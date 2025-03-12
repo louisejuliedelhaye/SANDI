@@ -13,9 +13,11 @@ The input image should contain the rocks displayed on a white or green backgroun
 *Figure x. Example of input image*
 
 ![BELREEFS-BDC1R1_size_distribution](https://github.com/user-attachments/assets/819ddeaa-168d-446d-a835-012eb69935df)
+
 *Figure x. Example of output gravel size distribution*
 
 
-<img src="https://github.com/user-attachments/assets/dbc545f0-8693-451b-b8a4-d7b2e8741821" width="300"><img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="500">
+<img src="https://github.com/user-attachments/assets/dbc545f0-8693-451b-b8a4-d7b2e8741821" width="300"><img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="450">
+
 *Figure x. Example of output classification of the gravels and mean shape indicators figure*
 
