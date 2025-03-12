@@ -17,11 +17,17 @@ The input image should contain the rocks displayed on a white or green backgroun
 <div align="center">
   <img src="https://github.com/user-attachments/assets/81823110-4d1f-46a8-8414-772492b99f6f" width="400"> <img src="https://github.com/user-attachments/assets/37c1304a-6572-428c-921a-cb3a95807a3b" width="400">
   
-  *Figure x. Example of input images on a green and on white background*
+  *Figure x. Examples of input images on a green and on white background.*
 </div>
 
 ### 2.2. Scale measurement
 When the images in jpg are imported in the software, the user is invited to draw a line representing one centimeter on the scale shown on the picture, enabling the software to calculate the scale of the image. The accuracy of this measurement is essential for the reliability of the results that are calculated based on the measured pixel size, so we recommend drawing the line several times in order to see the variability and compare the different pixel sizes obtained. A value can be considered correct when it is measured several times.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/d306ce67-8df9-47b3-bc10-bf0bc241e78b" width="600">
+  
+  *Figure x. Demonstration of the scale definition.*
+</div>
 
 ### 2.3. Background correction: white background image
 
