@@ -12,9 +12,9 @@ Description yet to be inserted.
 This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. 
 
 ### 2.1. Input image
-The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples.
+The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples. We recommand using a green background for rocks with a light or a wide range of colors, and a white background for darker gravels.
 
-<img src="https://github.com/user-attachments/assets/cbef9ba1-d010-4da7-aac0-781acc2a9078" width="400"><img src="https://github.com/user-attachments/assets/ea9aa287-a6cc-4d44-8f1a-4f3bdb5fed84" width="400">
+<img src="https://github.com/user-attachments/assets/bc7d91b2-47a1-4976-95b3-282ef0c865b4" width="400"><img src="https://github.com/user-attachments/assets/37c1304a-6572-428c-921a-cb3a95807a3b" width="400">
 
 *Figure x. Example of input images on a green and on white background*
 
