@@ -1,8 +1,9 @@
 # SANDI
-SANDI is a free, open-access software designed for oceanography and sedimentology. It can be used for two purposes: 1. to extract particles from high-resolution underwater images and 2. to extract gravels (> 1 mm) from laboratory images, in order to measure their size and shape and derive some statistics.
+SANDI is a free, open-access software designed for oceanography and sedimentology. It can be used for two purposes: 1. to extract particles from high-resolution underwater images and 2. to extract gravels (> 1 mm) from laboratory images, in order to measure their size and shape and to derive some statistics.
 
-***Disclaimer**: This is a beta version of the software, and may therefore still contain a few errors or malfunctions. We welcome any suggestions for improvement.*
+***Disclaimer**: This is a beta version of the software, and it may therefore still contain a few errors or malfunctions. We welcome any suggestions for improvement.*
 
+## 1. Suspended particles
 ## 2. Gravel analysis
 This section present a fast and easy way to measure the size and shape of rocks by detecting their contours from an image.
 
