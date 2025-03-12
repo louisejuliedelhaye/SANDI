@@ -3,7 +3,7 @@ SANDI is a free, open-access software designed for oceanography and sedimentolog
 
 ***Disclaimer**: This is a beta version of the software, and it may therefore still contain a few errors or malfunctions. We welcome any suggestions for improvement.*
 
-![homepage_background_v1](https://github.com/user-attachments/assets/1c7aabdf-8501-4a01-b93b-96be074683d1)
+![Capture](https://github.com/user-attachments/assets/a501f956-dc38-4597-9cda-cd86c29b0be2)
 
 ## 1. Suspended particles
 Description yet to be inserted.
