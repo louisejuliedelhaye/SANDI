@@ -8,5 +8,9 @@ The software contains two main sections: 1. a section to analyse particles in su
 ## 2. Gravel analysis
 This section present a fast and easy way to measure the size and calculate shape indicators of rocks by detecting their contours from an image.
 
-Input image:
+The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples.
 ![BELREEFS-BDC1R1](https://github.com/user-attachments/assets/cbef9ba1-d010-4da7-aac0-781acc2a9078)
+*Figure x. Example of input image*
+
+![BELREEFS-BDC1R1_size_distribution](https://github.com/user-attachments/assets/819ddeaa-168d-446d-a835-012eb69935df)
+*Figure x. Example of output gravel size distribution*
