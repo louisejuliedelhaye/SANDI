@@ -9,7 +9,7 @@ SANDI is a free, open-access software designed for oceanography and sedimentolog
 Description yet to be inserted.
 
 ## 2. Gravel analysis
-This section present a fast and easy way to measure the size and shape of rocks by detecting their contours from an image.
+This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. 
 
 ### 2.1. Input image
 The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples.
