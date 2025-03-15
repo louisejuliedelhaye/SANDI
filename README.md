@@ -54,12 +54,12 @@ When the images in jpg are imported in the software, the user is invited to draw
 ### 2.8. Examples of shape indicators
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/759c4ca0-1559-4c64-a512-47814be87fd0" width="500">   <img src="https://github.com/user-attachments/assets/02aada08-dd55-4876-b0ed-30dfc3379613" width="325" style="vertical-align: middle;">
+  <img src="https://github.com/user-attachments/assets/759c4ca0-1559-4c64-a512-47814be87fd0" width="300">   <img src="https://github.com/user-attachments/assets/02aada08-dd55-4876-b0ed-30dfc3379613" width="400" style="vertical-align: middle;">
 
   *Figure x. Example of angular stone.*
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/17c4dfea-e9da-45d0-9fd3-d6e573e3ea1d" width="500">   <img src="https://github.com/user-attachments/assets/d1149d54-cc86-4964-b783-381de25281b5" width="325" style="vertical-align: middle;">
+  <img src="https://github.com/user-attachments/assets/17c4dfea-e9da-45d0-9fd3-d6e573e3ea1d" width="300">   <img src="https://github.com/user-attachments/assets/d1149d54-cc86-4964-b783-381de25281b5" width="400" style="vertical-align: middle;">
 
   *Figure x. Example of rounded stone.*
 
