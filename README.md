@@ -12,7 +12,7 @@ Description yet to be inserted.
 This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. 
 
 ### 2.1. Input image
-The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples. We recommand using a green background for rocks with a light or a wide range of colors, and a white background for darker gravels.
+The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples. We recommand using a green background for rocks with a light or a wide range of colors, and a white background for darker gravels. The contour detection is very sensitive to lighting and shadows, we therefore recommand to photograph the samples with sufficient, homogenous natural light.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/81823110-4d1f-46a8-8414-772492b99f6f" width="400"> <img src="https://github.com/user-attachments/assets/37c1304a-6572-428c-921a-cb3a95807a3b" width="400">
@@ -50,4 +50,16 @@ When the images in jpg are imported in the software, the user is invited to draw
 </div>
 
 *Figure x. Example of output classification of the gravels and mean shape indicators figure*
+
+### 2.8. Examples of shape indicators
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/759c4ca0-1559-4c64-a512-47814be87fd0" width="500">   <img src="https://github.com/user-attachments/assets/02aada08-dd55-4876-b0ed-30dfc3379613" width="325" style="vertical-align: middle;">
+
+  *Figure x. Example of angular stone.*
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/17c4dfea-e9da-45d0-9fd3-d6e573e3ea1d" width="500">   <img src="https://github.com/user-attachments/assets/d1149d54-cc86-4964-b783-381de25281b5" width="325" style="vertical-align: middle;">
+
+  *Figure x. Example of rounded stone.*
 
