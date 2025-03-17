@@ -57,6 +57,15 @@ The histogram stretching operation is used on the greyscale image to clip the pi
 </div>
 
 #### 2.3.3. Image reconstruction
+The image reconstruction operation performs morphological reconstruction on the image to enhance its features by selectively preserving or suppressing certain regions. It uses a marker and a mask of the images to guide the reconstruction process, the marker being created by subtracting a specific value from each pixel in the input image (this value can be adapted by the user, default is set to 50). Pixels with values less than or equal to this value are set to 0. The function then applies a morphological reconstruction on a 3x3 window using the dilation method: the marker image is iteratively dilated until it matches the constraints imposed by the mask (corresponding to the input image). In other words, no pixel in the reconstructed image can have an intensity value higher than its value in the original image. The output image is then stretched again in the range 0-255. It allows to efficiently isolate structures, improve object connection, fill gaps, remove artifacts, or enhance specific regions in an image. 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7437284e-0519-4257-9941-83be68a5a044" width="400"> <img src="https://github.com/user-attachments/assets/afecbb7a-c976-47c3-b4d5-70f97a15cebf" width="400">
+  <img src="https://github.com/user-attachments/assets/034d72e9-dc8e-4f3e-bc81-cd680fb97d2c" width="400"> <img src="https://github.com/user-attachments/assets/fa4c3325-bf1a-448b-a746-244c88911e5e" width="400">
+  
+  *Figure x. Impact of the value used in the reconstruction (upper left: no image reconstruction; upper right: image reconstruction with a difference of 10; lower left: image reconstruction with a difference of 30; lower right: image reconstruction with a difference of 50).*
+</div>
+
 #### 2.3.4. Shadow correction
 
 ### 2.4. Contours detection
