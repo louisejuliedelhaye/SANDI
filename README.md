@@ -35,10 +35,21 @@ In the case of an image with a white background, defining a threshold can be com
 <div align="center">
   <img src="https://github.com/user-attachments/assets/341b0c7b-8e7c-4fc2-8e94-a6eb94d145d1" width="600">
   
-  *Figure x. Localisation of the options to enhance the image on a white background in the software.*
+  *Figure x. Localisation of the options to enhance the image on a white background in the software (see frame highlighted in green).*
 </div>
 
-#### 2.3.1. 
+#### 2.3.1. Denoising
+The denoise function is designed to reduce noise in a grayscale image using the Non-Local Means Denoising method from OpenCV. This technique works by comparing pixel intensities in different small windows across the image and averaging similar ones to replace the value of a specific pixel. Compared to blurring methods, it allows preserving as much image details as possible while removing unnecessary noise. The strength of the denoising filter can be adjusted manually by the user but is set to 15 by default, which after trial and errors showed to be the best fit for our test images. Performing this operation is essential to obtain representative shape indicators as noise on the image incorrectly increases the complexity of the edges of detected objects (see Figure x). 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/3c7eb310-317e-4200-9b4e-33510972de06" width="600">
+  
+  *Figure x. Impact of different values of the denoising filter strength (A: 0; B: 15; C: 30).*
+</div>
+
+#### 2.3.2. Histogram stretching
+#### 2.3.3. Image reconstruction
+#### 2.3.4. Shadow correction
 
 ### 2.4. Contours detection
 #### 2.4.1. For an image with a white background
