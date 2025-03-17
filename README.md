@@ -50,7 +50,11 @@ The denoise function is designed to reduce noise in a grayscale image using the 
 #### 2.3.2. Histogram stretching
 The histogram stretching operation is used on the greyscale image to clip the pixel intensity values within a specified range and then stretch the resulting values to cover the full 8-bit range (0–255), effectively enhancing contrasts. 
 
-
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/9044c428-a442-4338-a129-25aac870ad97" width="400"> <img src="https://github.com/user-attachments/assets/e4d8bc81-0a09-4f42-9147-f227188c0e12" width="400">
+  
+  *Figure x. Impact of the histogram stretching (left: no histogram stretching; right: histogram stretched between 0 and 200).*
+</div>
 
 #### 2.3.3. Image reconstruction
 #### 2.3.4. Shadow correction
