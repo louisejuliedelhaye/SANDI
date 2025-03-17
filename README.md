@@ -67,6 +67,13 @@ The image reconstruction operation performs morphological reconstruction on the 
 </div>
 
 #### 2.3.4. Shadow correction
+The shadows can be corrected by performing gamma correction on the image. This operation adjusts the brightness and contrast by redistributing pixel intensities non-linearly. It helps enhance details in either dark or bright regions, depending on the chosen gamma value.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/13e746d8-075a-4762-8525-53cf3a311bde" width="400"> <img src="https://github.com/user-attachments/assets/d7b94363-2d04-4061-9cc0-a43a3b6bb5d1" width="400">
+  
+  *Figure x. Impact of the gamma correction (left: no gamma correction ; right: gamma correction at 0.9).*
+</div>
 
 ### 2.4. Contours detection
 #### 2.4.1. For an image with a white background
