@@ -24,10 +24,10 @@ Description yet to be inserted.
 ### 1.5. Outputs
 
 ## 2. Gravel analysis
-This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. 
+This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. The beta version of this section is still under construction. Although it already is operational, it still has potential for improvement. Please bear this in mind when using it.  
 
 ### 2.1. Input image
-The input image should contain the rocks displayed on a white or green background (see two options later), together with a scale and a label. The image should be shot from above in order to have a good overall vision of the samples. We recommand using a green background for rocks with a light or a wide range of colors, and a white background for darker gravels. The contour detection is very sensitive to lighting and shadows, we therefore recommand to photograph the samples with sufficient, homogenous natural light, that generates as little shadow as possible. If the details of the rocks extracted are important, we recommend using a camera specially designed for macro shots, that will highly improve the quality of the vignettes.
+The input image should contain the rocks displayed on a white or green background (see two options later), together with a ruler and a label. The image should be shot from above in order to have a good overall vision of the samples and to avoid measurement inaccuracies due to changes in the image geometry. We recommand using a green background for rocks with a light or a wide range of colors, and a white background for darker gravels. The contour detection is very sensitive to lighting and shadows, we therefore recommand to photograph the samples with sufficient, homogenous natural light, that generates as little shadow as possible. If the details of the rocks extracted are important, we recommend using a camera specially designed for macro shots, that will highly improve the quality of the vignettes.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/81823110-4d1f-46a8-8414-772492b99f6f" width="400"> <img src="https://github.com/user-attachments/assets/37c1304a-6572-428c-921a-cb3a95807a3b" width="400">
@@ -36,7 +36,7 @@ The input image should contain the rocks displayed on a white or green backgroun
 </div>
 
 ### 2.2. Scale measurement
-When the images in jpg are imported in the software, the user is invited to draw a line representing one centimeter on the ruler displayed on the picture, enabling the software to calculate the scale of the image. The accuracy of this measurement is essential for the reliability of the results that are calculated based on the measured pixel size, so we recommend drawing the line several times in order to see the variability and compare the different pixel sizes obtained. A value can be considered correct when it is measured several times. For better accuracy, we recommend that the ruler is aligned parallel to the edge of the image.
+When the images in jpg are imported in the software, the user is invited to draw a line representing one centimeter on the ruler displayed on the picture, enabling the software to calculate the scale of the image. The accuracy of this measurement is essential for the reliability of the results that are calculated based on the measured pixel size, so we recommend drawing the line several times in order to see the variability and compare the different pixel sizes obtained each time. A value can be considered correct when it is measured several times. For better accuracy, we recommend that the ruler is aligned parallel to the edge of the image.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/d306ce67-8df9-47b3-bc10-bf0bc241e78b" width="600">
@@ -45,7 +45,7 @@ When the images in jpg are imported in the software, the user is invited to draw
 </div>
 
 ### 2.3. Background correction: white background image
-In the case of an image with a white background, defining a threshold can be complicated, particularly if the samples photographed contain stones of different colours, including light colours that are easily mistaken for the background. In such cases, different processes for enhancing the original image can be applied to obtain better results. The different enhancement methods can be found in the frame "Option 1" in the software, see image below.
+In the case of an image with a white background, defining a threshold can be complicated, particularly if the samples photographed contain stones of different colours, including light colours that are easily mistaken for the background. In such cases, different processes for enhancing the original image can be applied to obtain better results. The different enhancement methods can be found in the frame "Option 1" in the software, see green rectangle on the image below.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/341b0c7b-8e7c-4fc2-8e94-a6eb94d145d1" width="600">
@@ -54,7 +54,7 @@ In the case of an image with a white background, defining a threshold can be com
 </div>
 
 #### 2.3.1. Denoising
-The denoise function is designed to reduce noise in a grayscale image using the Non-Local Means Denoising method from OpenCV. This technique works by comparing pixel intensities in different small windows across the image and averaging similar ones to replace the value of a specific pixel. Compared to blurring methods, it allows preserving as much image details as possible while removing unnecessary noise. The strength of the denoising filter can be adjusted manually by the user but is set to 15 by default, which after trial and errors showed to be the best fit for our test images. Performing this operation is essential to obtain representative shape indicators as noise on the image incorrectly increases the complexity of the edges of detected objects (see Figure x). 
+The denoise function is designed to reduce noise in a grayscale image using the Non-Local Means Denoising method from OpenCV. The strength of the denoising filter can be adjusted manually by the user but is set to 15 by default, which after trial and errors showed to be the best fit for our test images. Performing this operation is essential to obtain representative shape indicators as noise on the image incorrectly increases the complexity of the edges of detected objects (see Figure x). 
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/3c7eb310-317e-4200-9b4e-33510972de06" width="600">
@@ -63,7 +63,7 @@ The denoise function is designed to reduce noise in a grayscale image using the 
 </div>
 
 #### 2.3.2. Histogram stretching
-The histogram stretching operation is used on the greyscale image to clip the pixel intensity values within a specified range and then stretch the resulting values to cover the full 8-bit range (0–255), effectively enhancing contrasts. 
+The histogram stretching operation is used on the greyscale image to clip the pixel intensity values within a specified range and then stretch the resulting values to cover the full 8-bit range (0–255). It allows to enhance the contrasts on the image. 
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/9044c428-a442-4338-a129-25aac870ad97" width="400"> <img src="https://github.com/user-attachments/assets/e4d8bc81-0a09-4f42-9147-f227188c0e12" width="400">
@@ -72,7 +72,7 @@ The histogram stretching operation is used on the greyscale image to clip the pi
 </div>
 
 #### 2.3.3. Image reconstruction
-The image reconstruction operation performs morphological reconstruction on the image to enhance its features by selectively preserving or suppressing certain regions. It uses a marker and a mask of the images to guide the reconstruction process, the marker being created by subtracting a specific value from each pixel in the input image (this value can be adapted by the user, default is set to 50). Pixels with values less than or equal to this value are set to 0. The function then applies a morphological reconstruction on a 3x3 window using the dilation method: the marker image is iteratively dilated until it matches the constraints imposed by the mask (corresponding to the input image). In other words, no pixel in the reconstructed image can have an intensity value higher than its value in the original image. The output image is then stretched again in the range 0-255. It allows to efficiently isolate structures, improve object connection, fill gaps, remove artifacts, or enhance specific regions in an image. 
+The image reconstruction operation helps keeping important objects on the image while removing unwanted ones. It works bu using two versions of the image: the *mask* and the *marker*. While the *mask* consists of the original image, the *marker* is the original image in which each pixel's intensity is reduced by a certain value - which is decided by the user. In that new image, all the pixels which intensities become lower than the threshold are set to 0. Through the reconstruction process, the *marker* image is gradually increased by a method called "dilation" so that no pixel in the new image has an intensity higher than its intensity in the *mask* image. This technique is useful for making objects clearer, improving their shapes and removing unwanted noise from the image.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/7437284e-0519-4257-9941-83be68a5a044" width="400"> <img src="https://github.com/user-attachments/assets/afecbb7a-c976-47c3-b4d5-70f97a15cebf" width="400">
@@ -82,7 +82,7 @@ The image reconstruction operation performs morphological reconstruction on the 
 </div>
 
 #### 2.3.4. Shadow correction
-The shadows can be corrected by performing gamma correction on the image. This operation adjusts the brightness and contrast by redistributing pixel intensities non-linearly. It helps enhance details in either dark or bright regions, depending on the chosen gamma value.
+The gamma correction allows to adjust the brightness and contrast of the image. Instead of changing all pixels equally, it applies a special curve that makes dark areas (shadows) brighter (with gamma value < 1) or bright areas darker (with a gamma value > 1).
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/13e746d8-075a-4762-8525-53cf3a311bde" width="400"> <img src="https://github.com/user-attachments/assets/d7b94363-2d04-4061-9cc0-a43a3b6bb5d1" width="400">
