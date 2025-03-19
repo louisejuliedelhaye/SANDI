@@ -8,6 +8,21 @@ SANDI is a free, open-access software designed for oceanography and sedimentolog
 ## 1. Suspended particles
 Description yet to be inserted.
 
+### 1.1. Input image
+
+### 1.2. Background correction
+#### 1.2.1. Denoising
+#### 1.2.2. Histogram stretching
+#### 1.2.3. Background illumination
+#### 1.2.4. Image reconstruction
+#### 1.2.5. Resampling
+
+### 1.3. Particle extraction
+
+### 1.4. Statistics computation
+
+### 1.5. Outputs
+
 ## 2. Gravel analysis
 This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. 
 
