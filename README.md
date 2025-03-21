@@ -121,17 +121,17 @@ Finally, the user can save the vignettes of each detected gravel in png and expo
 <div align="center">
   <img src="https://github.com/user-attachments/assets/819ddeaa-168d-446d-a835-012eb69935df" width="500">   <img src="https://github.com/user-attachments/assets/dbc545f0-8693-451b-b8a4-d7b2e8741821" width="325" style="vertical-align: middle;">
   
-  *Figure x. Example of output gravel size distribution*
+  *Figure x. Example of generated gravel size distribution and GRADISTAT classification of the gravels *
 </div>
-
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="400">
 
-  *Figure x. Example of output classification of the gravels and mean shape indicators figure*
+  *Figure x. Example of generated mean shape indicators figure*
 </div>
 
 ### 2.8. Examples of shape indicators
+Hereunder are shown a few gravels and their derived shape indicators as a reference for the user.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/759c4ca0-1559-4c64-a512-47814be87fd0" width="300">   <img src="https://github.com/user-attachments/assets/02aada08-dd55-4876-b0ed-30dfc3379613" width="400" style="vertical-align: middle;">
