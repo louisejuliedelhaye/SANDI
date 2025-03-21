@@ -90,13 +90,33 @@ The gamma correction allows to adjust the brightness and contrast of the image. 
   *Figure x. Impact of the gamma correction (left: no gamma correction ; right: gamma correction at 0.9).*
 </div>
 
-### 2.4. Contours detection
+### 2.4. Contours detection and gravel extraction
 #### 2.4.1. For an image with a white background
+For an image with a white background, the objects are detected after converting the enhanced image to binary using the Otsu thresholding method. Objects touching the borders of the image are then removed and holes inside detected objects are filled using morphological closing and binary holes filling. Finally, each object is labelled and its properties are extracted using the regionprops function from skimage. For more information regarding the different measurements made, we advise the user to refer to the corresponding section in the suspended sediment part of this guide.
+
 #### 2.4.2. For an image with a green background
+For an image with a green background, the objects are detected after a first denoising (Non-Local Means) is applied to the original HSV image. The background is then detected by creating a mask on a specified range of color (corresponding to the green of the background), effectively converting these pixels to white. The mask is then inverted, isolating the gravels from the background. As for the image with a white background, objects touching the borders of the image are then removed and holes inside detected objects are filled using morphological closing and binary holes filling. Each object is labelled and its properties are extracted using the regionprops function from skimage. For more information regarding the different measurements made, we advise the user to refer to the corresponding section in the suspended sediment part of this guide.
 
 ### 2.5. Gravel filtration
+Whatever the background chosen, this method will also detect objects that are not the gravels of interest (e.g. the ruler, label, little fragments of stones). These can be removed manually by the user by right-clicking or dragging a rectangle near the centroid(s) of the object(s) to be discarded. There is also an option for the user to remove all gravels udner a desired size (cm).
+
+<div align="center">
+  <img src="" width="600">
+  
+  *Figure x. Removal of unwanted objects on the image.*
+</div>
+
 ### 2.6. Statistics computation
+Once the unwanted objects have been removed from the image, the user can press the ‘Compute statistics’ button on the right side of the window. This will compute the mean area (cm²), perimeter (cm), equivalent spherical diameter (cm), major and minor axis lengths (cm), shape indicators and will aggregate the detected objects in bins of 0.1 cm based on their minor and major axis lengths and count the number of gravels per class on the GRADISTAT classification. It will also compute the sorting, skewness and kurtosis values of the sample.
+
 ### 2.7. Outputs
+Finally, the user can save the vignettes of each detected gravel in png and export the individual properties of each gravel as well as the statistics of the entire sample in two separated csv files. 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/55cd36c1-5c1a-4d09-83e9-d90e692cdcc1" width="400"> <img src="https://github.com/user-attachments/assets/f3f9b932-7885-4d0a-bce4-e656359a5b0d" width="400">
+  
+  *Figure x. Examples of the two csv created (left: the measurements of each gravel on the image; right: the mean statistics for the entire image).*
+</div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/819ddeaa-168d-446d-a835-012eb69935df" width="500">   <img src="https://github.com/user-attachments/assets/dbc545f0-8693-451b-b8a4-d7b2e8741821" width="325" style="vertical-align: middle;">
