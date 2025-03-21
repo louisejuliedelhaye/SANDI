@@ -110,7 +110,7 @@ Whatever the background chosen, this method will also detect objects that are no
 Once the unwanted objects have been removed from the image, the user can press the ‘Compute statistics’ button on the right side of the window. This will compute the mean area (cm²), perimeter (cm), equivalent spherical diameter (cm), major and minor axis lengths (cm), shape indicators and will aggregate the detected objects in bins of 0.1 cm based on their minor and major axis lengths and count the number of gravels per class on the GRADISTAT classification. It will also compute the sorting, skewness and kurtosis values of the sample.
 
 ### 2.7. Outputs
-Finally, the user can save the vignettes of each detected gravel in png and export the individual properties of each gravel as well as the statistics of the entire sample in two separated csv files. 
+Finally, the user can save the vignettes of each detected gravel in png and export the individual properties of each gravel as well as the statistics of the entire sample in two separated csv files. Three graphs are saved in the same folder, one showing the gravel size distribution, the percentage of each GRADISTAT class and the mean shape indicators of the sample (see images x and x).
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/55cd36c1-5c1a-4d09-83e9-d90e692cdcc1" width="400"> <img src="https://github.com/user-attachments/assets/f3f9b932-7885-4d0a-bce4-e656359a5b0d" width="400">
@@ -124,11 +124,12 @@ Finally, the user can save the vignettes of each detected gravel in png and expo
   *Figure x. Example of output gravel size distribution*
 </div>
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="450">
-</div>
 
-*Figure x. Example of output classification of the gravels and mean shape indicators figure*
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="400">
+
+  *Figure x. Example of output classification of the gravels and mean shape indicators figure*
+</div>
 
 ### 2.8. Examples of shape indicators
 
