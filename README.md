@@ -10,7 +10,7 @@ SANDI is a free, open-access software designed for oceanography and sedimentolog
 </div>
 
 ## 1. Suspended particles
-This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
+This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values for the image enhancement steps are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
 
 ### 1.1. Input image
 By clciking on the 'Select JPG image(s)' button, the user is invited to select one or multiples images to be processed. A pop-up should then appear allowing the user to insert the height, width and depth of field (in mm) of the images to be imported. The default values are for the PCam3 developed by Herbst Environmental Science. When clicking on the 'ok' button of the pop-up, the user should see the image appearing on the main window and its name, date and metadata, as well as the calculated pixel size (in µm) should be written on the console below. 
@@ -18,23 +18,36 @@ By clciking on the 'Select JPG image(s)' button, the user is invited to select o
 <div align="center">
   <img src="https://github.com/user-attachments/assets/30da6287-8cd2-417e-8a44-afbf396fdc3b" width="400"> <img src="https://github.com/user-attachments/assets/4bb3afd1-2387-476b-bb01-096bf16bc6ba" width="400">
 
-  *Figure 2. Demonstration of the window appearing when importing one or multiple image(s).*
+  *Figure 2. Demonstration of the windows when importing one or multiple image(s).*
 </div>
 
 ### 1.2. Background correction
-Description yet to be inserted.
+Several steps are necessary to improve the contour detection of the particles on the image by enhancing the image. These steps, on the left side of the page, are essential to obtain accurate size and shape measurements, they are briefly introduced here but further developed in Delhaye et al. (in prep). As mentioned earlier, we highly recommend testing the effect of different values for each of these parameters on the final contour detection before processing a batch of images.
+
 #### 1.2.1. Denoising
-Description yet to be inserted.
+Using the Non-Local Means Denoising (NLMD) method from OpenCV, the denoising function of the software is designed to reduce noise in a grayscale image. This step is recommended to improve shape indicators measurements as different factors (e.g. camera settings, environmental conditions) create noise in the image that can affect measurements. The user can manually adjust the denoising filter strength which will define the intensity of the denoising operation.
+
 #### 1.2.2. Histogram stretching
-Description yet to be inserted.
+In this part, the user can adapt the minimum and maximum values of the image histogram (which is visible on the 'single image processing' page) in order to enhance the contrasts on the image.
+
 #### 1.2.3. Background illumination
-Description yet to be inserted.
+The background illumination correction corresponds to the first part of to the “ImRec” function developed by Markussen (2016) and allows to homogeneize the background illumination in case some parts of the image are more illuminated than others. The size of the blocks that are iterated over the image should be higher than the expected particle size.
+
 #### 1.2.4. Image reconstruction
-Description yet to be inserted.
+The image reconstruction operation (corresponding to the second part of the “ImRec function of Markussen (2016)) performs morphological reconstruction on the image to enhance its features by selectively preserving or suppressing certain regions. The user can adjust the value to be substracted from the original image.
+
 #### 1.2.5. Resampling
-Description yet to be inserted.
+The image resampling function adjusts the spatial resolution of the image to the one chosen by the user (set to 1 µm by default) by linearly interpolating the intensities of the four neighboring pixels of the selected pixel in order to find its new value. We recommend using this option to ensure all shape indicators are confined within the expecte 0-1 range.  
+
 ### 1.3. Particle extraction
-Description yet to be inserted.
+Once these image enhancement operations are done, the contours of the particles are automatically extracted using the Otsu threshold. It creates a binary image that separates the particles from the background. As did Markussen (2016), the particles touching the border of the image are automatically discarded. Contours of every detected particle are then extracted from the image using functions from the scikit-image library in python. Upon clicking on the "extract particles" button, the user will see all the contours detected on the image on the screen and by hoving over with the cursor, the contours of the selected particle will be displayed on the bottom right side of the window, and a yellow pop-up will show the different values measured by the algorithm for that particle (see Figure below). By inspecting the results, the user can detect any abnormal value that may indicate that other settings should be used for the image enhancement.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7722fe3c-54b1-4eea-9598-7172f1ef7f53">
+
+  *Figure 3. Demonstration of the extracted contours and particles measurements.*
+</div>
+
 ### 1.4. Statistics computation
 Description yet to be inserted.
 ### 1.5. Outputs
