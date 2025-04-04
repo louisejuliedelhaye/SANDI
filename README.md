@@ -40,7 +40,7 @@ The image reconstruction operation (corresponding to the second part of the “I
 The image resampling function adjusts the spatial resolution of the image to the one chosen by the user (set to 1 µm by default) by linearly interpolating the intensities of the four neighboring pixels of the selected pixel in order to find its new value. We recommend using this option to ensure all shape indicators are confined within the expecte 0-1 range.  
 
 ### 1.3. Particle extraction
-Once these image enhancement operations are done, the contours of the particles are automatically extracted using the Otsu threshold. It creates a binary image that separates the particles from the background. As did Markussen (2016), the particles touching the border of the image are automatically discarded. Contours of every detected particle are then extracted from the image using functions from the scikit-image library in python. Upon clicking on the "extract particles" button, the user will see all the contours detected on the image on the screen and by hoving over with the cursor, the contours of the selected particle will be displayed on the bottom right side of the window, and a yellow pop-up will show the different values measured by the algorithm for that particle (see Figure below). By inspecting the results, the user can detect any abnormal value that may indicate that other settings should be used for the image enhancement.
+Once these image enhancement operations are done, the contours of the particles are automatically extracted using the Otsu threshold. It creates a binary image that separates the particles from the background. As did Markussen (2016), the particles touching the border of the image are automatically discarded. Contours of every detected particle are then extracted from the image using functions from the scikit-image library in python. Upon clicking on the "extract particles" button, the user will see all the contours detected on the image on the screen and by hoving over with the cursor, the contours of the selected particle will be displayed on the bottom right side of the window, and a yellow pop-up will show the different values measured by the algorithm for that particle (see Figure below). By inspecting the results, the user can detect any abnormal value that may indicate that other settings should be used for the image enhancement. By right-clicking on a particle, the user can choose to discard one particle from the measurements, this option as well as the visualization of the contours are only available in the 'single image processing' page and not for the batch processing.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/7722fe3c-54b1-4eea-9598-7172f1ef7f53">
@@ -49,9 +49,16 @@ Once these image enhancement operations are done, the contours of the particles 
 </div>
 
 ### 1.4. Statistics computation
-Description yet to be inserted.
+Various size measurements and shape indicators are calculated for each particles and their average for each image is calculated upon clicking on the 'Computate image statistics' button. Results should be displayed in the console at the bottom of the window. For more information on the shape and size measurements, we recommend the user to refer to Delhaye et al. (in prep).
+
 ### 1.5. Outputs
-Description yet to be inserted.
+The algorithm generates two CSV files (the mean statistics and PSD of each image and one CSV containing the measurements of each particle in the image) as well as vignettes for each particle extracted showing its detected contours on the original image. 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/98496f34-89ac-4d43-a881-71d2aac6160a" width="200"> <img src="https://github.com/user-attachments/assets/d132220e-616e-469f-8b1b-2c8dcaf49c9f" width="200">
+
+  *Figure 4. Examples of generated vignettes.*
+</div>
 
 ## 2. Gravel analysis
 This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. The beta version of this section is still under construction. Although it already is operational, it still has potential for improvement. Please bear this in mind when using it.  
