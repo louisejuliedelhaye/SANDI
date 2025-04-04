@@ -10,22 +10,35 @@ SANDI is a free, open-access software designed for oceanography and sedimentolog
 </div>
 
 ## 1. Suspended particles
-Description yet to be inserted.
+This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
 
 ### 1.1. Input image
+By clciking on the 'Select JPG image(s)' button, the user is invited to select one or multiples images to be processed. A pop-up should then appear allowing the user to insert the height, width and depth of field (in mm) of the images to be imported. The default values are for the PCam3 developed by Herbst Environmental Science. When clicking on the 'ok' button of the pop-up, the user should see the image appearing on the main window and its name, date and metadata, as well as the calculated pixel size (in µm) should be written on the console below. 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/30da6287-8cd2-417e-8a44-afbf396fdc3b" width="400"> <img src="https://github.com/user-attachments/assets/4bb3afd1-2387-476b-bb01-096bf16bc6ba" width="400">
+
+  *Figure 2. Demonstration of the window appearing when importing one or multiple image(s).*
+</div>
 
 ### 1.2. Background correction
+Description yet to be inserted.
 #### 1.2.1. Denoising
+Description yet to be inserted.
 #### 1.2.2. Histogram stretching
+Description yet to be inserted.
 #### 1.2.3. Background illumination
+Description yet to be inserted.
 #### 1.2.4. Image reconstruction
+Description yet to be inserted.
 #### 1.2.5. Resampling
-
+Description yet to be inserted.
 ### 1.3. Particle extraction
-
+Description yet to be inserted.
 ### 1.4. Statistics computation
-
+Description yet to be inserted.
 ### 1.5. Outputs
+Description yet to be inserted.
 
 ## 2. Gravel analysis
 This section presents a fast and easy way to measure the size and shape of rocks by detecting their contours from an image taken in a laboratory. The beta version of this section is still under construction. Although it already is operational, it still has potential for improvement. Please bear this in mind when using it.  
