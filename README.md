@@ -206,6 +206,7 @@ Hereunder are shown a few gravels and their derived shape indicators as a refere
   <img src="https://github.com/user-attachments/assets/17c4dfea-e9da-45d0-9fd3-d6e573e3ea1d" width="300">   <img src="https://github.com/user-attachments/assets/d1149d54-cc86-4964-b783-381de25281b5" width="400" style="vertical-align: middle;">
 
   *Figure 18. Example of rounded stone.*
+</div>
 
 ## 3. References
 Markussen T.N., 2016. “Parchar - Characterization of Suspended Particles Through Image Processing in Matlab”, Journal of Open Research Software 4: e26. http://dx.doi.org/10.5334/jors.114.  
