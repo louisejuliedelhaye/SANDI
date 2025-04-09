@@ -71,6 +71,7 @@ For each extracted particle, the following measurements are computed:
 * Sphericity
 * Roundness
 * Extent
+
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
 ### 1.4. Statistics computation
