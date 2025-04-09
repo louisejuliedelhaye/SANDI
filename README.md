@@ -173,19 +173,19 @@ Finally, the user can save the vignettes of each detected gravel in png and expo
 <div align="center">
   <img src="https://github.com/user-attachments/assets/55cd36c1-5c1a-4d09-83e9-d90e692cdcc1" width="400"> <img src="https://github.com/user-attachments/assets/f3f9b932-7885-4d0a-bce4-e656359a5b0d" width="400">
   
-  *Figure 14. Examples of the two csv created (left: the measurements of each gravel on the image; right: the mean statistics for the entire image).*
+  *Figure 13. Examples of the two csv created (left: the measurements of each gravel on the image; right: the mean statistics for the entire image).*
 </div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/819ddeaa-168d-446d-a835-012eb69935df" width="500">   <img src="https://github.com/user-attachments/assets/dbc545f0-8693-451b-b8a4-d7b2e8741821" width="325" style="vertical-align: middle;">
   
-  *Figure 15. Example of generated gravel size distribution and GRADISTAT classification of the gravels *
+  *Figure 14. Example of generated gravel size distribution and GRADISTAT classification of the gravels *
 </div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="400">
 
-  *Figure 16. Example of generated mean shape indicators figure*
+  *Figure 15. Example of generated mean shape indicators figure*
 </div>
 
 ### 2.8. Examples of shape indicators
@@ -194,13 +194,13 @@ Hereunder are shown a few gravels and their derived shape indicators as a refere
 <div align="center">
   <img src="https://github.com/user-attachments/assets/759c4ca0-1559-4c64-a512-47814be87fd0" width="300">   <img src="https://github.com/user-attachments/assets/02aada08-dd55-4876-b0ed-30dfc3379613" width="400" style="vertical-align: middle;">
 
-  *Figure 17. Example of angular stone.*
+  *Figure 16. Example of angular stone.*
 </div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/17c4dfea-e9da-45d0-9fd3-d6e573e3ea1d" width="300">   <img src="https://github.com/user-attachments/assets/d1149d54-cc86-4964-b783-381de25281b5" width="400" style="vertical-align: middle;">
 
-  *Figure 18. Example of rounded stone.*
+  *Figure 17. Example of rounded stone.*
 </div>
 
 ## 3. References
