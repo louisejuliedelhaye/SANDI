@@ -82,7 +82,7 @@ The averages of each particle measurement for each image are calculated upon cli
 The software generates two CSV files (the mean statistics and PSD of each image and one CSV containing the measurements of each particle in the image) as well as vignettes for each particle extracted showing its detected contours on the original image. 
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/d1dd74fd-48a4-4193-b514-79e2efde0d9c" width="200"> <img src="https://github.com/user-attachments/assets/20c93b11-9b5f-4fb6-86f7-dcada36d9383" width="195"> <img src="https://github.com/user-attachments/assets/ebc73f26-41cc-4805-acb0-ae8102272700" width="120">
+  <img src="https://github.com/user-attachments/assets/d1dd74fd-48a4-4193-b514-79e2efde0d9c" width="200"> <img src="https://github.com/user-attachments/assets/20c93b11-9b5f-4fb6-86f7-dcada36d9383" width="210"> <img src="https://github.com/user-attachments/assets/ebc73f26-41cc-4805-acb0-ae8102272700" width="140">
 
   *Figure 5. Examples of generated vignettes.*
 </div>
