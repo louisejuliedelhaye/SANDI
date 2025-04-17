@@ -1,4 +1,4 @@
-# To-do list - to SANDI v1.0.0-beta
+# To-do list - for SANDI v1.0.0-beta
 
 ## Layout
 - [ ] Add a progress bar for the batch processing
@@ -14,7 +14,7 @@
 - [ ] Correct requirements file
 - [ ] Make sure the user input width, height and depth are correctly adapted
 
-# To-do list - to future versions
+# To-do list - for future versions
 
 ## Layout
 - [ ] Make layout adaptable to different screen sizes and resolutions
