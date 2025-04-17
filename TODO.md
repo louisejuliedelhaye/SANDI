@@ -9,6 +9,10 @@
 - [ ] Add option to work with other formats than jpg
 - [ ] Add option to automatically detect whether the background is black or white
 - [ ] Adapt image reconstruction, background illumination and particle extractions to images on white background
+- [ ] Add option to choose the thresholding algorithm
+- [ ] Add option to shrink contours by a few pixels
+- [ ] Add option to fill holes or not
+- [ ] Add region merging option
 
 ## Bug corrections
 - [ ] Correct requirements file
@@ -18,6 +22,7 @@
 
 ## Layout
 - [ ] Make layout adaptable to different screen sizes and resolutions
+- [ ] Add option to zoom in the image when particles are extracted
 
 ## Bug corrections
 - [ ] Make it available for Linux and Mac
