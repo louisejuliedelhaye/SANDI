@@ -59,7 +59,13 @@ def open_file(app_instance):
     IMG.filename = filedialog.askopenfilename(
         initialdir="/",
         title="Select JPG Image",
-        filetypes=(("JPEG files", "*.jpg"), ("All files", "*.*"))
+        filetypes=(
+            ("Image files", "*.jpg *.jpeg *.png *.tif *.tiff"),
+            ("JPEG files", "*.jpg *.jpeg"),
+            ("PNG files", "*.png"),
+            ("TIFF files", "*.tif *.tiff"),
+            ("All files", "*.*"),
+        )
     )
 
     if IMG.filename is not None:
@@ -75,6 +81,9 @@ def open_file(app_instance):
                 IMG.selected_image = np.array(img)
                 IMG.tk_resized_image = ImageTk.PhotoImage(img.resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
                 IMG.exif_data = img._getexif()
+                
+                if img.mode != 'RGB':
+                    img = img.convert('RGB')
                 
                 show_technical_frame_popup(app_instance, IMG.filename)
 
