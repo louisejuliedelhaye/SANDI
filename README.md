@@ -1,18 +1,18 @@
 # <img src="https://github.com/user-attachments/assets/b1fa9c0e-d914-40fc-b6b8-83716b975e52" width="23">  SANDI     
 SANDI is a free, open-access software designed for oceanography and sedimentology. It can be used to extract suspended particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. Users can choose to download the full code and run the ‘main’ file, or they can download the latest release of the software as an executable, which is self-contained.
 
-***Disclaimer**: This is a beta version of the software, and it may therefore still contain some errors or malfunctions. Any feedback or suggestions for improvement is welcome and appreciated.*
+***Disclaimer**: This is a alpha version of the software, and it may therefore still contain some errors or malfunctions. Any feedback or suggestion for improvement is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/8c8d614f-1b01-4d04-8af2-7bc466a13b4c">
   
-  *Figure 1. Homepage of the SANDI v1.0.0-beta software. Illustration is from Sophie Delhaye.*
+  *Figure 1. Homepage of the SANDI v1.0.0-alpha software. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
 </div>
 
 ## 1. Suspended particles
 This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values for the image enhancement steps are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
 
-The 'single image processing' page contains a first frame on the left where the user can test the different image enhancement parameters, at the bottom of that frame, the 'extract particles' button allows the user to extract particles when the image is ready; and at the bottom left of the window, the histogram of the image is computed to help the user decide on the best parameters to enhance the image (Figure 2, left). That graph can be expanded. Once the image statistics are computed (see button on the right side of the window), this graph will be replaced by the computed particle size distribution. The imported image (and its modified version during the image enhancement process) is displayed at the center of the window, and at the bottom center, the console logs and details every step of the processing and results. The right side of the window contains options to filtrate the particles based on their intensity, size or aspect ratio; as well as two buttons to export the output csv files (after statistics computation) and vignettes. 
+The 'single image processing' page contains a first frame on the left where the user can test the different image enhancement parameters, at the bottom of that frame, the 'extract particles' button allows the user to extract particles when the image is ready; and at the bottom left of the window, the histogram of the image is computed to help the user decide on the best parameters to enhance the image (Figure 2, left). That graph can be expanded. Once the image statistics are computed (see button on the right side of the window), this graph will be replaced by the computed particle size distribution. The imported image (and its modified version during the image enhancement process) is displayed at the center of the window, and at the bottom center, the console logs and details every step of the processing and results. The right side of the window contains options to filtrate the particles based on their intensity, size or aspect ratio; as well as two buttons to export the output csv files (after statistics computation) and vignettes. The algorithm was inspired by Markussen (2016).
 
 The 'batch processing' page allows the user to import a set of images, to define the desired image enhancement values (left frame) and to start the processing on the entire batch by clicking on the 'process batch' button on the top right corner of the window (Figure 2, right). Three new folders (corrected images, statistics and vignettes) will automatically be created in the directory chosen by the user which will contain the output results of the processing (enhanced images, csv files, graphs, log and individual vignettes of each particle). During the processing, the console logs and details all the steps of the processing, the top graph shows the particle size distribution updated with each new image from the batch processed and the bottom right graph shows the mean shape parameters of all the particles extracted in the batch. 
 
@@ -76,15 +76,23 @@ For a more detailed explanation, the user is invited to read Delhaye et al. (in 
 
 ### 1.4. Statistics computation
 The averages of each particle measurement for each image are calculated upon clicking on the 'computate image statistics' button, as well as the D10, D50 and D90. Results should be displayed in the console at the bottom of the window. The particles are grouped into 57 bins between 1 and 19144 µm based on their equivalent spherical diameter. 
-***Note**: The minimum reliable particle size that can be detected with our reference camera (PCam3, 3.21 µm resolution) is of 9 µm.*
+
+***Note**: The minimum reliable equivalent spherical diameter that can be detected with our reference camera (PCam3, 3.21 µm resolution) is of 10 µm (7 coherent pixels).*
 
 ### 1.5. Outputs
-The software generates two CSV files (the mean statistics and PSD of each image and one CSV containing the measurements of each particle in the image) as well as vignettes for each particle extracted showing its detected contours on the original image. 
+The software generates two CSV files (the mean statistics and PSD of each image and one CSV containing the measurements of each particle in the image) as well as vignettes for each particle extracted showing its detected contours on the original image. It also creates a figure containing the PSD and the mean shape descriptors.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/d1dd74fd-48a4-4193-b514-79e2efde0d9c" height="150"> <img src="https://github.com/user-attachments/assets/20c93b11-9b5f-4fb6-86f7-dcada36d9383" height="150"> <img src="https://github.com/user-attachments/assets/ebc73f26-41cc-4805-acb0-ae8102272700" height="150">
 
   *Figure 5. Examples of generated vignettes.*
+</div>
+
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/da3e8afd-ae6d-465c-918e-f504c1039486" width="400">  <img src="https://github.com/user-attachments/assets/293f3594-7033-4d86-ad74-f10cd9cf372a" width="250">
+
+  *Figure 6. Output figures.*
 </div>
 
 ## 2. Gravel analysis
@@ -96,7 +104,7 @@ The input image should contain the rocks displayed on a white or green backgroun
 <div align="center">
   <img src="https://github.com/user-attachments/assets/81823110-4d1f-46a8-8414-772492b99f6f" width="400"> <img src="https://github.com/user-attachments/assets/37c1304a-6572-428c-921a-cb3a95807a3b" width="400">
   
-  *Figure 6. Examples of input images on a green and on white background.*
+  *Figure 7. Examples of input images on a green and on white background.*
 </div>
 
 ### 2.2. Scale measurement
@@ -105,7 +113,7 @@ When the images in jpg are imported in the software, the user is invited to draw
 <div align="center">
   <img src="https://github.com/user-attachments/assets/d306ce67-8df9-47b3-bc10-bf0bc241e78b" width="600">
   
-  *Figure 7. Demonstration of the scale definition.*
+  *Figure 8. Demonstration of the scale definition.*
 </div>
 
 ### 2.3. Background correction: white background image
@@ -114,7 +122,7 @@ In the case of an image with a white background, defining a threshold can be com
 <div align="center">
   <img src="https://github.com/user-attachments/assets/341b0c7b-8e7c-4fc2-8e94-a6eb94d145d1" width="600">
   
-  *Figure 8. Localisation of the options to enhance the image on a white background in the software (see frame highlighted in green).*
+  *Figure 9. Localisation of the options to enhance the image on a white background in the software (see frame highlighted in green).*
 </div>
 
 #### 2.3.1. Denoising
@@ -123,7 +131,7 @@ The denoise function is designed to reduce noise in a grayscale image using the 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/3c7eb310-317e-4200-9b4e-33510972de06" width="600">
   
-  *Figure 9. Impact of different values of the denoising filter strength (A: 0; B: 15; C: 30).*
+  *Figure 10. Impact of different values of the denoising filter strength (A: 0; B: 15; C: 30).*
 </div>
 
 #### 2.3.2. Histogram stretching
@@ -132,7 +140,7 @@ The histogram stretching operation is used on the greyscale image to clip the pi
 <div align="center">
   <img src="https://github.com/user-attachments/assets/9044c428-a442-4338-a129-25aac870ad97" width="400"> <img src="https://github.com/user-attachments/assets/e4d8bc81-0a09-4f42-9147-f227188c0e12" width="400">
   
-  *Figure 10. Impact of the histogram stretching (left: no histogram stretching; right: histogram stretched between 0 and 200).*
+  *Figure 11. Impact of the histogram stretching (left: no histogram stretching; right: histogram stretched between 0 and 200).*
 </div>
 
 #### 2.3.3. Image reconstruction
@@ -142,7 +150,7 @@ The image reconstruction operation helps keeping important objects on the image 
   <img src="https://github.com/user-attachments/assets/7437284e-0519-4257-9941-83be68a5a044" width="400"> <img src="https://github.com/user-attachments/assets/afecbb7a-c976-47c3-b4d5-70f97a15cebf" width="400">
   <img src="https://github.com/user-attachments/assets/034d72e9-dc8e-4f3e-bc81-cd680fb97d2c" width="400"> <img src="https://github.com/user-attachments/assets/fa4c3325-bf1a-448b-a746-244c88911e5e" width="400">
   
-  *Figure 11. Impact of the value used in the reconstruction (upper left: no image reconstruction; upper right: image reconstruction with a difference of 10; lower left: image reconstruction with a difference of 30; lower right: image reconstruction with a difference of 50).*
+  *Figure 12. Impact of the value used in the reconstruction (upper left: no image reconstruction; upper right: image reconstruction with a difference of 10; lower left: image reconstruction with a difference of 30; lower right: image reconstruction with a difference of 50).*
 </div>
 
 #### 2.3.4. Shadow correction
@@ -151,7 +159,7 @@ The gamma correction allows to adjust the brightness and contrast of the image. 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/13e746d8-075a-4762-8525-53cf3a311bde" width="400"> <img src="https://github.com/user-attachments/assets/d7b94363-2d04-4061-9cc0-a43a3b6bb5d1" width="400">
   
-  *Figure 12. Impact of the gamma correction (left: no gamma correction ; right: gamma correction at 0.9).*
+  *Figure 13. Impact of the gamma correction (left: no gamma correction ; right: gamma correction at 0.9).*
 </div>
 
 ### 2.4. Contours detection and gravel extraction
@@ -173,19 +181,19 @@ Finally, the user can save the vignettes of each detected gravel in png and expo
 <div align="center">
   <img src="https://github.com/user-attachments/assets/55cd36c1-5c1a-4d09-83e9-d90e692cdcc1" width="400"> <img src="https://github.com/user-attachments/assets/f3f9b932-7885-4d0a-bce4-e656359a5b0d" width="400">
   
-  *Figure 13. Examples of the two csv created (left: the measurements of each gravel on the image; right: the mean statistics for the entire image).*
+  *Figure 14. Examples of the two csv created (left: the measurements of each gravel on the image; right: the mean statistics for the entire image).*
 </div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/819ddeaa-168d-446d-a835-012eb69935df" width="500">   <img src="https://github.com/user-attachments/assets/dbc545f0-8693-451b-b8a4-d7b2e8741821" width="325" style="vertical-align: middle;">
   
-  *Figure 14. Example of generated gravel size distribution and GRADISTAT classification of the gravels *
+  *Figure 15. Example of generated gravel size distribution and GRADISTAT classification of the gravels *
 </div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/0f187742-e9ff-4440-8dff-cadd8c3ed752" width="400">
 
-  *Figure 15. Example of generated mean shape indicators figure*
+  *Figure 16. Example of generated mean shape indicators figure*
 </div>
 
 ### 2.8. Examples of shape indicators
@@ -194,13 +202,13 @@ Hereunder are shown a few gravels and their derived shape indicators as a refere
 <div align="center">
   <img src="https://github.com/user-attachments/assets/759c4ca0-1559-4c64-a512-47814be87fd0" width="300">   <img src="https://github.com/user-attachments/assets/02aada08-dd55-4876-b0ed-30dfc3379613" width="400" style="vertical-align: middle;">
 
-  *Figure 16. Example of angular stone.*
+  *Figure 17. Example of angular stone.*
 </div>
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/17c4dfea-e9da-45d0-9fd3-d6e573e3ea1d" width="300">   <img src="https://github.com/user-attachments/assets/d1149d54-cc86-4964-b783-381de25281b5" width="400" style="vertical-align: middle;">
 
-  *Figure 17. Example of rounded stone.*
+  *Figure 18. Example of rounded stone.*
 </div>
 
 ## 3. References
