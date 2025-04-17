@@ -12,6 +12,7 @@
 
 ## Bug corrections
 - [ ] Correct requirements file
+- [ ] Make sure the user input width, height and depth are correctly adapted
 
 # To-do list - to future versions
 
