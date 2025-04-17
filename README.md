@@ -89,7 +89,7 @@ The software generates two CSV files (the mean statistics and PSD of each image 
 </div>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/da3e8afd-ae6d-465c-918e-f504c1039486" width="400"> <img src="https://github.com/user-attachments/assets/293f3594-7033-4d86-ad74-f10cd9cf372a" width="400">
+  <img src="https://github.com/user-attachments/assets/da3e8afd-ae6d-465c-918e-f504c1039486" width="400"> <img src="https://github.com/user-attachments/assets/293f3594-7033-4d86-ad74-f10cd9cf372a" width="300">
 
   *Figure 6. Output figures.*
 </div>
