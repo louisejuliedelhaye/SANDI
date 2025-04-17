@@ -1,1 +1,22 @@
-test
+# To-do list - to SANDI v1.0.0-beta
+
+## Layout
+- [ ] Add a progress bar for the batch processing
+- [ ] Add description of each function when hovering over
+
+## Image processing options
+- [ ] Add option to insert pixel size directly, without the need for image height and width (mm)
+- [ ] Add option to work with other formats than jpg
+- [ ] Add option to automatically detect whether the background is black or white
+- [ ] Adapt image reconstruction, background illumination and particle extractions to images on white background
+
+## Bug corrections
+- [ ] Correct requirements file
+
+# To-do list - to future versions
+
+## Layout
+- [ ] Make layout adaptable to different screen sizes and resolutions
+
+## Bug corrections
+- [ ] Make it available for Linux and Mac
