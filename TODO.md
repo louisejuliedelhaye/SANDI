@@ -1,6 +1,8 @@
 # To-do list - for SANDI v1.0.0-beta
 
-This file lists all the improvements planned for future versions of the software. The sign "- [ ]" indicates changes not implemented yet and "- [x]" indicates changes implemented in the online code, but not yet in the latest executable release.
+This file lists all the improvements planned for future versions of the software. 
+- [ ] indicates changes not implemented yet
+- [x] indicates changes implemented in the online code, but not yet in the latest executable release.
 
 ## Layout
 - [ ] Add a progress bar for the batch processing
