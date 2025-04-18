@@ -1,5 +1,7 @@
 # To-do list - for SANDI v1.0.0-beta
 
+This file lists all the improvements planned for future versions of the software. The sign "- [ ]" indicates changes not implemented yet and "- [x]" indicates changes implemented in the online code, but not yet in the latest executable release.
+
 ## Layout
 - [ ] Add a progress bar for the batch processing
 - [ ] Add description of each function when hovering over
@@ -13,6 +15,9 @@
 - [ ] Add option to shrink contours by a few pixels
 - [ ] Add option to fill holes or not
 - [ ] Add region merging option
+
+## Particle measurements
+- [ ] Add 2D and 3D Fractal Dimension measurement
 
 ## Bug corrections
 - [ ] Correct requirements file
