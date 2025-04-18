@@ -75,7 +75,7 @@ For each extracted particle, the following measurements are computed:
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
 ### 1.4. Statistics computation
-The averages of each particle measurement for each image are calculated upon clicking on the 'computate image statistics' button, as well as the D10, D50 and D90. Results should be displayed in the console at the bottom of the window. The particles are grouped into 57 bins between 1 and 19144 µm based on their equivalent spherical diameter. 
+The averages of each particle measurement for each image are calculated upon clicking on the 'compute image statistics' button, as well as the D10, D50 and D90. Results should be displayed in the console at the bottom of the window. The particles are grouped into 57 bins between 1 and 19144 µm based on their equivalent spherical diameter. 
 
 ***Note**: The minimum reliable equivalent spherical diameter that can be detected with our reference camera (PCam3, 3.21 µm resolution) is of 10 µm (7 coherent pixels).*
 
