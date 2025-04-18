@@ -14,12 +14,18 @@ This section allows the user to process one or a batch of images of suspended pa
 
 The 'single image processing' page contains a first frame on the left where the user can test the different image enhancement parameters, at the bottom of that frame, the 'extract particles' button allows the user to extract particles when the image is ready; and at the bottom left of the window, the histogram of the image is computed to help the user decide on the best parameters to enhance the image (Figure 2, left). That graph can be expanded. Once the image statistics are computed (see button on the right side of the window), this graph will be replaced by the computed particle size distribution. The imported image (and its modified version during the image enhancement process) is displayed at the center of the window, and at the bottom center, the console logs and details every step of the processing and results. The right side of the window contains options to filtrate the particles based on their intensity, size or aspect ratio; as well as two buttons to export the output csv files (after statistics computation) and vignettes. The algorithm was inspired by Markussen (2016).
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/89b627d2-109c-4994-9a07-10152b0f43f0">
+  
+  *Figure 2. Demonstration of the single image processing page.*
+</div>
+
 The 'batch processing' page allows the user to import a set of images, to define the desired image enhancement values (left frame) and to start the processing on the entire batch by clicking on the 'process batch' button on the top right corner of the window (Figure 2, right). Three new folders (corrected images, statistics and vignettes) will automatically be created in the directory chosen by the user which will contain the output results of the processing (enhanced images, csv files, graphs, log and individual vignettes of each particle). During the processing, the console logs and details all the steps of the processing, the top graph shows the particle size distribution updated with each new image from the batch processed and the bottom right graph shows the mean shape parameters of all the particles extracted in the batch. 
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/89b627d2-109c-4994-9a07-10152b0f43f0" width="400"> <img src="https://github.com/user-attachments/assets/f70eca70-a409-4269-ae77-91a134301218" width="400">
+  <img src="https://github.com/user-attachments/assets/f70eca70-a409-4269-ae77-91a134301218">
 
-  *Figure 2. Demonstration of the single image processing (left) and batch processing (right) pages.*
+  *Figure 3. Demonstration of the batch processing page.*
 </div>
 
 ### 1.1. Input image
