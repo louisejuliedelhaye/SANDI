@@ -1,15 +1,13 @@
 # <img src="https://github.com/user-attachments/assets/b1fa9c0e-d914-40fc-b6b8-83716b975e52" width="23">  SANDI     
 SANDI is a free, open-access software designed for oceanography and sedimentology. It can be used to extract suspended particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. Users can choose to download the full code and run the ‘main’ file, or they can download the latest release of the software as an executable, which is self-contained.
 
-***Disclaimer**: This is a alpha version of the software, and it may therefore still contain some errors or malfunctions. Any feedback or suggestion for improvement is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
+***Disclaimer**: This is a alpha version of the software, and it may therefore still contain some errors or malfunctions. In the TODO.md document, you can see the improvements planned for the future versions of the software, but any additional feedback or suggestion is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/8c8d614f-1b01-4d04-8af2-7bc466a13b4c">
   
   *Figure 1. Homepage of the SANDI v1.0.0-alpha software. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
 </div>
-
-In the TODO.md document, you can see the improvements planned for the future versions of the software.
 
 ## 1. Suspended particles
 This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values for the image enhancement steps are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
