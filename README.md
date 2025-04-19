@@ -80,6 +80,12 @@ For each extracted particle, the following measurements are computed:
 
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ecb73961-7717-4ec1-af95-92e950e88a0f">
+
+  *Figure 4. Demonstration of the main particle measurements.*
+</div>
+
 ### 1.4. Statistics computation
 The averages of each particle measurement for each image are calculated upon clicking on the 'compute image statistics' button, as well as the D10, D50 and D90. Results should be displayed in the console at the bottom of the window. The particles are grouped into 57 bins between 1 and 19144 µm based on their equivalent spherical diameter. 
 
