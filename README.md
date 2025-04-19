@@ -77,13 +77,15 @@ For each extracted particle, the following measurements are computed:
 * Sphericity
 * Roundness
 * Extent
+* 2D fractal dimension (not yet implemented in the executable)
+* 3D fractal dimension (not yet implemented in the executable)
 
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/ecb73961-7717-4ec1-af95-92e950e88a0f">
+  <img src="https://github.com/user-attachments/assets/ecb73961-7717-4ec1-af95-92e950e88a0f" width="400">
 
-  *Figure 4. Demonstration of the main particle measurements.*
+  *Figure 4. Representation of the core particle measurements, on which the size and shape metrics are based.*
 </div>
 
 ### 1.4. Statistics computation
