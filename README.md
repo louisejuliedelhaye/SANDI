@@ -59,7 +59,7 @@ The image resampling function adjusts the spatial resolution of the image to the
 Once these image enhancement operations are done, the contours of the particles are automatically extracted using the Otsu threshold. It creates a binary image that separates the particles from the background. As did Markussen (2016), the particles touching the border of the image are automatically discarded. Contours of every detected particle are then extracted from the image using functions from the scikit-image library in python. Upon clicking on the "extract particles" button, the user will see all the contours detected on the image on the screen and by hoving over with the cursor, the contours of the selected particle will be displayed on the bottom right side of the window, and a yellow pop-up will show the different values measured by the algorithm for that particle (see Figure below). By inspecting the results, the user can detect any abnormal value that may indicate that other settings should be used for the image enhancement. By right-clicking on a particle (or dragging a rectangle over multiple particles), the user can choose to discard one (or multiple) particles from the measurements. The process can be reversed by right-clicking on the image and selecting the 'restore particle(s)' option from the menu. This option as well as the visualization of the contours are only available in the 'single image processing' page and not in the 'batch processing' page. 
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/9be1bb81-0166-4fa0-ac5f-654ff1e7e79a" width="100">
+  <img src="https://github.com/user-attachments/assets/7722fe3c-54b1-4eea-9598-7172f1ef7f53">
 
   *Figure 5. Demonstration of the extracted contours and particles measurements.*
 </div>
@@ -83,7 +83,7 @@ For each extracted particle, the following measurements are computed:
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/ecb73961-7717-4ec1-af95-92e950e88a0f" width="400">
+  <img src="https://github.com/user-attachments/assets/d72bb0fe-300a-4ffc-9a14-47181e51c6fe" width="200">
 
   *Figure 6. Representation of the core particle measurements, on which the size and shape metrics are based.*
 </div>
