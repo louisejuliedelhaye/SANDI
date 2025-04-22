@@ -114,6 +114,16 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
         else:
             prop.roundness = None
             
+        if prop.area_um2 > 0 and prop.perimeter_um > 0:
+            prop.fractal_dimension_2D = 2 * (np.log(prop.perimeter_um) / np.log(prop.area_um2))
+        else:
+            prop.fractal_dimension_2D = None
+            
+        if prop.area_um2 > 0 and prop.perimeter_um > 0:
+            prop.fractal_dimension_3D = -1.63 * prop.fractal_dimension_2D + 4.6
+        else:
+            prop.fractal_dimension_3D = None
+            
         return prop
 
     # Parallel processing of particles properties
@@ -275,7 +285,9 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             "roundness": (4 * (prop.area * pixel_size**2)) / (np.pi * ((prop.feret_diameter_max * pixel_size) ** 2)) if prop.area > 0 and prop.feret_diameter_max > 0 else None,
             "orientation": prop.orientation,
             "extent": prop.extent,
-            "euler_number": prop.euler_number
+            "euler_number": prop.euler_number,
+            "fractal_dimension_2D": 2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2)) if prop.perimeter > 0 and prop.area > 0 else None,
+            "fractal_dimension_3D": -1.63 * (2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2))) + 4.6 if prop.perimeter > 0 and prop.area > 0 else None
         }
 
     # Parallel processing of properties

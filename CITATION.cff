@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the following metadata."
+title: "SANDI"
+version: "1.0.0-alpha"
+date-released: 2025-04-16
+authors:
+  - family-names: Delhaye
+    given-names: Louise
+    orcid: https://orcid.org/0000-0002-3407-6295  
+abstract: >
+  SANDI (Sediment ANalysis and Delineation through Images) is a free and open-source software to process particles from high-resolution underwater images and to analyze gravels from laboratory images. Designed for contour detection, shape characterization, and size measurement.
+url: "https://github.com/louisejuliedelhaye/SANDI" 
