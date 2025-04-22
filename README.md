@@ -77,8 +77,8 @@ For each extracted particle, the following measurements are computed:
 * Sphericity
 * Roundness
 * Extent
-* 2D fractal dimension (not yet implemented in the executable)
-* 3D fractal dimension (not yet implemented in the executable)
+* 2D fractal dimension (available very soon)
+* 3D fractal dimension (available very soon)
 
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
