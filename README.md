@@ -83,7 +83,7 @@ For each extracted particle, the following measurements are computed:
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/d72bb0fe-300a-4ffc-9a14-47181e51c6fe" width="200">
+  <img src="https://github.com/user-attachments/assets/d72bb0fe-300a-4ffc-9a14-47181e51c6fe" width="400">
 
   *Figure 6. Representation of the core particle measurements, on which the size and shape metrics are based.*
 </div>
