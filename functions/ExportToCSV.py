@@ -116,7 +116,7 @@ def save_image_csv(stats, file_path, app_instance):
             
             with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
                 
-                fieldnames = ["Image Name", "Datetime", "D10", "D50", "D90", "Mean Solidity", "Mean Aspect Ratio", "Mean Form Factor", "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Major-Axis-Length (um)",
+                fieldnames = ["Image Name", "Datetime", "D10", "D50", "D90", "Mean Solidity", "Mean Aspect Ratio", "Mean Form Factor", "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Fractal Dimension 2D", "Mean Fractal Dimension 3D", "Mean Major-Axis-Length (um)",
            "Mean Minor-Axis-Length (um)", "Number of Particles", "Mean Area (um²)", "Mean Perimeter (um)", "Mean Diameter (um)",
            "Total Volume Concentration (ul/l)","1.21449578", "1.60249025", "1.891035166", "2.23134399", "2.633450968", "3.107850704", "3.666961685", "4.327133347", "5.106510257", "6.025832888", 
                       "7.111107509", "8.39172807", "9.90256593", "11.68543358", "13.78971066", "16.27318162", "19.20366522", "22.66131587", "26.74179968", "31.55729789", "37.23981168", "43.94534164", 
@@ -137,6 +137,8 @@ def save_image_csv(stats, file_path, app_instance):
                     "Mean Sphericity": IMG.mean_sphericity,
                     "Mean Roundness": IMG.mean_roundness,
                     "Mean Extent": IMG.mean_extent,
+                    "Mean Fractal Dimension 2D": IMG.mean_fractal_dimension_2D,
+                    "Mean Fractal Dimension 3D": IMG.mean_fractal_dimension_3D,
                     "Mean Major-Axis-Length (um)": IMG.mean_major_axis_length,
                     "Mean Minor-Axis-Length (um)": IMG.mean_minor_axis_length,
                     "Number of Particles": len(IMG.stats),
@@ -207,7 +209,7 @@ def save_image_csv(stats, file_path, app_instance):
     else:
         app_instance.log_message('error', "Error: No particle statistics to save")
         
-
+##
 
 def save_batch_particles_csv(stats, image_paths, app_instance, csv_file_path):
     """
@@ -252,8 +254,8 @@ def save_batch_particles_csv(stats, image_paths, app_instance, csv_file_path):
                         "Sphericity": prop.get("sphericity", "N/A"),
                         "Roundness": prop.get("roundness", "N/A"),
                         "Extent": prop.get("extent", "N/A"),
-                        "2D Fractal Dimension": prop.get("fractal_dimesion_2D", "N/A"), 
-                        "3D Fractal Dimension": prop.get("fractal_dimesion_3D", "N/A")
+                        "2D Fractal Dimension": prop.get("fractal_dimension_2D", "N/A"), 
+                        "3D Fractal Dimension": prop.get("fractal_dimension_3D", "N/A")
                     }
                     writer.writerow(particle_data)
 

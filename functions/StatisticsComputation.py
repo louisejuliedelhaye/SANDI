@@ -181,12 +181,20 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
         extents = np.array([prop.extent for prop in stats])
         IMG.mean_extent = np.nanmean(extents)
         
+        # Fractal Dimension 2D
+        fractal_dim_2D = np.array([prop.fractal_dimension_2D for prop in stats])
+        IMG.mean_fractal_dimension_2D = np.nanmean(fractal_dim_2D)
+        
+        # Fractal Dimension 3D
+        fractal_dim_3D = np.array([prop.fractal_dimension_3D for prop in stats])
+        IMG.mean_fractal_dimension_3D = np.nanmean(fractal_dim_3D)
+        
         #######################################################################
         ## 8 ## Print image statistics
         #######################################################################
         
         app_instance.log_message('success', "Image statistics successfully computed:")
-        app_instance.log_message('info', f"Total volume concentration: {IMG.total_volume_concentration:.2f} µL/L\nMean diameter: {IMG.mean_diameter:.2f} µm\nD10: {IMG.D10:.2f} µm; D50: {IMG.D50:.2f} µm; D90: {IMG.D90:.2f} µm\nMean particle area: {IMG.mean_area:.0f} µm²; mean particle perimeter: {IMG.mean_perimeter:.0f} µm\nMean major axis length: {IMG.mean_major_axis_length:.0f} µm; mean minor axis length: {IMG.mean_minor_axis_length:.0f} µm\nMean aspect ratio: {IMG.mean_aspect_ratio:.2f}; mean solidity: {IMG.mean_solidity:.2f}; mean form factor: {IMG.mean_form_factor:.2f}; mean sphericity: {IMG.mean_sphericity:.2f}; mean roundness: {IMG.mean_roundness:.2f}; mean extent: {IMG.mean_extent:.2f}")
+        app_instance.log_message('info', f"Total volume concentration: {IMG.total_volume_concentration:.2f} µL/L\nMean diameter: {IMG.mean_diameter:.2f} µm\nD10: {IMG.D10:.2f} µm; D50: {IMG.D50:.2f} µm; D90: {IMG.D90:.2f} µm\nMean particle area: {IMG.mean_area:.0f} µm²; mean particle perimeter: {IMG.mean_perimeter:.0f} µm\nMean major axis length: {IMG.mean_major_axis_length:.0f} µm; mean minor axis length: {IMG.mean_minor_axis_length:.0f} µm\nMean aspect ratio: {IMG.mean_aspect_ratio:.2f}; mean solidity: {IMG.mean_solidity:.2f}; mean form factor: {IMG.mean_form_factor:.2f}; mean sphericity: {IMG.mean_sphericity:.2f}; mean roundness: {IMG.mean_roundness:.2f}; mean extent: {IMG.mean_extent:.2f}; mean fractal dimension 2D: {IMG.mean_fractal_dimension_2D:.2f}; mean fractal dimension 3D: {IMG.mean_fractal_dimension_3D:.2f}")
     
     else:
         app_instance.log_message('error', "Statistics couldn't be computed for this image")

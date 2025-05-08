@@ -438,6 +438,8 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             mean_sphericity = np.mean([particle['sphericity'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_roundness = np.mean([particle['roundness'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_extent = np.mean([particle['extent'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
+            mean_fractal_dimension_2D = np.mean([particle['fractal_dimension_2D'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
+            mean_fractal_dimension_3D = np.mean([particle['fractal_dimension_3D'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_major_axis_length = np.mean([particle['major_axis_length_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_minor_axis_length = np.mean([particle['minor_axis_length_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             number_particles = len(IMG.stats[i])
@@ -460,6 +462,8 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
                 "Mean Roundness": mean_roundness,
                 "Mean Extent": mean_extent,
                 "Mean Aspect Ratio": mean_aspect_ratio,
+                "Mean Fractal Dimension 2D": mean_fractal_dimension_2D,
+                "Mean Fractal Dimension 3D": mean_fractal_dimension_3D,
                 "Mean Major-Axis-Length (um)": mean_major_axis_length,
                 "Mean Minor-Axis-Length (um)": mean_minor_axis_length,
                 "Number of Particles": number_particles,

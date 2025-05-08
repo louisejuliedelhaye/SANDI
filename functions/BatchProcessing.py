@@ -547,7 +547,7 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
             with open(os.path.join(csv_file_path, "batch_statistics.csv"), mode='a', newline='', encoding='utf-8') as csvfile:
                 fieldnames = [
                     "Image Name", "Datetime", "D10", "D50", "D90", "Mean Solidity", "Mean Form Factor", 
-                    "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Aspect Ratio", "Mean Major-Axis-Length (um)", 
+                    "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Aspect Ratio", "Mean Fractal Dimension 2D", "Mean Fractal Dimension 3D", "Mean Major-Axis-Length (um)", 
                     "Mean Minor-Axis-Length (um)", "Number of Particles", "Mean Area (um²)", "Mean Perimeter (um)", 
                     "Mean Diameter (um)", "Total Volume Concentration (ul/l)", "1.21449578", "1.60249025", "1.891035166", "2.23134399", "2.633450968", "3.107850704", "3.666961685", "4.327133347", "5.106510257", "6.025832888", 
                                "7.111107509", "8.39172807", "9.90256593", "11.68543358", "13.78971066", "16.27318162", "19.20366522", "22.66131587", "26.74179968", "31.55729789", "37.23981168", "43.94534164", 

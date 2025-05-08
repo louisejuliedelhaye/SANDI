@@ -2426,29 +2426,6 @@ class SingleImageProcessing:
 
         self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             
-    # def update_scroll_region(self, event=None):
-    #     """
-    #     Update the image displayed on the canvas based on the user choice.
-    #     """
-    #     # Update the scroll region of the canvas
-    #     self.background_processing_frame.update_idletasks()
-    #     bbox = self.background_canvas.bbox("all")
-    #     canvas_height = self.background_canvas.winfo_height()
-        
-    #     if bbox:
-    #         content_height = bbox[3] - bbox[1]
-    #         # Only enable scrolling if content is larger than canvas height
-    #         if content_height > canvas_height:
-    #             self.background_canvas.config(scrollregion=self.background_canvas.bbox("all"))
-    #             self.background_canvas.bind_all("<MouseWheel>", self._on_mousewheel)
-    #         else:
-    #             self.background_canvas.config(scrollregion=(0, 0, 0, 0))  # Disable scrolling if not needed
-    #             self.background_canvas.unbind_all("<MouseWheel>")
-
-    # def _on_mousewheel(self, event):
-    #     if self.background_canvas.cget("scrollregion") != (0, 0, 0, 0):  # Only scroll if scrollregion is set
-    #         self.background_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
-            
     def show_particle_tooltip(self, event):
         """
         Shows a yellow popup when the mouse goes over detected contours (within a radius of 10) and updates the particle canvas with the corresponding contours.
@@ -2466,7 +2443,7 @@ class SingleImageProcessing:
             if (centroid_x - proximity_radius <= x <= centroid_x + proximity_radius and
                 centroid_y - proximity_radius <= y <= centroid_y + proximity_radius):
     
-                tooltip_text = f"Particle: {i}\nArea: {prop.area_um2:.1f} µm²\nEquivalent diameter: {prop.equivalent_diameter_um:.1f} µm\nMajor axis length: {prop.major_axis_length_um:.1f} µm\nMinor axis length: {prop.minor_axis_length_um:.1f} µm\nPerimeter: {prop.perimeter_um:.1f} µm\nVolume: {prop.volume_ul:.4f} µl\nSolidity: {prop.solidity:.2f}\nAspect ratio: {prop.aspect_ratio:.2f}\nForm Factor: {prop.form_factor:.2f}\nSphericity: {prop.sphericity:.2f}\nRoundess: {prop.roundness:.2f}\nExtent: {prop.extent:.2f}\nOrientation: {prop.orientation:.2f} radians"
+                tooltip_text = f"Particle: {i}\nArea: {prop.area_um2:.1f} µm²\nEquivalent diameter: {prop.equivalent_diameter_um:.1f} µm\nMajor axis length: {prop.major_axis_length_um:.1f} µm\nMinor axis length: {prop.minor_axis_length_um:.1f} µm\nPerimeter: {prop.perimeter_um:.1f} µm\nVolume: {prop.volume_ul:.4f} µl\nSolidity: {prop.solidity:.2f}\nAspect ratio: {prop.aspect_ratio:.2f}\nForm Factor: {prop.form_factor:.2f}\nSphericity: {prop.sphericity:.2f}\nRoundess: {prop.roundness:.2f}\nExtent: {prop.extent:.2f}\nFractal dimension 2D: {prop.fractal_dimension_2D:.2f}\nFractal dimension 3D: {prop.fractal_dimension_3D:.2f}\nOrientation: {prop.orientation:.2f} radians"
                 
                 # Get the mouse position relative to the canvas
                 canvas_x = self.image_canvas.winfo_pointerx() - self.image_canvas.winfo_rootx()
