@@ -31,6 +31,7 @@ import time
 import datetime
 import pandas as pd
 from scipy.ndimage import binary_fill_holes
+from scipy.stats import kurtosis, skew
 
 ###############################################################################
 # Access everything in the directory
@@ -123,6 +124,18 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
             prop.fractal_dimension_3D = -1.63 * prop.fractal_dimension_2D + 4.6
         else:
             prop.fractal_dimension_3D = None
+         
+        if prop.area_um2 > 0 and prop.perimeter_um > 0:    
+            intensities = prop.intensity_image[prop.image]
+            if intensities.size > 0 and np.std(intensities) > 1e-8:
+                prop.kurtosis = kurtosis(intensities, fisher=True, bias=False)
+                prop.skewness = skew(intensities, bias=False)
+            else:
+                prop.kurtosis = None
+                prop.skewness = None
+        else:
+            prop.kurtosis = None
+            prop.skewness = None
             
         return prop
 
@@ -287,7 +300,9 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             "extent": prop.extent,
             "euler_number": prop.euler_number,
             "fractal_dimension_2D": 2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2)) if prop.perimeter > 0 and prop.area > 0 else None,
-            "fractal_dimension_3D": -1.63 * (2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2))) + 4.6 if prop.perimeter > 0 and prop.area > 0 else None
+            "fractal_dimension_3D": -1.63 * (2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2))) + 4.6 if prop.perimeter > 0 and prop.area > 0 else None,
+            "kurtosis": float(kurtosis(prop.intensity_image[prop.image], fisher=True, bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None,
+            "skewness": float(skew(prop.intensity_image[prop.image], bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None
         }
 
     # Parallel processing of properties
@@ -446,6 +461,15 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             mean_aspect_ratio = np.mean([particle['aspect_ratio'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_area = np.mean([particle['area_um2'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_perimeter = np.mean([particle['perimeter_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
+            kurtosiss = np.array([particle['kurtosis'] for particle in IMG.stats[i] if particle['kurtosis'] is not None])
+            mean_kurtosis = np.nanmean(kurtosiss) if kurtosiss.size > 0 else -99.99
+            
+            skewnesss = np.array([particle['skewness'] for particle in IMG.stats[i] if particle['skewness'] is not None])
+            mean_skewness = np.nanmean(skewnesss) if skewnesss.size > 0 else -99.99
+            
+            mean_intensities = np.array([particle['mean_intensity'] for particle in IMG.stats[i] if particle['mean_intensity'] is not None])
+            mean_mean_intensity = np.nanmean(mean_intensities) if mean_intensities.size > 0 else -99.99
+            
         except Exception as e:
             app_instance.log_message('error', f"Error during image mean statistics calculation: {e}")
             
@@ -470,6 +494,9 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
                 "Mean Area (um²)": mean_area,
                 "Mean Perimeter (um)": mean_perimeter,
                 "Mean Diameter (um)": mean_diameter,
+                "Mean Mean Intensity": mean_mean_intensity,
+                "Mean Kurtosis": mean_kurtosis,
+                "Mean Skewness": mean_skewness,
                 "Total Volume Concentration (ul/l)": total_volume_concentration,
                 "1.21449578": volume_concentration_per_bin[0],
                 "1.60249025": volume_concentration_per_bin[1],

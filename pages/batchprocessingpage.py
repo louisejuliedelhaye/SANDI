@@ -707,7 +707,7 @@ class BatchProcessing:
             dataframe_fieldnames = [
             "Image Name", "Datetime", "D10 (µm)", "D50 (µm)", "D90 (µm)", "Mean Solidity", "Mean Form Factor", 
             "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Aspect Ratio", "Mean Fractal Dimension 2D", "Mean Fractal Dimension 3D", "Mean Major-Axis-Length (µm)", "Mean Minor-Axis-Length (µm)",
-            "Number of Particles", "Mean Area (µm²)", "Mean Perimeter (µm)", "Mean Diameter (µm)",
+            "Number of Particles", "Mean Area (µm²)", "Mean Perimeter (µm)", "Mean Diameter (µm)", "Mean Mean Intensity", "Mean Kurtosis", "Mean Skewness",
             "Total Volume Concentration (µl/l)"
         ] + [
             str(size) for size in [

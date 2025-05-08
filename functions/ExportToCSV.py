@@ -64,7 +64,7 @@ def save_particles_csv(stats, image_paths, app_instance):
             
             with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
                 
-                fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid", "Max Intensity", "Min Intensity", "Mean Intensity", "Major Axis Length (um)", "Minor Axis Length (um)", "Perimeter (um)", "Volume (ul)", "Euler Number", "Orientation", "Solidity", "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension"]
+                fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid", "Max Intensity", "Min Intensity", "Mean Intensity", "Major Axis Length (um)", "Minor Axis Length (um)", "Perimeter (um)", "Volume (ul)", "Euler Number", "Orientation", "Solidity", "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension", "Kurtosis", "Skewness"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for i, prop in enumerate(stats):
@@ -92,7 +92,9 @@ def save_particles_csv(stats, image_paths, app_instance):
                         "Roundness": prop.roundness,
                         "Extent": prop.extent,
                         "2D Fractal Dimension": prop.fractal_dimension_2D,
-                        "3D Fractal Dimension": prop.fractal_dimension_3D
+                        "3D Fractal Dimension": prop.fractal_dimension_3D,
+                        "Kurtosis": prop.kurtosis,
+                        "Skewness": prop.skewness
                     }
                     writer.writerow(particle_data)
                 app_instance.log_message('success', 'CSV file containing the detailed particles measurements successfully exported')
@@ -117,7 +119,7 @@ def save_image_csv(stats, file_path, app_instance):
             with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
                 
                 fieldnames = ["Image Name", "Datetime", "D10", "D50", "D90", "Mean Solidity", "Mean Aspect Ratio", "Mean Form Factor", "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Fractal Dimension 2D", "Mean Fractal Dimension 3D", "Mean Major-Axis-Length (um)",
-           "Mean Minor-Axis-Length (um)", "Number of Particles", "Mean Area (um²)", "Mean Perimeter (um)", "Mean Diameter (um)",
+           "Mean Minor-Axis-Length (um)", "Number of Particles", "Mean Area (um²)", "Mean Perimeter (um)", "Mean Diameter (um)", "Mean Mean Intensity", "Mean Kurtosis", "Mean Skewness",
            "Total Volume Concentration (ul/l)","1.21449578", "1.60249025", "1.891035166", "2.23134399", "2.633450968", "3.107850704", "3.666961685", "4.327133347", "5.106510257", "6.025832888", 
                       "7.111107509", "8.39172807", "9.90256593", "11.68543358", "13.78971066", "16.27318162", "19.20366522", "22.66131587", "26.74179968", "31.55729789", "37.23981168", "43.94534164", 
                       "51.85865627", "61.19717694", "72.21641829", "85.2202712", "100.5661856", "118.6746248", "140.0438222", "165.261362", "195.0198203", "230.1369158", "272.6270346", "324.2098302", 
@@ -145,6 +147,9 @@ def save_image_csv(stats, file_path, app_instance):
                     "Mean Area (um²)": IMG.mean_area,
                     "Mean Perimeter (um)": IMG.mean_perimeter,
                     "Mean Diameter (um)": IMG.mean_diameter,
+                    "Mean Mean Intensity": IMG.mean_mean_intensity,
+                    "Mean Kurtosis": IMG.mean_kurtosis,
+                    "Mean Skewness": IMG.mean_skewness,
                     "Total Volume Concentration (ul/l)": IMG.total_volume_concentration,
                     "1.21449578": IMG.volume_concentration_per_bin[0],
                     "1.60249025": IMG.volume_concentration_per_bin[1],
@@ -227,7 +232,7 @@ def save_batch_particles_csv(stats, image_paths, app_instance, csv_file_path):
             
             with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
                 
-                fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid", "Max Intensity", "Min Intensity", "Mean Intensity", "Major Axis Length (um)", "Minor Axis Length (um)", "Perimeter (um)", "Volume (ul)", "Euler Number",  "Orientation", "Solidity", "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension"]
+                fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid", "Max Intensity", "Min Intensity", "Mean Intensity", "Major Axis Length (um)", "Minor Axis Length (um)", "Perimeter (um)", "Volume (ul)", "Euler Number",  "Orientation", "Solidity", "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension","Mean Intensity", "Kurtosis", "Skewness"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
 
@@ -255,7 +260,9 @@ def save_batch_particles_csv(stats, image_paths, app_instance, csv_file_path):
                         "Roundness": prop.get("roundness", "N/A"),
                         "Extent": prop.get("extent", "N/A"),
                         "2D Fractal Dimension": prop.get("fractal_dimension_2D", "N/A"), 
-                        "3D Fractal Dimension": prop.get("fractal_dimension_3D", "N/A")
+                        "3D Fractal Dimension": prop.get("fractal_dimension_3D", "N/A"),
+                        "Kurtosis": prop.get("kurtosis", "N/A"),
+                        "Skewness":prop.get("skewness", "N/A")
                     }
                     writer.writerow(particle_data)
 
