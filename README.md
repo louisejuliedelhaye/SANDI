@@ -70,6 +70,7 @@ For each extracted particle, the following measurements are computed:
 * Equivalent spherical diameter (µm)
 * Major and minor axis lengths (µm)
 * Perimeter (µm)
+* Euler number
 * Solidity
 * Form factor
 * Volume (µl)
