@@ -78,8 +78,11 @@ For each extracted particle, the following measurements are computed:
 * Sphericity
 * Roundness
 * Extent
-* 2D fractal dimension (available very soon)
-* 3D fractal dimension (available very soon)
+* 2D fractal dimension (not yet in the executable)
+* 3D fractal dimension (not yet in the executable)
+* Mean pixel intensity (not yet in the executable)
+* Kurtosis of the pixels intensity (not yet in the executable)
+* Skewness of the pixels intensity (not yet in the exectuable)
 
 For a more detailed explanation, the user is invited to read Delhaye et al. (in prep.).
 
