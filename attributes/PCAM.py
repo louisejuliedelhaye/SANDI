@@ -27,3 +27,4 @@ class PCam3_characteristics:
         self.image_height = StringVar(value="14.9")
         self.image_width = StringVar(value="22.3")
         self.image_depth = StringVar(value="0.405")
+        self.pixel_size = StringVar(value="3.21")
