@@ -32,6 +32,7 @@ import tkinter as tk
 import matplotlib.pyplot as plt
 import gc
 import seaborn as sns
+import traceback
 
 ###############################################################################
 # Access everything in the directory
@@ -573,8 +574,9 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
                         writer.writerow(image_stats_dict)
                         IMG.batch_results_df = pd.concat([IMG.batch_results_df, pd.DataFrame([image_stats_dict])], ignore_index=True)
                     except Exception as e:
-                        app_instance.log_message('error', f"Error extracting particles for {file_path}: {str(e)}")
-                        continue  
+                        app_instance.log_message('error', f"Error extracting particles for {file_path}: {str(e)}. Processing stopped.")
+                        app_instance.log_message('error', f"Traceback: {traceback.format_exc()}")
+                        raise  
     
                     try:
                         update_plot(app_instance)

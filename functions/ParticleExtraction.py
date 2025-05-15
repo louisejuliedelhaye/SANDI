@@ -18,7 +18,7 @@ from skimage.filters import threshold_otsu
 from skimage.segmentation import clear_border, watershed
 from skimage.measure import label, regionprops
 from skimage import morphology
-from skimage.morphology import binary_dilation, convex_hull_image, remove_small_objects, closing, square
+from skimage.morphology import binary_dilation, convex_hull_image, remove_small_objects, closing, square, binary_erosion, disk
 import gc
 from tkinter import filedialog
 import cv2
@@ -76,6 +76,7 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
 
     threshold_value = threshold_otsu(IMG.img_modified)
     IMG.img_binary = clear_border(IMG.img_modified > threshold_value)
+    IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(2)) # Erode the contours of 4 pixels
     
     IMG.tk_binary_image = ImageTk.PhotoImage(
         Image.fromarray(IMG.img_binary).resize((RESIZE_WIDTH, RESIZE_HEIGHT))
@@ -271,6 +272,7 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
 
     threshold_value = threshold_otsu(IMG.img_modified[i])
     IMG.img_binary[i] = clear_border(IMG.img_modified[i] > threshold_value)
+    IMG.img_binary[i] = binary_erosion(IMG.img_binary[i], footprint=disk(2)) # Erode the contours of 2 pixels
 
     CC = label(IMG.img_binary[i], connectivity=1)
     IMG.stats[i] = regionprops(CC, intensity_image=IMG.img_modified[i])
