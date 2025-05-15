@@ -9,12 +9,12 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Add description of each function when hovering over
 
 ## Image processing options
-- [ ] Add option to insert pixel size directly, without the need for image height and width (mm)
+- [x] Add option to insert pixel size directly
 - [ ] Add option to work with other formats than jpg
 - [ ] Add option to automatically detect whether the background is black or white
 - [ ] Adapt image reconstruction, background illumination and particle extractions to images on white background
 - [ ] Add option to choose the thresholding algorithm
-- [ ] Add option to shrink contours by a few pixels
+- [x] Add option to shrink contours by a few pixels
 - [ ] Add option to fill holes or not
 - [ ] Add region merging option
 
