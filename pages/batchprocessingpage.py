@@ -311,7 +311,7 @@ class BatchProcessing:
                   sliderrelief=[("active", "flat")])
         
         self.background_window_size_slider = ttk.Scale(self.left_frame,
-                                                from_=0, to=5,
+                                                from_=0, to=25,
                                                 orient="horizontal",
                                                 variable=self.background_window_size,
                                                 style="TScale",
@@ -376,7 +376,7 @@ class BatchProcessing:
                   sliderrelief=[("active", "flat")])
         
         self.SubDiff_slider = ttk.Scale(self.left_frame,
-                                                from_=0, to=255,
+                                                from_=0, to=5,
                                                 orient="horizontal",
                                                 variable=self.SubDiff,
                                                 style="TScale",

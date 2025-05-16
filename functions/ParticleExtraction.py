@@ -75,8 +75,11 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
         return
 
     threshold_value = threshold_otsu(IMG.img_modified)
-    IMG.img_binary = clear_border(IMG.img_modified > threshold_value)
-    IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(2)) # Erode the contours of 4 pixels
+    if IMG.image_background == 'white':
+        IMG.img_binary = clear_border(IMG.img_modified < threshold_value)
+    else:
+        IMG.img_binary = clear_border(IMG.img_modified > threshold_value)
+    IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(2))
     
     IMG.tk_binary_image = ImageTk.PhotoImage(
         Image.fromarray(IMG.img_binary).resize((RESIZE_WIDTH, RESIZE_HEIGHT))
@@ -271,8 +274,11 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
         IMG.img_modified[i] = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY) if len(image.shape) == 3 else image
 
     threshold_value = threshold_otsu(IMG.img_modified[i])
-    IMG.img_binary[i] = clear_border(IMG.img_modified[i] > threshold_value)
-    IMG.img_binary[i] = binary_erosion(IMG.img_binary[i], footprint=disk(2)) # Erode the contours of 2 pixels
+    if IMG.image_background[i] == 'white':
+        IMG.img_binary[i] = clear_border(IMG.img_modified[i] < threshold_value)
+    else:
+        IMG.img_binary[i] = clear_border(IMG.img_modified[i] > threshold_value)
+    IMG.img_binary[i] = binary_erosion(IMG.img_binary[i], footprint=disk(2))
 
     CC = label(IMG.img_binary[i], connectivity=1)
     IMG.stats[i] = regionprops(CC, intensity_image=IMG.img_modified[i])

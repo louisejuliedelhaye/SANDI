@@ -106,6 +106,7 @@ def open_multiple_files(app_instance):
     # Initialize or clear lists to store multiple image attributes
     IMG.image_paths = list(file_paths)
     IMG.image_names = []
+    IMG.image_background = []
     IMG.date_times = []
     IMG.selected_images = []
     IMG.exif_data_list = []
@@ -150,6 +151,26 @@ def open_multiple_files(app_instance):
                     Fraction(parsed_exif.get('ExposureTime', None)).limit_denominator()
                     if parsed_exif.get('ExposureTime', None) else None
                 )
+                
+                try:
+                    img_cv = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+                    if img_cv is not None:
+                        total_pixels = img_cv.size
+                        dark_pixels = np.sum(img_cv < 100)
+
+                        if len(IMG.image_background) <= i:
+                            IMG.image_background.append('black' if dark_pixels > total_pixels / 2 else 'white')
+                        else:
+                            IMG.image_background[i] = 'black' if dark_pixels > total_pixels / 2 else 'white'
+                    else:
+                        raise ValueError("cv2.imread() returned None")
+                        
+                except Exception as e:
+                    print(f"[ERROR] Could not analyze image background for '{file_path}': {e}")
+                    if len(IMG.image_background) <= i:
+                        IMG.image_background.append(None)
+                    else:
+                        IMG.image_background[i] = None
                 
         except FileNotFoundError:
             app_instance.log_message('error', f"File not found: {file_path}")
@@ -327,7 +348,7 @@ def import_all_images(app_instance, file_paths, height, width, depth, pixelsize,
             app_instance.log_message('new', f"Image name: {image_name}")
             app_instance.log_message('info', f"Image date: {date_time}")
             app_instance.log_message('info', f"Calculated pixel size: {pixel_size:.2f} µm")
-            app_instance.log_message('info', f"Camera: {camera}, Lens: {lens}, f/{aperture}, {focal_length} mm, {exposure} s, ISO {iso}")
+            app_instance.log_message('info', f"Camera: {camera}, Lens: {lens}, f/{aperture}, {focal_length} mm, {exposure} s, ISO {iso}, detected background is {IMG.image_background[i]}")
         app_instance.update_pixel_size_value()
         app_instance.update_new_resolution()
             
@@ -400,7 +421,13 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
     ### 1. Image conversion to greyscale
     #######################################################################
         
-    IMG.img_grey[i]= cv2.cvtColor(IMG.selected_images[i], cv2.COLOR_RGB2GRAY)
+    #IMG.img_grey[i]= cv2.cvtColor(IMG.selected_images[i], cv2.COLOR_RGB2GRAY)
+    if len(IMG.selected_images[i].shape) == 2:
+        IMG.img_grey[i] = IMG.selected_images[i]
+    elif len(IMG.selected_images[i].shape) == 3 and IMG.selected_images[i].shape[2] == 3:
+        IMG.img_grey[i] = cv2.cvtColor(IMG.selected_images[i], cv2.COLOR_RGB2GRAY)
+    else:
+        raise ValueError(f"Unexpected image shape: {IMG.selected_images[i].shape}")
     
     if IMG.img_grey[i] is None:
         app_instance.log_message('error', f"An error occurred during the conversion to greyscale of {IMG.image_names[i]}. Batch processing stopped")
@@ -439,11 +466,24 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
     ###########################################################
     
     w = int(np.ceil((background_illumination_window_size * 1000) / IMG.pixel_sizes[i]))  
-    bg = cv2.erode(IMG.img_modified[i], np.ones((w, w)))  
-    bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))  
-    IMG.img_modified[i] = IMG.img_modified[i] - bg  
-    IMG.img_modified[i] = cv2.normalize(IMG.img_modified[i], None, 0, 255, cv2.NORM_MINMAX) 
+    kernel = np.ones((w, w), np.uint8)
     
+    if IMG.image_background[i] == 'black':
+        bg = cv2.erode(IMG.img_modified[i], kernel)
+        bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))
+        corrected = IMG.img_modified[i] - bg
+        
+    elif IMG.image_background[i]  == 'white':
+        bg = cv2.dilate(IMG.img_modified[i], kernel)
+        bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))
+        corrected = bg - IMG.img_modified[i]
+        corrected = 255 - corrected
+        
+    else:
+        raise ValueError("IMG.image_background must be either 'black' or 'white'.")
+    
+    IMG.img_modified[i] = cv2.normalize(corrected, None, 0, 255, cv2.NORM_MINMAX)
+        
     if np.array_equal(before_illumination, IMG.img_modified[i]) and background_illumination_window_size != 0:
         app_instance.log_message('error', f"Image remained the same after background illumination correction of {IMG.image_names[i]}")
     else:
@@ -489,7 +529,7 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
         return
     else:
         app_instance.log_message('info', f"{IMG.image_names[i]} successfully resampled")
-        app_instance.log_message('success', f"Image enhancement successfully completed for {IMG.image_names[i]} ")
+        app_instance.log_message('success', f"Image enhancement successfully completed for {IMG.image_names[i]}")
     
     try:
         corrected_image_file_path = os.path.join(corrected_image_file_path, f"{IMG.image_names[i]}_enhanced_image.png")

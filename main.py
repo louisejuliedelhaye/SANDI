@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 File: main file
-Version: SANDI v1.0.0-beta
+Version: SANDI v1.0.0-alpha
 Created on Mon Aug 19 14:37:38 2024
 Author: Louise Delhaye, Royal Belgian Institute of Natural Sciences
 Description: Main application file for the SANDI software. This file initializes the GUI, 

@@ -22,6 +22,7 @@ import datetime
 import numpy as np
 from fractions import Fraction
 import pandas as pd
+import cv2
 
 ###############################################################################
 # Access everything in the directory
@@ -231,7 +232,20 @@ def import_image(app_instance, filename, height, width, depth, pixelsize, popup)
             IMG.lens = IMG.exif_data.get('LensModel', None)
             IMG.iso = IMG.exif_data.get('ISOSpeedRatings', None)
             IMG.exposure = Fraction(IMG.exif_data.get('ExposureTime', None)).limit_denominator() if IMG.exif_data.get('ExposureTime', None) else None
-            IMG.pixel_size = IMG.pixel_size 
+            
+        IMG.pixel_size = IMG.pixel_size 
+            
+        try:
+            img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+            if img is not None:
+                total_pixels = img.size
+                dark_pixels = np.sum(img < 100)
+                IMG.image_background = 'black' if dark_pixels > total_pixels / 2 else 'white'
+            else:
+                raise ValueError("cv2.imread() returned None")
+        except Exception as e:
+            print(f"[ERROR] Could not analyze image background for '{filename}': {e}")
+            IMG.image_background = None
         
         if IMG.tk_resized_image:
             app_instance.image_list = [IMG.tk_resized_image] 
@@ -245,7 +259,7 @@ def import_image(app_instance, filename, height, width, depth, pixelsize, popup)
             app_instance.log_message('info', f"Image name is: {IMG.image_name}")
             app_instance.log_message('info', f"Image date is: {IMG.date_time}")
             app_instance.log_message('info', f"Calculated pixel size is: {IMG.pixel_size} µm")
-            app_instance.log_message('info', f"Image was shot using {IMG.camera} equipped with {IMG.lens}, at aperture of f/{IMG.aperture}, focal length of {IMG.focal_length} mm, exposure time of {IMG.exposure} s and ISO {IMG.iso}")
+            app_instance.log_message('info', f"Image was shot using {IMG.camera} equipped with {IMG.lens}, at aperture of f/{IMG.aperture}, focal length of {IMG.focal_length} mm, exposure time of {IMG.exposure} s and ISO {IMG.iso}. Detected background is {IMG.image_background}")
         
             if IMG.selected_image is not None:
                 app_instance.plot_histogram(which='original_histogram')  

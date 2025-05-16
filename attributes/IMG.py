@@ -25,6 +25,7 @@ class IMG:
     image_height= 0
     image_width = 0
     image_depth = 0
+    image_background = None
     
     filename = None
     selected_image = None

@@ -86,11 +86,25 @@ def correct_background_illumination(img, BlockSize, pixelsize):
     Homogeneizes the background illumination by iterating a window of chosen size (BlockSize) over the image to detect the minimum value in each. 
     """
     w = int(np.ceil((BlockSize * 1000) / pixelsize))  
-    bg = cv2.erode(img, np.ones((w, w)))  
-    bg = cv2.resize(bg, (img.shape[1], img.shape[0]))  
-    img = img - bg  
-    IMG.img_modified = cv2.normalize(img, None, 0, 255, cv2.NORM_MINMAX)  
+    kernel = np.ones((w, w), np.uint8)
+    
+    if IMG.image_background == 'black':
+        bg = cv2.erode(img, kernel)
+        bg = cv2.resize(bg, (img.shape[1], img.shape[0]))
+        corrected = img - bg
+        
+    elif IMG.image_background == 'white':
+        bg = cv2.dilate(img, kernel)
+        bg = cv2.resize(bg, (img.shape[1], img.shape[0]))
+        corrected = bg - img
+        corrected = 255 - corrected
+        
+    else:
+        raise ValueError("IMG.image_background must be either 'black' or 'white'.")
+    
+    IMG.img_modified = cv2.normalize(corrected, None, 0, 255, cv2.NORM_MINMAX)
     IMG.tk_corrected_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
+    
     return IMG.img_modified
     
 def lighten_shadows_with_gamma(img, gamma_value):
