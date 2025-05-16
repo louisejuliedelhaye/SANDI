@@ -167,7 +167,7 @@ class SingleImageProcessing:
         ### Import file button
         #######################################################################
         
-        self.file_button = tk.Button(self.left_frame, text="Select JPG image", command=self.open_file_button_clicked,
+        self.file_button = tk.Button(self.left_frame, text="Select image", command=self.open_file_button_clicked,
                                      bg=self.button_color, fg="black", font=("Segoe UI", 12),
                                      borderwidth=1, relief="flat", width=80)
         self.file_button.grid(row=0, column=0, columnspan=2, pady=(6, 3), padx=(8,0), sticky="nw")

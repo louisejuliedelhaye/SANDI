@@ -10,7 +10,7 @@ This file lists all the improvements planned for future versions of the software
 
 ## Image processing options
 - [x] Add option to insert pixel size directly
-- [ ] Add option to work with other formats than jpg
+- [x] Add option to work with other formats than jpg
 - [x] Add option to automatically detect whether the background is black or white
 - [x] Adapt background illumination and particle extraction to images on white background
 - [ ] Add option to choose the thresholding algorithm

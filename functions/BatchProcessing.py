@@ -95,9 +95,16 @@ def open_multiple_files(app_instance):
     reset_all_batch()
     file_paths = filedialog.askopenfilenames(
         initialdir="/",
-        title="Select JPG Images",
-        filetypes=(("JPEG files", "*.jpg"), ("All files", "*.*"))
+        title="Select images",
+        filetypes=(
+            ("Image files", "*.jpg *.jpeg *.png *.tif *.tiff"),
+            ("JPEG files", "*.jpg *.jpeg"),
+            ("PNG files", "*.png"),
+            ("TIFF files", "*.tif *.tiff"),
+            ("All files", "*.*"),
+        )
     )
+
     filenames = file_paths
 
     if not file_paths:

@@ -59,7 +59,7 @@ def open_file(app_instance):
     reset_all()
     IMG.filename = filedialog.askopenfilename(
         initialdir="/",
-        title="Select JPG Image",
+        title="Select image",
         filetypes=(
             ("Image files", "*.jpg *.jpeg *.png *.tif *.tiff"),
             ("JPEG files", "*.jpg *.jpeg"),
