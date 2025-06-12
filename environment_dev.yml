@@ -1,0 +1,24 @@
+name: sandi_dev
+channels:
+  - conda-forge
+  - defaults
+dependencies :
+  - python=3.11
+  - matplotlib=3.7.1
+  - numpy=1.24.3
+  - opencv=4.10.0
+  - pandas=1.5.3
+  - Pillow=10.4.0
+  - scikit-image=0.19.3
+  - scipy=1.10.1
+  - seaborn=0.11.2
+  - pip
+  - jupyterlab
+  - pandoc
+  - sphinx
+  - myst-parser
+  - build
+  - conda-build
+  - twine
+  - pip:
+    - sphinx-rtd-theme
