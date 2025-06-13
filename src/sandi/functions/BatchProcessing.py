@@ -35,23 +35,11 @@ import seaborn as sns
 import traceback
 
 ###############################################################################
-# Access everything in the directory
-###############################################################################
-
-#sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
-
-###############################################################################
 # Import local packages
 ###############################################################################
 
 from sandi.attributes.IMG import IMG
 from sandi.functions.ParticleExtraction import extract_batch_particles
-#from IMG import IMG
-#from ParticleExtraction import extract_batch_particles
 
 ###############################################################################
 # Functions

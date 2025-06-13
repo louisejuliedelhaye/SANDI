@@ -34,25 +34,12 @@ from scipy.ndimage import binary_fill_holes
 from scipy.stats import kurtosis, skew
 
 ###############################################################################
-# Access everything in the directory
-###############################################################################
-
-#sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
-
-###############################################################################
 # Import local packages
 ###############################################################################
 
 from sandi.attributes.IMG import IMG
 from sandi.functions.ExportToCSV import save_batch_particles_csv
 from sandi.functions.VignetteGeneration import generate_batch_vignettes
-#from IMG import IMG
-#from ExportToCSV import save_batch_particles_csv
-#from VignetteGeneration import generate_batch_vignettes
 
 ###############################################################################
 # Set width, height for image canvas resizing

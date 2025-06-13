@@ -24,17 +24,6 @@ import os
 import sys
 
 ###############################################################################
-# Access everything in the directory
-###############################################################################
-
-#current_dir = os.getcwd()
-#sys.path.append(current_dir)
-#sys.path.append(os.path.join(current_dir, 'pages'))
-#sys.path.append(os.path.join(current_dir, 'functions'))
-#sys.path.append(os.path.join(current_dir, 'images'))
-#sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
-
-###############################################################################
 # Import local packages
 ###############################################################################
 
@@ -50,15 +39,6 @@ from sandi.functions.VignetteGeneration import generate_vignette
 from sandi.functions.StatisticsComputation import compute_image_statistics
 from sandi.functions.ExportToCSV import (save_image_csv, save_particles_csv,
                                          save_single_image_PSD_figure, save_single_image_spiderchart_figure)
-
-#from PCAM import PCam3_characteristics
-#from IMG import IMG
-#from ImportImages import open_file, reset_all
-#from ImageEnhancement import rgb_to_grey, denoise, histogram_stretching, correct_background_illumination, image_reconstruction, image_resampling
-#from ParticleExtraction import extract_particles, filter_particles_on_intensity, filter_particles_on_size, filter_particles_on_aspect_ratio
-#from VignetteGeneration import generate_vignette
-#from StatisticsComputation import compute_image_statistics
-#from ExportToCSV import save_image_csv, save_particles_csv, save_single_image_PSD_figure, save_single_image_spiderchart_figure
 
 ###############################################################################
 # Creation of the page layout

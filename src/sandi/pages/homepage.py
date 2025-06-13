@@ -18,16 +18,6 @@ import sys
 from PIL import Image, ImageTk
 
 ###############################################################################
-# Access everything in the directory
-###############################################################################
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
-
-###############################################################################
 # Creation of the page layout
 ###############################################################################
 
