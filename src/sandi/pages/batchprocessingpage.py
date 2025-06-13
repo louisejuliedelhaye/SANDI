@@ -28,19 +28,22 @@ import matplotlib.ticker as ticker
 # Access everything in the directory
 ###############################################################################
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
+#sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
 
 ###############################################################################
 # Import local packages
 ###############################################################################
 
-from PCAM import PCam3_characteristics
-from IMG import IMG
-from BatchProcessing import open_multiple_files, reset_all_batch, start_batch_processing
+from sandi.attributes.PCAM import PCam3_characteristics
+from sandi.attributes.IMG import IMG
+from sandi.functions.BatchProcessing import (open_multiple_files, reset_all_batch, start_batch_processing)
+#from PCAM import PCam3_characteristics
+#from IMG import IMG
+#from BatchProcessing import open_multiple_files, reset_all_batch, start_batch_processing
 
 ###############################################################################
 # Creation of the page layout

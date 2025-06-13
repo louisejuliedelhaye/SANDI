@@ -24,17 +24,18 @@ from skimage import transform
 # Access everything in the directory
 ###############################################################################
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
+#sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
 
 ###############################################################################
 # Import local packages
 ###############################################################################
 
-from IMG import IMG
+from sandi.attributes.IMG import IMG
+#from IMG import IMG
 
 ###############################################################################
 # Set width, height for image canvas resizing

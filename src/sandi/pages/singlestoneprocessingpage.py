@@ -31,24 +31,34 @@ import sys
 # Access everything in the directory
 ###############################################################################
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
+#sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'pages'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'functions'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'images'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'attributes'))
 
 ###############################################################################
 # Import local packages
 ###############################################################################
 
-from PCAM import PCam3_characteristics
-from IMG import IMG
-from ImportImages import open_stones_file, reset_all
-from ImageEnhancement import rgb_to_grey, denoise, histogram_stretching, image_reconstruction, lighten_shadows_with_gamma
-from ParticleExtraction import extract_stones, extract_stones_on_green, filter_stones_on_size
-from VignetteGeneration import add_scale_bar, generate_vignette
-from StatisticsComputation import stones_sample_statistics, compute_stones_statistics
-from ExportToCSV import save_sample_csv, save_gravels_csv
+from sandi.attributes.PCAM import PCam3_characteristics
+from sandi.attributes.IMG import IMG
+from sandi.functions.ImportImages import open_stones_file, reset_all
+from sandi.functions.ImageEnhancement import (rgb_to_grey, denoise, histogram_stretching,
+                                              image_reconstruction, lighten_shadows_with_gamma)
+from sandi.functions.ParticleExtraction import extract_stones, extract_stones_on_green, filter_stones_on_size
+from sandi.functions.VignetteGeneration import add_scale_bar, generate_vignette
+from sandi.functions.StatisticsComputation import stones_sample_statistics, compute_stones_statistics
+from sandi.functions.ExportToCSV import save_sample_csv, save_gravels_csv
+
+#from PCAM import PCam3_characteristics
+#from IMG import IMG
+#from ImportImages import open_stones_file, reset_all
+#from ImageEnhancement import rgb_to_grey, denoise, histogram_stretching, image_reconstruction, lighten_shadows_with_gamma
+#from ParticleExtraction import extract_stones, extract_stones_on_green, filter_stones_on_size
+#from VignetteGeneration import add_scale_bar, generate_vignette
+#from StatisticsComputation import stones_sample_statistics, compute_stones_statistics
+#from ExportToCSV import save_sample_csv, save_gravels_csv
 
 ###############################################################################
 # Creation of the page layout
