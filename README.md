@@ -15,8 +15,8 @@ There are three ways for the user to use SANDI:
 1. Users can choose to download the full code and run the ‘main’ file
 2. They can download the latest release of the software as an executable, which is self-contained but is not the most recent version
 3. Or, the **easiest and most up-to-date way** for the user is to install the Python package SANDI (https://pypi.org/project/SANDI/):
-  3.1. download the environment_user.yml file
-  3.2. open the miniconda/anaconda prompt:
+    - download the environment_user.yml file
+    - open the miniconda/anaconda prompt:
 <pre lang="markdown"> 
   # Navigate to the folder where your .yml file is located 
   cd directory/of/your/yml-file 
