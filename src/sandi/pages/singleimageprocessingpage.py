@@ -20,8 +20,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import mplcursors
 import cv2
 import numpy as np
-import os
-import sys
+#import os
+#import sys
 
 ###############################################################################
 # Import local packages

@@ -11,8 +11,8 @@ Description: functions for the image import and variables resetting
 # Import packages
 ###############################################################################
 
-import os
-import sys
+#import os
+#import sys
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk 
@@ -21,7 +21,7 @@ import os
 import datetime
 import numpy as np
 from fractions import Fraction
-import pandas as pd
+#import pandas as pd
 import cv2
 
 ###############################################################################

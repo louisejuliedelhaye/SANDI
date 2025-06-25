@@ -13,8 +13,8 @@ Description: layout of the homepage
 
 import tkinter as tk
 from tkinter import ttk
-import os
-import sys
+#import os
+#import sys
 from PIL import Image, ImageTk
 import importlib.resources
 

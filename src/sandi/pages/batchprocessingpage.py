@@ -13,16 +13,16 @@ Description: layout of the batch SPM image processing page
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import mplcursors
-import cv2
-import os
-import sys
-import numpy as np
+#import mplcursors
+#import cv2
+#import os
+#import sys
+#import numpy as np
 import pandas as pd
-import matplotlib.ticker as ticker
+#import matplotlib.ticker as ticker
 
 ###############################################################################
 # Import local packages

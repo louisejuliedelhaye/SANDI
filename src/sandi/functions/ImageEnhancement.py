@@ -11,14 +11,14 @@ Description: functions for the image enhancement and background processing
 # Import packages
 ###############################################################################
 
-import sys
-import os
+#import sys
+#import os
 import numpy as np
 import cv2
 from skimage.morphology import reconstruction
-import concurrent.futures
+#import concurrent.futures
 from PIL import Image, ImageTk 
-from skimage import transform
+#from skimage import transform
 
 ###############################################################################
 # Import local packages

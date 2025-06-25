@@ -13,21 +13,21 @@ Description: File containing the functions needed to extract the particles and g
 
 import concurrent.futures
 import numpy as np
-import cv2
+#import cv2
 from skimage.filters import threshold_otsu
 from skimage.segmentation import clear_border, watershed
 from skimage.measure import label, regionprops
 from skimage import morphology
-from skimage.morphology import binary_dilation, convex_hull_image, remove_small_objects, closing, square, binary_erosion, disk
-import gc
-from tkinter import filedialog
+from skimage.morphology import closing, square, binary_erosion, disk
+#import gc
+#from tkinter import filedialog
 import cv2
-from PIL import Image, ImageTk, ImageDraw, ImageFont
+from PIL import Image, ImageTk
 from scipy import ndimage as ndi
 import os
 import sys
-import csv
-import time
+#import csv
+#import time
 import datetime
 import pandas as pd
 from scipy.ndimage import binary_fill_holes
