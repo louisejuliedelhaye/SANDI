@@ -160,7 +160,7 @@ class Homepage():
         space.grid(row=5, column=0, padx=80, pady=(0, 20), sticky="sw")
     
         # Copyrights
-        copyrights = tk.Label(self.homepage_frame, text="SANDI v1.0.0-alpha 2025\nRoyal Belgian Institute of Natural Sciences | Louise Delhaye\nArtwork by Sophie Delhaye",
+        copyrights = tk.Label(self.homepage_frame, text="SANDI v0.1.5+ 2025\nRoyal Belgian Institute of Natural Sciences | Louise Delhaye\nArtwork by Sophie Delhaye",
                                      bg="#2c3e50", fg="#0f1620", font=("Segoe UI", 8), wraplength=440)
         copyrights.grid(row=6, column=0, padx=140, pady=(20, 10), sticky="sw")
     
