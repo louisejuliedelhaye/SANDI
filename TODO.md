@@ -19,8 +19,11 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Add region merging option
 
 ## Particle measurements
-- [x] Add 2D and 3D Fractal Dimension measurements
+- [ ] Modify 2D and 3D Fractal Dimension measurements calculations
 - [x] Add kurtosis, skewness and mean pixel intensity inside the particle
+
+## Code structure
+- [ ] Isolate all constants
 
 ## Bug corrections
 - [ ] Correct requirements file
