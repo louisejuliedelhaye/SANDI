@@ -16,14 +16,14 @@ There are three ways to install and use SANDI:
 2. *Users can download the executable in the 'tags' section of the repository.* This is a self-contained software, the easiest option for users with no experience in coding but is only compatible with Windows systems and is the least frequently updated of the three options.
 3. *Users can choose to work with the sandi package referenced in PyPI*. This is the **easiest and most reliable option**, it contains the latest approved updates of the software and can simply be installed with the few following steps :
     - download the environment_user.yml file
-    - open the miniconda/anaconda prompt and type the following lines to install the package:
+    - open the miniconda/anaconda prompt and type the following lines **to install the package**:
 <pre lang="markdown"> 
-  # Navigate to the folder where your .yml file is located (only for the first installation)
+  # Navigate to the folder where your .yml file is located 
   cd directory/of/your/yml-file 
-  # Create the environment (only for the first installation)
+  # Create the environment 
   conda env create -f environment_user.yml 
-</pre>
-    - open the miniconda/anaconda prompt and type the following lines to run the package after installation:
+</pre> 
+    - open the miniconda/anaconda prompt and type the following lines **to run the package after installation**:
 <pre lang="markdown"> 
   # Activate the environment
   conda activate sandi_env 
