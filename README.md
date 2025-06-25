@@ -16,18 +16,17 @@ There are three ways to install and use SANDI:
 2. *Users can download the executable in the 'tags' section of the repository.* This is a self-contained software, the easiest option for users with no experience in coding but is only compatible with Windows systems and is the least frequently updated of the three options.
 3. *Users can choose to work with the sandi package referenced in PyPI*. This is the **easiest and most reliable option**, it contains the latest approved updates of the software and can simply be installed with the few following steps :
     - download the environment_user.yml file
-    - open the miniconda/anaconda prompt:
+    - open the miniconda/anaconda prompt and type the following lines:
 <pre lang="markdown"> 
-  # Navigate to the folder where your .yml file is located 
+  # Navigate to the folder where your .yml file is located (only for the first installation)
   cd directory/of/your/yml-file 
-  # Create the environment 
+  # Create the environment (only for the first installation)
   conda env create -f environment_user.yml 
-  # Activate the environment 
+  # Activate the environment
   conda activate sandi_env 
   # Run the package 
   python -m sandi 
 </pre>
-
 
 ## 1. Suspended particles
 This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values for the image enhancement steps are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
