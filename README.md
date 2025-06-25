@@ -21,8 +21,8 @@ There are three ways for the user to use SANDI:
   # Navigate to the folder where your .yml file is located 
   cd directory/of/your/yml-file 
   # Create the environment 
-  conda env create -f environment.yml 
-  # Activate it 
+  conda env create -f environment_user.yml 
+  # Activate the environment 
   conda activate sandi_env 
   # Run the package 
   python -m sandi 
