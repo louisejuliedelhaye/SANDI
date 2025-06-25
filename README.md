@@ -33,7 +33,7 @@ There are three ways to install and use SANDI:
   python -m sandi 
 </pre>
 
-If you encounter any issue with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you.
+If you encounter any problem with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you resolve it.
 
 ## 1. Suspended particles
 This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values for the image enhancement steps are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
