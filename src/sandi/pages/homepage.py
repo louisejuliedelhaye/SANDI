@@ -16,6 +16,7 @@ from tkinter import ttk
 import os
 import sys
 from PIL import Image, ImageTk
+import importlib.resources
 
 ###############################################################################
 # Creation of the page layout
@@ -33,8 +34,13 @@ class Homepage():
         self.homepage_frame = tk.Frame(self.root, bg="#2c3e50")
         self.homepage_frame.pack(fill=tk.BOTH, expand=True)
         
-        self.bg_photo = None 
-        self.set_background_image("images/homepage_background.png")
+        self.bg_photo = None
+
+        #self.set_background_image("images/homepage_background.png")
+        self.background_res = importlib.resources.files("sandi.images").joinpath("homepage_background.png")
+        with importlib.resources.as_file(self.background_res) as res_file:
+            self.set_background_image(res_file)
+
         self.homepage_frame.bind("<Configure>", self.on_resize)
 
         self.create_widgets()
@@ -43,21 +49,24 @@ class Homepage():
         """
         Adapt background image to window size.
         """
-        self.set_background_image("images/homepage_background.png")
-    
+        #self.set_background_image("images/homepage_background.png")
+
+        with importlib.resources.as_file(self.background_res) as res_file:
+            self.set_background_image(res_file)
+
     def set_background_image(self, image_path):
         """
         Displays the background image.
         """
-        if getattr(sys, 'frozen', False):  
-            base_path = sys._MEIPASS
-        else:
-            base_path = os.path.abspath(".")   
+        #if getattr(sys, 'frozen', False):
+            #base_path = sys._MEIPASS
+        #else:
+            #base_path = os.path.abspath(".")
 
-        full_image_path = os.path.join(base_path, image_path)
+        #full_image_path = os.path.join(base_path, image_path)
 
         if self.homepage_frame.winfo_width() > 1 and self.homepage_frame.winfo_height() > 1:
-            self.original_bg_image = Image.open(full_image_path)
+            self.original_bg_image = Image.open(image_path)
             resized_image = self.original_bg_image.resize(
                 (self.homepage_frame.winfo_width(), self.homepage_frame.winfo_height()), 
                 Image.LANCZOS

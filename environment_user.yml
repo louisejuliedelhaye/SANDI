@@ -1,4 +1,4 @@
-name: sandi_dev
+name: sandi_env
 channels:
   - conda-forge
   - defaults
@@ -15,12 +15,5 @@ dependencies :
   - pip
   - mplcursors
   - jupyterlab
-  - pandoc
-  - sphinx
-  - myst-parser
-  - build
-  - conda-build
-  - twine
-  - pyinstaller
   - pip:
-    - sphinx-rtd-theme
+    - sandi
