@@ -70,10 +70,15 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
     else:
         IMG.img_binary = clear_border(IMG.img_modified > threshold_value)
     IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(2))
-    
-    IMG.tk_binary_image = ImageTk.PhotoImage(
-        Image.fromarray(IMG.img_binary).resize((RESIZE_WIDTH, RESIZE_HEIGHT))
-    )
+
+    # Rescale the image for display
+    original_height, original_width = IMG.img_modified.shape[:2]
+    scale_w = RESIZE_WIDTH / original_width
+    scale_h = RESIZE_HEIGHT / original_height
+    scale = min(scale_w, scale_h)
+    new_width = int(original_width * scale)
+    new_height = int(original_height * scale)
+    IMG.tk_binary_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_binary).resize((new_width, new_height)))
 
     CC = label(IMG.img_binary, connectivity=1)
     IMG.stats = regionprops(CC, intensity_image=IMG.img_modified)
@@ -152,7 +157,7 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
         contours, _ = cv2.findContours(IMG.img_binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         
         # Rescale contours and centroids
-        scale_x, scale_y = RESIZE_WIDTH / IMG.img_modified.shape[1], RESIZE_HEIGHT / IMG.img_modified.shape[0]
+        scale_x, scale_y = new_width / IMG.img_modified.shape[1], new_height / IMG.img_modified.shape[0]
         IMG.img_modified_8bit = cv2.normalize(IMG.img_modified, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
         grayscale_with_contours = cv2.cvtColor(IMG.img_modified_8bit, cv2.COLOR_GRAY2BGR)
         updated_stats = [] 
@@ -181,8 +186,16 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
                 updated_stats.append(prop)
     
             IMG.stats = updated_stats
-    
-        output_image_resized = cv2.resize(grayscale_with_contours, (RESIZE_WIDTH, RESIZE_HEIGHT))
+
+        # Rescale the image for display
+        original_height, original_width = IMG.img_modified.shape[:2]
+        scale_w = new_width / original_width
+        scale_h = new_height / original_height
+        scale = min(scale_w, scale_h)
+        new_width = int(original_width * scale)
+        new_height = int(original_height * scale)
+
+        output_image_resized = cv2.resize(grayscale_with_contours, (new_width, new_height))
     
         for prop in IMG.stats:
             scaled_contour = getattr(prop, "scaled_contour", None)

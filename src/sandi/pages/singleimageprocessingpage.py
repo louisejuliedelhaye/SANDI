@@ -41,6 +41,13 @@ from sandi.functions.ExportToCSV import (save_image_csv, save_particles_csv,
                                          save_single_image_PSD_figure, save_single_image_spiderchart_figure)
 
 ###############################################################################
+# Set width, height for image canvas resizing
+###############################################################################
+
+RESIZE_WIDTH = 900
+RESIZE_HEIGHT = 600
+
+###############################################################################
 # Creation of the page layout
 ###############################################################################
 
@@ -717,7 +724,7 @@ class SingleImageProcessing:
         #######################################################################
         
         # Dropdown for selecting image type
-        self.image_select = ttk.Combobox(self.middle_frame, values=["Original Image", "Denoised Image", "Stretched Image", "Corrected Image", "Reconstructed Image", "Resampled Image", "Binary Image", "Extracted Particles Image", "Extracted Particles Filtered on Intensity"], state="readonly")
+        self.image_select = ttk.Combobox(self.middle_frame, values=["Original image", "Denoised image", "Stretched image", "Corrected image", "Reconstructed image", "Resampled image", "Binary image", "Extracted particles image", "Extracted particles filtered on intensity"], state="readonly")
         self.image_select.set("Select image")
         self.image_select.grid(row=0, column=0, padx=1, pady=(2,0), sticky="ew")
         self.image_select.bind("<<ComboboxSelected>>", self.update_image_display)
@@ -1216,7 +1223,21 @@ class SingleImageProcessing:
     
             # Update display
             if IMG.tk_denoised_image:
-                self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_denoised_image, tags="denoised img")
+                self.image_canvas.update_idletasks()
+                self.image_canvas.update()
+
+                canvas_width = self.image_canvas.winfo_width()
+                canvas_height = self.image_canvas.winfo_height()
+
+                image_width = IMG.tk_denoised_image.width()
+                image_height = IMG.tk_denoised_image.height()
+
+                x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_denoised_image,
+                                               tags="denoised img")
+                #self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_denoised_image, tags="denoised img")
                 self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
     
             # Plot histogram
@@ -1239,8 +1260,21 @@ class SingleImageProcessing:
                 
                 if self.original_denoising_image is not None:
                     IMG.img_modified = self.original_denoising_image
-                    IMG.tk_denoised_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
-                    self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_denoised_image, tags="resampled img")
+                    #IMG.tk_denoised_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
+                    self.image_canvas.update_idletasks()
+                    self.image_canvas.update()
+
+                    canvas_width = self.image_canvas.winfo_width()
+                    canvas_height = self.image_canvas.winfo_height()
+
+                    image_width = IMG.tk_denoised_image.width()
+                    image_height = IMG.tk_denoised_image.height()
+
+                    x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                    y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                    self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_denoised_image,
+                                                   tags="resampled img")
                     self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                     self.log_message('success', "Denoising has been undone")
                     self.plot_histogram(which="modified_histogram")
@@ -1289,7 +1323,21 @@ class SingleImageProcessing:
             self.log_message('error', f"An error occurred during the histogram stretching process: {e}")
             
         if IMG.tk_stretched_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_stretched_image, tags="stretched img")
+            self.image_canvas.update_idletasks()
+            self.image_canvas.update()
+
+            canvas_width = self.image_canvas.winfo_width()
+            canvas_height = self.image_canvas.winfo_height()
+
+            image_width = IMG.tk_denoised_image.width()
+            image_height = IMG.tk_denoised_image.height()
+
+            x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+            y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+            self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_stretched_image,
+                                           tags="stretched img")
+            #self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_stretched_image, tags="stretched img")
             self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             
         self.plot_histogram(which="modified_histogram")
@@ -1308,8 +1356,30 @@ class SingleImageProcessing:
                 
                 if self.original_histogram_image is not None:
                     IMG.img_modified = self.original_histogram_image
-                    IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
-                    self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_stretched_image, tags="resampled img")
+
+                    self.image_canvas.update_idletasks()
+                    self.image_canvas.update()
+
+                    canvas_width = self.image_canvas.winfo_width()
+                    canvas_height = self.image_canvas.winfo_height()
+
+                    image_width = IMG.tk_denoised_image.width()
+                    image_height = IMG.tk_denoised_image.height()
+
+                    x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                    y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                    # Recreate the rescaled image for display
+                    original_height, original_width = IMG.img_modified.shape[:2]
+                    scale_w = RESIZE_WIDTH / original_width
+                    scale_h = RESIZE_HEIGHT / original_height
+                    scale = min(scale_w, scale_h)
+                    new_width = int(original_width * scale)
+                    new_height = int(original_height * scale)
+                    IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
+
+                    self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_stretched_image,
+                                                   tags="stretched img")
                     self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                     self.log_message('success', "Histogram stretching has been undone.")
                     self.plot_histogram(which="modified_histogram")
@@ -1362,7 +1432,21 @@ class SingleImageProcessing:
                 self.log_message('error', f"An error occurred during the correction of the background illumination. Corrected image is {IMG.img_modified}")
                 
             if IMG.tk_corrected_image:
-                self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_corrected_image, tags="corrected img")
+                self.image_canvas.update_idletasks()
+                self.image_canvas.update()
+
+                canvas_width = self.image_canvas.winfo_width()
+                canvas_height = self.image_canvas.winfo_height()
+
+                image_width = IMG.tk_denoised_image.width()
+                image_height = IMG.tk_denoised_image.height()
+
+                x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_corrected_image,
+                                               tags="corrected img")
+                #self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_corrected_image, tags="corrected img")
                 self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                 
             self.plot_histogram(which="modified_histogram")
@@ -1383,8 +1467,30 @@ class SingleImageProcessing:
             try:
                 if self.original_illumination_image is not None:
                     IMG.img_modified = self.original_illumination_image
-                    IMG.tk_corrected_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
-                    self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_corrected_image, tags="resampled img")
+                    self.image_canvas.update_idletasks()
+                    self.image_canvas.update()
+
+                    canvas_width = self.image_canvas.winfo_width()
+                    canvas_height = self.image_canvas.winfo_height()
+
+                    image_width = IMG.tk_denoised_image.width()
+                    image_height = IMG.tk_denoised_image.height()
+
+                    x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                    y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                    # Recreate the rescaled image for display
+                    original_height, original_width = IMG.img_modified.shape[:2]
+                    scale_w = RESIZE_WIDTH / original_width
+                    scale_h = RESIZE_HEIGHT / original_height
+                    scale = min(scale_w, scale_h)
+                    new_width = int(original_width * scale)
+                    new_height = int(original_height * scale)
+                    IMG.tk_corrected_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
+
+                    self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_corrected_image,
+                                                   tags="stretched img")
+
                     self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                     self.log_message('success', "Background illumination correction has been undone")
                     self.plot_histogram(which="modified_histogram")
@@ -1433,7 +1539,22 @@ class SingleImageProcessing:
                 self.log_message('error', f"An error occurred during the image reconstruction. Reconstructed image is {IMG.img_reconstructed}")
                 
             if IMG.tk_reconstructed_image:
-                self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_reconstructed_image, tags="reconstructed img")
+                self.image_canvas.update_idletasks()
+                self.image_canvas.update()
+
+                canvas_width = self.image_canvas.winfo_width()
+                canvas_height = self.image_canvas.winfo_height()
+
+                image_width = IMG.tk_denoised_image.width()
+                image_height = IMG.tk_denoised_image.height()
+
+                x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_reconstructed_image,
+                                               tags="reconstructed img")
+
+                #self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_reconstructed_image, tags="reconstructed img")
                 self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                 
             self.plot_histogram(which="modified_histogram")
@@ -1454,8 +1575,33 @@ class SingleImageProcessing:
             try:
                 if self.original_reconstruction_image is not None:
                     IMG.img_modified = self.original_reconstruction_image
-                    IMG.tk_reconstructed_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
-                    self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_reconstructed_image, tags="resampled img")
+                    #IMG.tk_reconstructed_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
+
+                    self.image_canvas.update_idletasks()
+                    self.image_canvas.update()
+
+                    canvas_width = self.image_canvas.winfo_width()
+                    canvas_height = self.image_canvas.winfo_height()
+
+                    image_width = IMG.tk_denoised_image.width()
+                    image_height = IMG.tk_denoised_image.height()
+
+                    x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                    y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                    # Recreate the rescaled image for display
+                    original_height, original_width = IMG.img_modified.shape[:2]
+                    scale_w = RESIZE_WIDTH / original_width
+                    scale_h = RESIZE_HEIGHT / original_height
+                    scale = min(scale_w, scale_h)
+                    new_width = int(original_width * scale)
+                    new_height = int(original_height * scale)
+                    IMG.tk_reconstructed_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
+
+                    self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_reconstructed_image,
+                                                   tags="reconstructed img")
+
+                    #self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_reconstructed_image, tags="stretched img")
                     self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                     self.log_message('success', "Image reconstruction has been undone")
                     self.plot_histogram(which="modified_histogram")
@@ -1513,7 +1659,22 @@ class SingleImageProcessing:
                 self.log_message('error', "An error occurred during the resampling of the image")
                 
             if IMG.tk_resampled_image:
-                self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_resampled_image, tags="resampled img")
+                self.image_canvas.update_idletasks()
+                self.image_canvas.update()
+
+                canvas_width = self.image_canvas.winfo_width()
+                canvas_height = self.image_canvas.winfo_height()
+
+                image_width = IMG.tk_denoised_image.width()
+                image_height = IMG.tk_denoised_image.height()
+
+                x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_resampled_image,
+                                               tags="resampled img")
+
+                #self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_resampled_image, tags="resampled img")
                 self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                 
             self.plot_histogram(which="modified_histogram")
@@ -1534,8 +1695,31 @@ class SingleImageProcessing:
                 if self.original_resampling_image is not None:
                     IMG.img_modified = self.original_resampling_image
                     IMG.pixel_size = IMG.original_pixel_size
-                    IMG.tk_resampled_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((900, 600)))
-                    self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_resampled_image, tags="resampled img")
+
+                    self.image_canvas.update_idletasks()
+                    self.image_canvas.update()
+
+                    canvas_width = self.image_canvas.winfo_width()
+                    canvas_height = self.image_canvas.winfo_height()
+
+                    image_width = IMG.tk_denoised_image.width()
+                    image_height = IMG.tk_denoised_image.height()
+
+                    x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                    y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                    # Recreate the rescaled image for display
+                    original_height, original_width = IMG.img_modified.shape[:2]
+                    scale_w = RESIZE_WIDTH / original_width
+                    scale_h = RESIZE_HEIGHT / original_height
+                    scale = min(scale_w, scale_h)
+                    new_width = int(original_width * scale)
+                    new_height = int(original_height * scale)
+                    IMG.tk_resampled_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
+
+                    self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_resampled_image,
+                                                   tags="resampled img")
+
                     self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
                     self.log_message('success', f"Resampling has been undone. Current pixel size: {IMG.pixel_size:.2f} µm")
                     self.plot_histogram(which="modified_histogram")
@@ -1571,12 +1755,26 @@ class SingleImageProcessing:
                 pass
     
             if IMG.tk_binary_image and IMG.tk_extracted_particles_image:
-                
-                self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_binary_image, tags="binary img")
+                self.image_canvas.update_idletasks()
+                self.image_canvas.update()
+
+                canvas_width = self.image_canvas.winfo_width()
+                canvas_height = self.image_canvas.winfo_height()
+
+                image_width = IMG.tk_denoised_image.width()
+                image_height = IMG.tk_denoised_image.height()
+
+                x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+                y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+                self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_binary_image,
+                                               tags="binary img")
                 self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
-                self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_extracted_particles_image, tags="extracted particles img")
+
+                self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_extracted_particles_image,
+                                               tags="extracted particles img")
                 self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
-                self.draw_centroids_on_canvas()
+                self.draw_centroids_on_canvas(True)
                 self.image_canvas.bind('<Motion>', lambda event: self.show_particle_tooltip(event))
                 self.image_canvas.bind("<Button-3>", lambda event: self.show_context_menu(event, selected_particles, x_min, x_max, y_min, y_max))
                 self.image_canvas.bind("<Button-3>", self.on_right_mouse_down)  
@@ -1617,7 +1815,7 @@ class SingleImageProcessing:
             self.log_message('success', f"Particles with an intensity lower than {str(self.MaxInt.get())} of the maximum intensity on the image were filtered out.")
             self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             self.image_canvas.bind('<Motion>', lambda event: self.show_particle_tooltip(event))
-            self.draw_centroids_on_canvas()
+            self.draw_centroids_on_canvas(False)
         else:
             self.log_message('error', "An error occurred during the particle filtration.")
         
@@ -1639,7 +1837,7 @@ class SingleImageProcessing:
             self.log_message('success', f"Particles smaller than {str(self.MinSize.get())} were filtered out.")
             self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             self.image_canvas.bind('<Motion>', lambda event: self.show_particle_tooltip(event))
-            self.draw_centroids_on_canvas()
+            self.draw_centroids_on_canvas(False)
         else:
             self.log_message('error', "An error occurred during the particle filtration.")
     
@@ -1668,7 +1866,7 @@ class SingleImageProcessing:
             self.log_message('success', f"Particles with an aspect ratio lower than {str(self.MinAspectRatio.get())} were filtered out.")
             self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             self.image_canvas.bind('<Motion>', lambda event: self.show_particle_tooltip(event))
-            self.draw_centroids_on_canvas()
+            self.draw_centroids_on_canvas(False)
         else:
             self.log_message('error', "An error occurred during the particle filtration.")
             
@@ -2386,9 +2584,22 @@ class SingleImageProcessing:
         Displays an image on the canvas.
         """
         self.image_canvas.delete("all")
+        self.image_canvas.update_idletasks()
+        self.image_canvas.update()
+
         if 0 <= index < len(self.image_list):
             IMG.tk_image = self.image_list[index]
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_image, tags="img")
+
+            canvas_width = self.image_canvas.winfo_width()
+            canvas_height = self.image_canvas.winfo_height()
+
+            image_width = IMG.tk_image.width()
+            image_height = IMG.tk_image.height()
+
+            x = (canvas_width - image_width) // 2 if image_width < canvas_width else 0
+            y = (canvas_height - image_height) // 2 if image_height < canvas_height else 0
+
+            self.image_canvas.create_image(x, y, anchor=tk.NW, image=IMG.tk_image, tags="img")
             self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             
     def update_image_display(self, event):
@@ -2397,25 +2608,44 @@ class SingleImageProcessing:
         """
         selected_image = self.image_select.get()
         self.image_canvas.delete("all")
-        
-        if selected_image == "Denoised Image" and IMG.tk_denoised_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_denoised_image, tags="img")
-        elif selected_image == "Original Image" and IMG.tk_resized_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_resized_image, tags="img")
-        elif selected_image =="Stretched Image" and IMG.tk_stretched_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_stretched_image, tags="img")
-        elif selected_image =="Corrected Image" and IMG.tk_corrected_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_corrected_image, tags="img")
-        elif selected_image =="Reconstructed Image" and IMG.tk_reconstructed_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_reconstructed_image, tags="img")
-        elif selected_image =="Resampled Image" and IMG.tk_resampled_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_resampled_image, tags="img")
-        elif selected_image =="Binary Image" and IMG.tk_binary_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_binary_image, tags="img")
-        elif selected_image == "Extracted Particles Image" and IMG.tk_extracted_particles_image:
-            self.image_canvas.create_image(0,0,anchor=tk.NW, image=IMG.tk_extracted_particles_image, tags = "extracted particles img")
-        elif selected_image =="Extracted Particles Filtered on Intensity" and IMG.tk_extracted_intensity_image:
-            self.image_canvas.create_image(0, 0, anchor=tk.NW, image=IMG.tk_extracted_intensity_image, tags="extracted intensity img")
+
+        self.image_canvas.update_idletasks()
+        self.image_canvas.update()
+        canvas_width = self.image_canvas.winfo_width()
+        canvas_height = self.image_canvas.winfo_height()
+
+        x, y = 0, 0
+        img = None
+
+        if selected_image == "Denoised image" and IMG.tk_denoised_image:
+            img = IMG.tk_denoised_image
+        elif selected_image == "Original image" and IMG.tk_resized_image:
+            img = IMG.tk_resized_image
+        elif selected_image == "Stretched image" and IMG.tk_stretched_image:
+            img = IMG.tk_stretched_image
+        elif selected_image == "Corrected image" and IMG.tk_corrected_image:
+            img = IMG.tk_corrected_image
+        elif selected_image == "Reconstructed image" and IMG.tk_reconstructed_image:
+            img = IMG.tk_reconstructed_image
+        elif selected_image == "Resampled image" and IMG.tk_resampled_image:
+            img = IMG.tk_resampled_image
+        elif selected_image == "Binary image" and IMG.tk_binary_image:
+            img = IMG.tk_binary_image
+        elif selected_image == "Extracted particles image" and IMG.tk_extracted_particles_image:
+            img = IMG.tk_extracted_particles_image
+        elif selected_image == "Extracted particles filtered on intensity" and IMG.tk_extracted_intensity_image:
+            img = IMG.tk_extracted_intensity_image
+
+        if img:
+            image_width = img.width()
+            image_height = img.height()
+
+            if image_width < canvas_width:
+                x = (canvas_width - image_width) // 2
+            if image_height < canvas_height:
+                y = (canvas_height - image_height) // 2
+
+            self.image_canvas.create_image(x, y, anchor=tk.NW, image=img, tags="img")
 
         self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
             
@@ -2585,32 +2815,60 @@ class SingleImageProcessing:
         else:
             self.tooltip_label.place_forget()
         
-    def draw_centroids_on_canvas(self):
+    def draw_centroids_on_canvas(self, apply_offset):
         """
-        Shows the centroids of all particles on the image canvas.
+        Shows the centroids of all particles on the image canvas. If offset needed = True, an offset will be added to the contours.
         """
         if not IMG.stats:
             self.log_message('error', "No particles to draw.")
             return
-        
+
         self.image_canvas.delete("centroid", "contour")
-        
+
+        if apply_offset:
+            # Get canvas and image dimensions
+            canvas_width = self.image_canvas.winfo_width()
+            canvas_height = self.image_canvas.winfo_height()
+
+            img_obj = self.image_canvas.find_withtag("img")
+            if not img_obj:
+                return
+            tk_image = self.image_canvas.itemcget(img_obj[0], "image")
+            if not tk_image:
+                return
+
+            tk_image_obj = self.image_canvas.tk.call("image", "width", tk_image), self.image_canvas.tk.call("image",
+                                                                                                            "height",
+                                                                                                            tk_image)
+            img_width, img_height = int(tk_image_obj[0]), int(tk_image_obj[1])
+
+            # Calculate offsets to center the image
+            offset_x = (canvas_width - img_width) // 2
+            offset_y = (canvas_height - img_height) // 2
+
+            # Apply offset to all centroids and contours
+            for prop in IMG.stats:
+                cx, cy = prop.scaled_centroid
+                prop.scaled_centroid = (cx + offset_x, cy + offset_y)
+
+                if hasattr(prop, 'scaled_contour') and prop.scaled_contour:
+                    prop.scaled_contour = [
+                        [(x + offset_x, y + offset_y) for x, y in cnt]
+                        for cnt in prop.scaled_contour if cnt is not None
+                    ]
+        else:
+            pass
+
+        # Draw centroids and contours
         for i, prop in enumerate(IMG.stats):
-            centroid_x, centroid_y = prop.scaled_centroid 
-            
-            # Draw a red dot on the canvas to represent the centroid
-            self.image_canvas.create_oval(
-                centroid_x - 1, centroid_y - 1, centroid_x + 1, centroid_y + 1,
-                outline="red", fill="red", tags=("centroid", f"particle_{i}")
-            )
-            
-            # Draw contours if available
-            if hasattr(prop, 'scaled_contour') and prop.scaled_contour:
+            x, y = prop.scaled_centroid
+            self.image_canvas.create_oval(x - 1, y - 1, x + 1, y + 1,
+                                          outline="red", fill="red", tags=("centroid", f"particle_{i}"))
+            if hasattr(prop, 'scaled_contour'):
                 for cnt in prop.scaled_contour:
-                    if cnt is not None:
-                        cnt = np.array(cnt, dtype=np.int32).tolist()
-                        self.image_canvas.create_polygon(cnt, outline='lime', fill='', width=1, tags=("contour", f"particle_{i}"))
-            
+                    self.image_canvas.create_polygon(cnt, outline='lime', fill='', width=1,
+                                                     tags=("contour", f"particle_{i}"))
+
     def on_right_mouse_down(self, event):
         """
         Start selection rectangle creation on right-click.
@@ -2709,7 +2967,7 @@ class SingleImageProcessing:
         del IMG.stats[index] 
         self.log_message('info', f"Successfully removed particle {index + 1}.")
         self.image_canvas.delete("centroid") 
-        self.draw_centroids_on_canvas()
+        self.draw_centroids_on_canvas(False)
         
     def remove_particles(self, particle_indices):
         """        
@@ -2724,7 +2982,7 @@ class SingleImageProcessing:
             del IMG.stats[index]
         self.log_message('info', f"Removed {len(particle_indices)} particle(s).")
         self.image_canvas.delete("centroid")
-        self.draw_centroids_on_canvas()
+        self.draw_centroids_on_canvas(False)
             
     def restore_particle(self):
         """
@@ -2739,7 +2997,7 @@ class SingleImageProcessing:
                 IMG.stats.insert(index, particle_data)
             self.log_message('info', f"Restored {len(self.removed_particles)} particle(s).")
             self.image_canvas.delete("centroid")
-            self.draw_centroids_on_canvas()
+            self.draw_centroids_on_canvas(False)
             self.removed_particles.clear()
         else:
             self.log_message('warning', "No particle to restore.")

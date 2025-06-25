@@ -54,8 +54,19 @@ def denoise(img_grey, denoise_filter_strength):
     denoised_image = cv2.fastNlMeansDenoising(img_grey, None, denoise_filter_strength, 7, 21)
     IMG.img_modified = denoised_image
     img_rgb = cv2.cvtColor(denoised_image, cv2.COLOR_GRAY2RGB)
-    resized_img = cv2.resize(img_rgb, (RESIZE_WIDTH, RESIZE_HEIGHT))
+
+    # Rescale the image for display
+    original_height, original_width = img_rgb.shape[:2]
+    scale_w = RESIZE_WIDTH / original_width
+    scale_h = RESIZE_HEIGHT / original_height
+    scale = min(scale_w, scale_h)
+    new_width = int(original_width * scale)
+    new_height = int(original_height * scale)
+    resized_img = cv2.resize(img_rgb, (new_width, new_height))
     IMG.tk_denoised_image = ImageTk.PhotoImage(Image.fromarray(resized_img))
+
+    #resized_img = cv2.resize(img_rgb, (RESIZE_WIDTH, RESIZE_HEIGHT))
+    #IMG.tk_denoised_image = ImageTk.PhotoImage(Image.fromarray(resized_img))
     return IMG.img_modified
     
 def histogram_stretching(image, minimum, maximum):
@@ -66,7 +77,18 @@ def histogram_stretching(image, minimum, maximum):
     if image is not None:
         img_clipped = np.clip(image, minimum, maximum)
         IMG.img_modified = np.uint8((img_clipped - minimum) / (maximum - minimum) * 255)
-        IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
+
+        # Rescale the image for display
+        original_height, original_width = IMG.img_modified.shape[:2]
+        scale_w = RESIZE_WIDTH / original_width
+        scale_h = RESIZE_HEIGHT / original_height
+        scale = min(scale_w, scale_h)
+        new_width = int(original_width * scale)
+        new_height = int(original_height * scale)
+        IMG.img_modified = cv2.resize(IMG.img_modified, (new_width, new_height))
+        IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified))
+
+        #IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
         return IMG.img_modified
     else:
         pass
@@ -93,7 +115,15 @@ def correct_background_illumination(img, BlockSize, pixelsize):
         raise ValueError("IMG.image_background must be either 'black' or 'white'.")
     
     IMG.img_modified = cv2.normalize(corrected, None, 0, 255, cv2.NORM_MINMAX)
-    IMG.tk_corrected_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
+
+    # Rescale the image for display
+    original_height, original_width = IMG.img_modified.shape[:2]
+    scale_w = RESIZE_WIDTH / original_width
+    scale_h = RESIZE_HEIGHT / original_height
+    scale = min(scale_w, scale_h)
+    new_width = int(original_width * scale)
+    new_height = int(original_height * scale)
+    IMG.tk_corrected_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
     
     return IMG.img_modified
     
@@ -117,7 +147,16 @@ def image_reconstruction(img, subdiff):
     marker = np.where(img <= subdiff, 0, img - subdiff)
     IMG.img_reconstructed = reconstruction(marker, mask, method='dilation', footprint=np.ones((3,) * mask.ndim))
     IMG.img_modified = cv2.normalize(IMG.img_reconstructed, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-    IMG.tk_reconstructed_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_reconstructed).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
+
+    # Rescale the image for display
+    original_height, original_width = IMG.img_modified.shape[:2]
+    scale_w = RESIZE_WIDTH / original_width
+    scale_h = RESIZE_HEIGHT / original_height
+    scale = min(scale_w, scale_h)
+    new_width = int(original_width * scale)
+    new_height = int(original_height * scale)
+    IMG.tk_reconstructed_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_reconstructed).resize((new_width, new_height)))
+
     return IMG.img_modified
 
 def image_resampling(image, new_resolution):
@@ -141,6 +180,14 @@ def image_resampling(image, new_resolution):
         if img.dtype in [np.float64, np.float32]:
             img = (img * 255).clip(0, 255).astype(np.uint8)
 
-    # Convert to PhotoImage for Tkinter display
-    IMG.tk_resampled_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
+    # Rescale the image for display
+    original_height, original_width = IMG.img_modified.shape[:2]
+    scale_w = RESIZE_WIDTH / original_width
+    scale_h = RESIZE_HEIGHT / original_height
+    scale = min(scale_w, scale_h)
+    new_width = int(original_width * scale)
+    new_height = int(original_height * scale)
+    IMG.tk_resampled_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
+
+    #IMG.tk_resampled_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
     return IMG.img_modified

@@ -70,8 +70,16 @@ def open_file(app_instance):
             with Image.open(IMG.filename) as img:
                 IMG.img_original = Image.open(IMG.filename)
                 IMG.selected_image = np.array(img)
-                IMG.tk_resized_image = ImageTk.PhotoImage(img.resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
                 IMG.exif_data = img._getexif()
+                # Rescale the image for display
+                original_width, original_height = img.size
+                scale_w = RESIZE_WIDTH / original_width
+                scale_h = RESIZE_HEIGHT / original_height
+                scale = min(scale_w, scale_h)
+                new_width = int(original_width * scale)
+                new_height = int(original_height * scale)
+                resized_img = img.resize((new_width, new_height), Image.LANCZOS)
+                IMG.tk_resized_image = ImageTk.PhotoImage(resized_img)
                 
                 if img.mode != 'RGB':
                     img = img.convert('RGB')
@@ -286,8 +294,17 @@ def open_stones_file(app_instance, image_height):
             with Image.open(IMG.filename) as img:
                 IMG.img_original = Image.open(IMG.filename)
                 IMG.selected_image = np.array(img)
-                IMG.tk_resized_image = ImageTk.PhotoImage(img.resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
                 IMG.exif_data = img._getexif()
+
+                # Rescale the image for display
+                original_width, original_height = img.size
+                scale_w = RESIZE_WIDTH / original_width
+                scale_h = RESIZE_HEIGHT / original_height
+                scale = min(scale_w, scale_h)
+                new_width = int(original_width * scale)
+                new_height = int(original_height * scale)
+                resized_img = img.resize((new_width, new_height), Image.LANCZOS)
+                IMG.tk_resized_image = ImageTk.PhotoImage(resized_img)
 
                 if IMG.exif_data:
                     IMG.exif_data = {PIL.ExifTags.TAGS.get(k, k): v for k, v in IMG.exif_data.items()}
