@@ -13,7 +13,7 @@ SANDI is a free, open-source software designed for oceanography and sedimentolog
 There are three ways for the user to use SANDI:
 1. Users can choose to download the full code and run the ‘main’ file
 2. They can download the latest release of the software as an executable, which is self-contained but is not the most recent version
-3. Or, the easiest way for the user is to install the Python package SANDI (https://pypi.org/project/SANDI/):
+3. Or, the **easiest and most up-to-date way** for the user is to install the Python package SANDI (https://pypi.org/project/SANDI/):
 - download the environment_user.yml file
 - open the miniconda prompt:
 <pre lang="markdown"> 
