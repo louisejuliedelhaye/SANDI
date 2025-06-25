@@ -1,5 +1,5 @@
 # <img src="https://github.com/user-attachments/assets/b1fa9c0e-d914-40fc-b6b8-83716b975e52" width="23">  SANDI     
-SANDI is a free, open-source software designed for oceanography and sedimentology. It can be used to extract suspended particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. Users can choose to download the full code and run the ‘main’ file, or they can download the latest release of the software as an executable, which is self-contained. 
+SANDI is a free, open-source software designed for oceanography and sedimentology. It can be used to extract suspended particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. 
 
 ***Disclaimer**: This is an alpha version of the software, and it may therefore still contain some errors or malfunctions. In the TODO document, you can see the improvements planned for future versions, but any additional feedback or suggestion is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
 
@@ -8,6 +8,25 @@ SANDI is a free, open-source software designed for oceanography and sedimentolog
 
   *Figure 1. Homepage of the SANDI v1.0.0-alpha software. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
 </div>
+
+**How to use SANDI?** 
+There are three ways for the user to use SANDI:
+1. Users can choose to download the full code and run the ‘main’ file
+2. They can download the latest release of the software as an executable, which is self-contained but is not the most recent version
+3. Or, the easiest way for the user is to install the Python package SANDI (https://pypi.org/project/SANDI/):
+- download the environment_user.yml file
+- open the miniconda prompt:
+<pre lang="markdown"> 
+  # Navigate to the folder where your .yml file is located 
+  cd directory/of/your/yml-file 
+  # Create the environment 
+  conda env create -f environment.yml 
+  # Activate it 
+  conda activate sandi_env 
+  # Run the package 
+  python -m sandi 
+</pre>
+
 
 ## 1. Suspended particles
 This section allows the user to process one or a batch of images of suspended particles and to extract their size and shape measurements. We strongly recommend that the user first processes a representative image from the batch in the ‘single image processing’ page in order to test which parameters' values for the image enhancement steps are best for each type of image and sample, as our tests have shown that these parameters can strongly influence the measured sizes and shapes. In the 'single image processing' page, the user has the possibility to test the effects of different values of these parameters on the resulting image and detected contours. 
