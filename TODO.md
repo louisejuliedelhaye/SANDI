@@ -1,4 +1,4 @@
-# To-do list - for SANDI v1.0.0-beta
+# To-do list - for SANDI v0.1.6
 
 This file lists all the improvements planned for future versions of the software. 
 - [ ] indicates changes not implemented yet
