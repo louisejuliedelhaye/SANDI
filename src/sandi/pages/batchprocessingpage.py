@@ -202,7 +202,7 @@ class BatchProcessing:
         self.test_histogram_button.grid(row=6, column=0, columnspan=2, sticky="ew", padx=(5, 5), pady=(0, 5))
         
             #######################################################################
-            ##### Min/Max Input Fields and Labels
+            ##### Min/Max input fields and labels
             #######################################################################
         
         self.min_value = tk.DoubleVar(value=0)
@@ -366,7 +366,7 @@ class BatchProcessing:
                   sliderrelief=[("active", "flat")])
         
         self.SubDiff_slider = ttk.Scale(self.left_frame,
-                                                from_=0, to=5,
+                                                from_=0, to=100,
                                                 orient="horizontal",
                                                 variable=self.SubDiff,
                                                 style="TScale",
@@ -487,7 +487,7 @@ class BatchProcessing:
         self.console_frame = tk.Frame(self.middle_frame, bg="#243342", bd=1, relief="flat")
         self.console_frame.grid(row=2, column=0, padx=0, pady=(0, 5), sticky="nsew")
         
-        self.console_text = tk.Text(self.console_frame, bg="#243342", fg="white", wrap=tk.WORD, height=25)
+        self.console_text = tk.Text(self.console_frame, bg="#243342", fg="white", wrap=tk.WORD, height=15)
         self.console_text.grid(row=0, column=0, sticky="nsew")
         self.console_text.config(state=tk.DISABLED)
         
@@ -521,6 +521,20 @@ class BatchProcessing:
         
         self.console_frame.update_idletasks()
         self.console_frame.config(height=self.console_frame.winfo_reqheight())
+
+        # Add progress bar below the console
+        self.progress_var = tk.DoubleVar()
+        self.progress_var.set(0)
+        self.style.configure("TProgressbar",
+                             troughcolor="#34495e",
+                             background="lime",
+                             thickness=10,
+                             bordercolor="#34495e",
+                             lightcolor="#34495e",
+                             darkcolor="#34495e")
+        self.progress = ttk.Progressbar(self.console_frame, variable=self.progress_var,
+                                            maximum=100, mode='determinate', style='TProgressbar')
+        self.progress.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(5, 0))
         
         #######################################################################
         # Right frame
@@ -623,6 +637,7 @@ class BatchProcessing:
             plot_spider_chart (local)
         """
         reset_all_batch()
+        self.progress_var.set(0)
         self.update_pixel_size_value()
         self.update_new_resolution()
         self.plot_histogram('initialise', IMG.csv_file_path)

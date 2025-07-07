@@ -66,11 +66,10 @@ class App:
             logo_res = importlib.resources.files("sandi.images").joinpath("logo.png")
             with importlib.resources.as_file(logo_res) as icon_path:
                 self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
-            #icon_path = os.path.join(os.path.dirname(__file__), 'images', 'logo.png')
 
-        hicon = ctypes.windll.user32.LoadImageW(0, str(icon_path), win32con.IMAGE_ICON, 0, 0, win32con.LR_LOADFROMFILE)
-        hwnd = self.root.winfo_id()
-        win32gui.SendMessage(hwnd, win32con.WM_SETICON, win32con.ICON_BIG, hicon)
+        #hicon = ctypes.windll.user32.LoadImageW(0, str(icon_path), win32con.IMAGE_ICON, 0, 0, win32con.LR_LOADFROMFILE)
+        #hwnd = self.root.winfo_id()
+        #win32gui.SendMessage(hwnd, win32con.WM_SETICON, win32con.ICON_BIG, hicon)
             
         self.style = ttk.Style()
         self.style.theme_use('clam')

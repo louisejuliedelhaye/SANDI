@@ -305,6 +305,7 @@ def import_all_images(app_instance, file_paths, height, width, depth, pixelsize,
         IMG.image_width = float(app_instance.pcam_characteristics.image_width.get())
         IMG.image_depth = float(app_instance.pcam_characteristics.image_depth.get())
         IMG.pixel_size = float(app_instance.pcam_characteristics.pixel_size.get())
+        app_instance.progress_var.set(0)
 
         app_instance.image_list = []  
         
@@ -413,7 +414,7 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
     """   
     current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')        
     app_instance.log_message('new', f"{current_time} - Initiated processing {IMG.image_names[i]}. Image {i+1}/{len(file_paths)}")
-    
+
     #######################################################################
     ### 1. Image conversion to greyscale
     #######################################################################
@@ -548,7 +549,9 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
     """   
     try:
         app_instance.log_message('info', f"Images being processed are {file_paths}")
-        
+        app_instance.progress_var.set(0)
+        app_instance.progress["maximum"] = len(file_paths)
+
         if not file_paths:
             app_instance.log_message('error', "No files selected")
             return
@@ -560,6 +563,7 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
                 return
         except Exception as e:
             app_instance.log_message('error', f"Error selecting output directory: {str(e)}")
+            app_instance.progress_var.set(0)
             return
             
         try:
@@ -577,12 +581,14 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
             app_instance.log_message('info', f"Enhanced images will be saved to {corrected_image_file_path}")
         except Exception as e:
             app_instance.log_message('error', f"Error creating directories: {str(e)}")
+            app_instance.progress_var.set(0)
             return    
         
         try:
             app_instance.log_message('info', f"Image enhancement parameters:\nDenoising: {denoising_strength:.0f}\nHistogram stretching between {min_histogram_value:.0f} and {max_histogram_value:.0f}\nBackground illumination with window size of {background_illumination_window_size:.2f}\nImage reconstruction: {image_reconstruction_value:.0f}\nResampling at pixel size: {resampling_pixel_size:.2f} µm")
         except Exception as e:
             app_instance.log_message('error', f"Error logging parameters: {str(e)}")
+            app_instance.progress_var.set(0)
             return
         
         try:
@@ -591,6 +597,7 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
             app_instance.log_message('start', f"{current_time} - Batch processing initiated on {len(file_paths)} images")
         except Exception as e:
             app_instance.log_message('error', f"Error logging start of batch processing: {str(e)}")
+            app_instance.progress_var.set(0)
             return
         
         IMG.img_modified = [None] * len(file_paths)
@@ -622,6 +629,7 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
                                                     resampling_pixel_size, corrected_image_file_path)
                     except Exception as e:
                         app_instance.log_message('error', f"Error processing background for {file_path}: {str(e)}")
+                        app_instance.progress_var.set(0)
                         continue 
     
                     try:
@@ -631,27 +639,33 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
                     except Exception as e:
                         app_instance.log_message('error', f"Error extracting particles for {file_path}: {str(e)}. Processing stopped.")
                         app_instance.log_message('error', f"Traceback: {traceback.format_exc()}")
+                        app_instance.progress_var.set(0)
                         raise  
     
                     try:
                         update_plot(app_instance)
                         update_spider_plot(app_instance)
+                        current_value = app_instance.progress_var.get()
+                        app_instance.progress_var.set(current_value + 1)
+                        app_instance.progress.update_idletasks()
                     except Exception as e:
                         app_instance.log_message('error', f"Error updating plots: {str(e)}")
+                        app_instance.progress_var.set(0)
                     
                     current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     app_instance.log_message('success', f"{current_time} - Processing completed for {IMG.image_names[i]}")
-                        
+
                     IMG.img_modified[i] = None 
                     IMG.stats[i] = None
                     IMG.img_grey[i] = None 
                     IMG.img_original_resampled[i] = None 
                     IMG.img_binary[i] = None
                     del image_stats_dict
-                    gc.collect() 
+                    gc.collect()
                 
         except Exception as e:
             app_instance.log_message('error', f"Error during CSV writing: {str(e)}")
+            app_instance.progress_var.set(0)
     
         folder_path = csv_file_path
         file_name = "log.txt"
@@ -687,19 +701,23 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
             
         except Exception as e:
             app_instance.log_message('error', f"Error exporting logs: {str(e)}")
+            app_instance.progress["value"] = 0
     
         try:
             save_PSD_figure(IMG.csv_file_path, IMG.batch_results_df)
         except Exception as e:
             app_instance.log_message('error', f"Error saving PSD figure: {str(e)}")
+            app_instance.progress["value"] = 0
     
         try:
             save_spiderchart_figure(IMG.csv_file_path, IMG.batch_results_df)
         except Exception as e:
             app_instance.log_message('error', f"Error saving spiderchart figure: {str(e)}")
+            app_instance.progress["value"] = 0
     
     except Exception as e:
         app_instance.log_message('error', f"Error during batch processing: {str(e)}")
+        app_instance.progress["value"] = 0
 
 def update_plot(app_instance):
     """

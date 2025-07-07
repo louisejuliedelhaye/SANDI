@@ -5,7 +5,7 @@ This file lists all the improvements planned for future versions of the software
 - [x] indicates changes implemented in the online code, but not yet in the latest executable release.
 
 ## Layout
-- [ ] Add a progress bar for the batch processing
+- [x] Add a progress bar for the batch processing
 - [ ] Add description of each function when hovering over
 
 ## Image processing options
