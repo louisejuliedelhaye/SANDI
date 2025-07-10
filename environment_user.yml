@@ -2,7 +2,7 @@ name: sandi_env
 channels:
   - conda-forge
   - defaults
-dependencies :
+dependencies:
   - python=3.11
   - matplotlib=3.7.1
   - numpy=1.24.3
@@ -14,6 +14,9 @@ dependencies :
   - seaborn=0.11.2
   - pip
   - mplcursors
+  - pims
+  - av
+  - imutils
   - jupyterlab
   - pip:
     - sandi
