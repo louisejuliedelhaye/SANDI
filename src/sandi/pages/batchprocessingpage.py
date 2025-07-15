@@ -542,6 +542,72 @@ class BatchProcessing:
         
         self.right_frame = tk.Frame(self.root, bg="#2c3e50", padx=5, pady=10)
         self.right_frame.grid(row=0, column=2, sticky="nsew")
+
+        #######################################################################
+        ### Erosion section
+        #######################################################################
+
+        self.erosion = tk.DoubleVar(value=0)
+
+        def update_erosion(value):
+            self.erosion_value.config(text=str(int(float(value))))
+
+            #######################################################################
+            ##### drop-down button
+            #######################################################################
+
+        self.test_erosion_button = tk.Button(self.right_frame,
+                                                         text="Contours erosion",
+                                                         bg="#3A506B", fg="white", font=("Segoe UI", 11, "bold"),
+                                                         borderwidth=0, relief="flat",
+                                                         activebackground="#3A506B", activeforeground="white",
+                                                         padx=10, pady=5, anchor="w", width=27, state="disabled",
+                                                         disabledforeground="white")
+        self.test_erosion_button.grid(row=1, column=0, columnspan=1, sticky="w", padx=(10, 5), pady=(0, 5))
+
+        #######################################################################
+        ##### Filter strength label
+        #######################################################################
+
+        self.erosion_label = tk.Label(self.right_frame,
+                                      text="Erosion (in pix):",
+                                      bg="#2c3e50",
+                                      fg="white",
+                                      font=("Segoe UI", 11))
+        self.erosion_label.grid(row=2, column=0, sticky="w", padx=10, pady=(5, 0))
+
+        self.erosion_value = tk.Label(self.right_frame,
+                                      text=str(int(self.erosion.get())),
+                                      bg="#2c3e50",
+                                      fg="#388E3C",
+                                      font=("Segoe UI", 11, "bold"))
+        self.erosion_value.grid(row=2, column=0, sticky="e", padx=(10,20), pady=(5, 0))
+
+        #######################################################################
+        ##### Erosion slider
+        #######################################################################
+
+        style = ttk.Style()
+        style.configure("TScale",
+                        background="#1C2833",
+                        troughcolor="#34495e",
+                        sliderlength=25,
+                        sliderrelief="flat",
+                        troughrelief="flat",
+                        sliderthickness=12,
+                        relief="flat",
+                        borderwidth=0)
+        style.map("TScale",
+                  background=[("active", "#388E3C")],
+                  sliderrelief=[("active", "flat")])
+
+        self.erosion_slider = ttk.Scale(self.right_frame,
+                                        from_=0, to=5,
+                                        orient="horizontal",
+                                        variable=self.erosion,
+                                        style="TScale",
+                                        command=update_erosion)
+        self.erosion_slider.grid(row=3, column=0, columnspan=1, sticky="ew", padx=(10,18), pady=(0, 10))
         
         #######################################################################
         # Batch processing button
@@ -559,11 +625,11 @@ class BatchProcessing:
                   background=[('active', '#FFBC42')],
                   relief=[('pressed', 'sunken'), ('!pressed', 'raised')])
         
-        self.compute_statistics_button = ttk.Button(self.right_frame,
+        self.batch_processing_button = ttk.Button(self.right_frame,
                                  text="Process batch",
                                  command=self.apply_batch_processing,
                                  style='Extraction.TButton', width=28) 
-        self.compute_statistics_button.grid(row=1, column=0, columnspan=1, sticky="nw", pady=(6, 3), padx=(10, 15))
+        self.batch_processing_button.grid(row=4, column=0, columnspan=1, sticky="nw", pady=(6, 3), padx=(10, 15))
         
         #######################################################################
         # Back to Homepage button
@@ -572,7 +638,7 @@ class BatchProcessing:
         self.back_button = tk.Button(self.right_frame, text="Back to homepage", command=self.go_home,
                                      bg=self.button_color, fg="black", font=("Segoe UI", 12),
                                      borderwidth=1, relief="flat", width=29)
-        self.back_button.grid(row=2, column=0, columnspan=1, sticky="nw", pady=(3, 10), padx=(10, 10))
+        self.back_button.grid(row=5, column=0, columnspan=1, sticky="nw", pady=(3, 10), padx=(10, 10))
         
         self.back_button.bind("<Enter>", self.on_hover_buttons)
         self.back_button.bind("<Leave>", self.on_leave_buttons)
@@ -588,13 +654,13 @@ class BatchProcessing:
                                          wraplength=230,
                                          justify="left",
                                          font=("Segoe UI", 12))
-        self.spider_title.grid(row=17, column=0, columnspan=1, padx=5, pady=(390, 5), sticky="w")
+        self.spider_title.grid(row=8, column=0, columnspan=1, padx=5, pady=(300, 5), sticky="w")
         
         self.spider_figure = Figure(figsize=(2, 2), dpi=120)
         self.spider_ax = self.spider_figure.add_subplot(111, polar=True)
                
         self.spider_canvas = FigureCanvasTkAgg(self.spider_figure, master=self.right_frame)
-        self.spider_canvas.get_tk_widget().grid(row=18, column=0, sticky="nsew", padx=(0,0), pady=(0, 0))
+        self.spider_canvas.get_tk_widget().grid(row=9, column=0, sticky="nsew", padx=(0,0), pady=(0, 0))
         
     ###########################################################################
     ########################### Log message function ##########################
@@ -729,8 +795,9 @@ class BatchProcessing:
             background_window_size = round(self.background_window_size.get(), 2)
             subdiff = round(self.SubDiff.get(), 0)
             new_resolution = round(self.new_resolution.get(), 2)
-            
-            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, self.pcam_characteristics.image_height.get(), self.pcam_characteristics.image_width.get(), self.pcam_characteristics.image_depth.get(), self.canvas)
+            erosion_value = round(self.erosion.get(), 0)
+
+            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, self.pcam_characteristics.image_height.get(), self.pcam_characteristics.image_width.get(), self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value)
 
         else:
             self.log_message('error', "There is no particle statistics available")

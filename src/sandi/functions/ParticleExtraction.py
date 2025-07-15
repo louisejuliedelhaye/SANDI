@@ -52,7 +52,7 @@ RESIZE_HEIGHT = 600
 # Single image processing (SPM)
 ###############################################################################
 
-def extract_particles(app_instance, image_name, vignette_folder_path=None):
+def extract_particles(app_instance, image_name, erosion_value, vignette_folder_path=None):
     """
     Extracts particles from the original or modified SPM image.
     """
@@ -69,7 +69,7 @@ def extract_particles(app_instance, image_name, vignette_folder_path=None):
         IMG.img_binary = clear_border(IMG.img_modified < threshold_value)
     else:
         IMG.img_binary = clear_border(IMG.img_modified > threshold_value)
-    IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(2))
+    IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(erosion_value))
 
     # Rescale the image for display
     original_height, original_width = IMG.img_modified.shape[:2]
@@ -268,7 +268,7 @@ def filter_particles_on_aspect_ratio(app_instance, stats, MinAspectRatio):
 # Batch processing (SPM)
 ###############################################################################
 
-def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_file_path, height, width, depth, i):
+def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_file_path, height, width, depth, erosion_value, i):
     """
     Extract and computes particles properties on a batch of images.
     """
@@ -281,7 +281,7 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
         IMG.img_binary[i] = clear_border(IMG.img_modified[i] < threshold_value)
     else:
         IMG.img_binary[i] = clear_border(IMG.img_modified[i] > threshold_value)
-    IMG.img_binary[i] = binary_erosion(IMG.img_binary[i], footprint=disk(2))
+    IMG.img_binary[i] = binary_erosion(IMG.img_binary[i], footprint=disk(erosion_value))
 
     CC = label(IMG.img_binary[i], connectivity=1)
     IMG.stats[i] = regionprops(CC, intensity_image=IMG.img_modified[i])

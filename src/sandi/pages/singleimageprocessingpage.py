@@ -1746,8 +1746,9 @@ class SingleImageProcessing:
         try:
             if IMG.selected_image is None:
                 self.log_message('error', f"Selected image is {IMG.selected_image}")
-                
-            extract_particles(self, IMG.image_name)
+
+            erosion_value = 2
+            extract_particles(self, IMG.image_name, erosion_value)
             
             if IMG.stats is None:
                 self.log_message('error', f"An error occurred during the particle extraction. Stats is {IMG.stats}")
