@@ -1,8 +1,8 @@
-# To-do list - for SANDI v0.1.6
-
 This file lists all the improvements planned for future versions of the software. 
 - [ ] indicates changes not implemented yet
 - [x] indicates changes implemented in the online code, but not yet in the latest executable release.
+
+# To-do list - for SANDI v0.1.6
 
 ## Layout
 - [x] Add a progress bar for the batch processing
@@ -16,7 +16,7 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Add option to shrink contours by a few pixels
 
 ## Particle measurements
-- [ ] Modify 2D and 3D Fractal Dimension measurements calculations
+- [x] Modify 2D and 3D Fractal Dimension measurements calculations
 - [x] Add kurtosis, skewness and mean pixel intensity inside the particle
 
 ## Bug corrections
@@ -40,3 +40,4 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Add option to fill holes or not
 - [ ] Add region merging option
 - [ ] Add option to choose the thresholding algorithm
+- [ ] Add option to convert video to images
