@@ -6,7 +6,7 @@ This file lists all the improvements planned for future versions of the software
 
 ## Layout
 - [x] Add a progress bar for the batch processing
-- [ ] Improve vignette design
+- [x] Improve vignette design
 
 ## Image processing options
 - [x] Add option to insert pixel size directly

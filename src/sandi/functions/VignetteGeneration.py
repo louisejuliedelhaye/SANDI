@@ -154,6 +154,13 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
         image_with_scale = image.copy()
 
     pixelsize = IMG.pixel_size
+
+    height, width = image_with_scale.shape[:2]
+
+    # Default scale bar length is 1/3 of the image width
+    if scale_length_pixels is None:
+        fraction = 1 / 3
+        scale_length_pixels = int(width * fraction)
     
     # Calculate the required size for the scale bar legend
     if sample_type == "gravel":
@@ -162,23 +169,25 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
         scale_text = f"{scale_length_cm:.0f} cm"
     elif sample_type == "suspended particles":
         scale_length_um = scale_length_pixels * pixelsize
-        scale_text = f"{scale_length_um:.0f} um"
+        if scale_length_um >= 1000:
+            scale_text = f"{scale_length_um / 1000:.1f} mm"
+        else:
+            scale_text = f"{scale_length_um:.0f} µm"
 
     # Characteristics of the scale bar
-    bar_height = int(max(scale_length_pixels/10, 2))   
+    bar_height = max(2, height // 100)
     bar_color = (255, 255, 255)  
     text_color = (255, 255, 255)  
     font = cv2.FONT_HERSHEY_SIMPLEX
     if sample_type == "suspended particles":
-        if scale_length_um <= 50:
-            font_scale = 0.2
-        if scale_length_um > 50:
-            font_scale = 0.4
+        font_scale = max(0.4, width / 800)
     elif sample_type == "gravel":
         font_scale = 0.2
     font_thickness = 1
-    horizontal_margin = 25  
-    vertical_margin = 5 
+
+    # Margins
+    horizontal_margin = int(width * 0.05)
+    vertical_margin = int(height * 0.03)
     
     if sample_type == "suspended particles":
         if scale_length_um <= 50:
@@ -192,8 +201,8 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
         
     text_size, _ = cv2.getTextSize(scale_text, font, font_scale, font_thickness)
 
-    min_vignette_height = text_size[1] + bar_height + vertical_margin
-    min_vignette_width = scale_length_pixels + horizontal_margin
+    min_vignette_height = text_size[1] + bar_height + 2 * vertical_margin
+    min_vignette_width = scale_length_pixels + 2 * horizontal_margin
 
     # Resize the image if necessary
     if image_with_scale.shape[0] < min_vignette_height or image_with_scale.shape[1] < min_vignette_width:
