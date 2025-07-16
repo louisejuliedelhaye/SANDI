@@ -25,6 +25,8 @@ This file lists all the improvements planned for future versions of the software
 
 # To-do list - for future versions
 
+- [ ] Update Documentation (format & content)
+
 ## Code structure
 - [ ] Isolate all constants
       
