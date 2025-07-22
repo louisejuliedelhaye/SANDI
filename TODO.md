@@ -13,7 +13,7 @@ This file lists all the improvements planned for future versions of the software
 - [x] Add option to work with other formats than jpg
 - [x] Add option to automatically detect whether the background is black or white
 - [x] Adapt background illumination and particle extraction to images on white background
-- [ ] Add option to shrink contours by a few pixels
+- [x] Add option to shrink contours by a few pixels
 
 ## Particle measurements
 - [x] Modify 2D and 3D Fractal Dimension measurements calculations

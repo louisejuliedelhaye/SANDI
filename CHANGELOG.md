@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Added progress bar in batch processing page.
+* Added option to erode particles by selected number of pixels in batch and single image processing pages.
 
 ### Changed
 * Updated image canvas in single image processing page to center smaller images.

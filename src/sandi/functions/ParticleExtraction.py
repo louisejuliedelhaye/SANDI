@@ -69,7 +69,8 @@ def extract_particles(app_instance, image_name, erosion_value, vignette_folder_p
         IMG.img_binary = clear_border(IMG.img_modified < threshold_value)
     else:
         IMG.img_binary = clear_border(IMG.img_modified > threshold_value)
-    IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(erosion_value))
+    if erosion_value != 0:
+        IMG.img_binary = binary_erosion(IMG.img_binary, footprint=disk(erosion_value))
 
     # Rescale the image for display
     original_height, original_width = IMG.img_modified.shape[:2]
@@ -206,7 +207,7 @@ def extract_particles(app_instance, image_name, erosion_value, vignette_folder_p
 
         IMG.tk_extracted_particles_image = ImageTk.PhotoImage(Image.fromarray(output_image_resized))
         
-        app_instance.log_message('success', "Particle extraction is successfully completed")
+        app_instance.log_message('success', f"Particle extraction is successfully completed with contour erosion of {erosion_value} pixel(s)")
         app_instance.log_message('info', f"{len(IMG.stats)} particles have been extracted")
     
 def filter_particles_on_intensity(app_instance, stats, MaxInt):

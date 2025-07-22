@@ -110,22 +110,22 @@ class SingleImageProcessing:
         self.resampling_button.grid_remove()
         self.return_arrow_button.grid_remove()
         
-        self.max_intensity_controls_visible = False
-        self.MaxInt_label.grid_remove()
-        self.MaxInt_value.grid_remove()
-        self.MaxInt_slider.grid_remove()
-        self.filter_intensity_button.grid_remove()
+        #self.max_intensity_controls_visible = False
+        #self.MaxInt_label.grid_remove()
+        #self.MaxInt_value.grid_remove()
+        #self.MaxInt_slider.grid_remove()
+        #self.filter_intensity_button.grid_remove()
         
-        self.min_size_controls_visible = False
-        self.MinSize_label.grid_remove()
-        self.MinSize_entry.grid_remove()
-        self.filter_size_button.grid_remove()
+        #self.min_size_controls_visible = False
+        #self.MinSize_label.grid_remove()
+        #self.MinSize_entry.grid_remove()
+        #self.filter_size_button.grid_remove()
         
-        self.min_aspect_ratio_controls_visible = False
-        self.MinAspectRatio_label.grid_remove()
-        self.MinAspectRatio_value.grid_remove()
-        self.MinAspectRatio_slider.grid_remove()
-        self.filter_aspectratio_button.grid_remove()
+        #self.min_aspect_ratio_controls_visible = False
+        #self.MinAspectRatio_label.grid_remove()
+        #self.MinAspectRatio_value.grid_remove()
+        #self.MinAspectRatio_slider.grid_remove()
+        #self.filter_aspectratio_button.grid_remove()
         
         self.initialize_expanded_window()
         self.plot_histogram(which='initialise')
@@ -660,34 +660,6 @@ class SingleImageProcessing:
                                      command=self.reset_resampling_clicked, width=4, height=1, font=("Segoe UI", 11, "bold"))
 
         self.return_arrow_button.grid(row=21, column=0, sticky="w", pady=(0, 10), padx=(210, 0))
-
-        #######################################################################
-        # Extract particles button
-        #######################################################################
-        
-        style.configure('TButton',
-                        background='#2c3e50',
-                        foreground='white',
-                        font=('Segoe UI', 10),
-                        padding=6,
-                        borderwidth=0.5,
-                        relief='solid')
-        
-        # Title for the background processing section
-        self.extraction_frame_title = tk.Label(self.left_frame,
-                                         text="Particles extraction:",
-                                         bg="#2c3e50",
-                                         fg="white",
-                                         justify="left",
-                                         font=("Segoe UI", 12))
-        self.extraction_frame_title.grid(row=22, column=0, columnspan=2, padx=5, pady=(0, 5), sticky="w")
-        
-        self.extract_particles_button = ttk.Button(self.left_frame,
-                                 text="Extract particles",
-                                 command=self.apply_extract_particles,
-                                 style='TButton',
-                                 width=28)  
-        self.extract_particles_button.grid(row=23, column=0, columnspan=2, sticky="ew", pady=(0, 15), padx=(10, 0))
         
         #######################################################################
         ##### Histogram Plot
@@ -801,208 +773,74 @@ class SingleImageProcessing:
         # Configure row and column weights for dynamic resizing
         self.right_frame.grid_rowconfigure(1, weight=3)
         self.right_frame.grid_columnconfigure(0, weight=0)
-        
-        #######################################################################
-        # Filtering section
-        #######################################################################
-        
-        self.filtering_title = tk.Label(self.extraction_frame,
-                                         text="Particles filtration:",
-                                         bg="#2c3e50",
-                                         fg="white",
-                                         wraplength=230,
-                                         justify="left",
-                                         font=("Segoe UI", 12))
-        self.filtering_title.grid(row=2, column=0, columnspan=2, padx=5, pady=(0, 5), sticky="w")
-        
-        #######################################################################
-        ### Adjust intensity of extracted particles section
-        #######################################################################
-    
-        self.MaxInt = tk.DoubleVar(value=0.50)
-        
-            #######################################################################
-            ##### Drop-down button
-            #######################################################################
-        
-        self.dropdown_max_intensity_button = tk.Button(self.extraction_frame,
-                                               text="› Filter particles on intensity",
-                                               command=self.toggle_max_intensity_controls, 
-                                               bg="#3A506B", fg="white", font=("Segoe UI", 11, "bold"),
-                                               borderwidth=0, relief="flat",
-                                               activebackground="#2C3E50", activeforeground="white",
-                                               padx=10, pady=5, anchor="w", width=28)
-        self.dropdown_max_intensity_button.grid(row=3, column=0, columnspan=1, sticky="ew", padx=(5, 15), pady=(0, 5))
-        
-            #######################################################################
-            ##### Max intensity label
-            #######################################################################
-        
-        self.MaxInt_label = tk.Label(self.extraction_frame,
-                                              text="Fraction of the max intensity:",
-                                              bg="#2c3e50",
-                                              fg="white",
-                                              font=("Segoe UI", 11),
-                                              justify="left",
-                                              wraplength=150)
-        self.MaxInt_label.grid(row=4, column=0, sticky="w", padx=10, pady=(5, 0))
-        
-        maxint_value = self.MaxInt.get()
-        formatted_maxint = "{:.2f}".format(maxint_value)
-        
-        self.MaxInt_value = tk.Label(self.extraction_frame,
-                                                    text=formatted_maxint,
-                                                    bg="#2c3e50",
-                                                    fg="#388E3C",
-                                                    font=("Segoe UI", 11, "bold"))
-        self.MaxInt_value.grid(row=4, column=0, sticky="e", padx=(10,20), pady=(5, 0))
-        
-            #######################################################################
-            ##### Max intensity slider
-            #######################################################################
-            
-        style.configure("TScale",
-                        background="#1C2833",
-                        troughcolor="#34495e",
-                        sliderlength=25,
-                        sliderrelief="flat",
-                        troughrelief="flat",
-                        sliderthickness=12,
-                        relief="flat",
-                        borderwidth=0)
-        style.map("TScale",
-                  background=[("active", "#388E3C")],
-                  sliderrelief=[("active", "flat")])
-            
-        self.MaxInt_slider = ttk.Scale(self.extraction_frame,
-                                                from_=0, to=1,
-                                                orient="horizontal",
-                                                variable=self.MaxInt,
-                                                style="TScale",
-                                                command=self.update_MaxInt)         
-        self.MaxInt_slider.grid(row=5, column=0, columnspan=1, sticky="ew", padx=(10,20), pady=(0, 10))
 
-            #######################################################################
-            ##### Apply filter on intensity button
-            #######################################################################
-        
-        self.filter_intensity_button = ttk.Button(self.extraction_frame,
-                                 text="Apply intensity filter",
-                                 command=self.apply_intensity_filter, 
-                                 style='TButton')
-        self.filter_intensity_button.grid(row=6, column=0, columnspan=2, sticky="ew", pady=(0, 10), padx=(10, 20))
-        
         #######################################################################
-        ### Filter based on size of extracted particles section
+        # Extract particles button
         #######################################################################
-    
-        self.MinSize = tk.DoubleVar(value=20)
-        
-            #######################################################################
-            ##### Drop-down button
-            #######################################################################
-        
-        self.dropdown_min_size_button = tk.Button(self.extraction_frame,
-                                               text="› Filter particles on size",
-                                               command=self.toggle_min_size_controls, 
-                                               bg="#3A506B", fg="white", font=("Segoe UI", 11, "bold"),
-                                               borderwidth=0, relief="flat",
-                                               activebackground="#2C3E50", activeforeground="white",
-                                               padx=10, pady=5, anchor="w", width=28)
-        self.dropdown_min_size_button.grid(row=7, column=0, columnspan=1, sticky="ew", padx=(5, 15), pady=(0, 5))
-        
-            #######################################################################
-            ##### Min size label
-            #######################################################################
-        
-        self.MinSize_label = tk.Label(self.extraction_frame,
-                                              text="Minimum area (pixels):",
+
+        style.configure('Extraction.TButton',
+                        background='#2c3e50',
+                        foreground='white',
+                        font=('Segoe UI', 12),
+                        padding=6,
+                        relief='solid'
+                        )
+
+        style.map('Extraction.TButton',
+                  background=[('active', '#FFBC42')],
+                  relief=[('pressed', 'sunken'), ('!pressed', 'raised')])
+
+        # Title for the background processing section
+        self.extraction_frame_title = tk.Label(self.extraction_frame,
+                                               text="Particles extraction:",
+                                               bg="#2c3e50",
+                                               fg="white",
+                                               justify="left",
+                                               font=("Segoe UI", 12))
+        self.extraction_frame_title.grid(row=1, column=0, columnspan=1, padx=5, pady=(0, 5), sticky="w")
+
+        # Particle pixel erosion option
+        self.erosion_value = tk.DoubleVar(value=0)
+        self.erosion_label = tk.Label(self.extraction_frame,
+                                              text="Contour erosion (pixels):",
                                               bg="#2c3e50",
                                               fg="white",
                                               font=("Segoe UI", 11),
                                               wraplength=200)
-        self.MinSize_label.grid(row=8, column=0, sticky="w", padx=10, pady=(5, 0))
-        
-        self.MinSize_entry = tk.Entry(self.extraction_frame,
-                                      textvariable=self.MinSize,
+        self.erosion_label.grid(row=2, column=0, sticky="w", padx=10, pady=(5, 0))
+
+        self.erosion_entry = tk.Entry(self.extraction_frame,
+                                      textvariable=self.erosion_value,
                                       bg="#243342",
                                       fg="white",
                                       width=6,
                                       font=("Segoe UI", 11),
                                       justify='center')
-        self.MinSize_entry.grid(row=8, column=0, sticky="e", padx=(5, 20), pady=5)
-        
-            #######################################################################
-            ##### Apply filter on size button
-            #######################################################################
-        
-        self.filter_size_button = ttk.Button(self.extraction_frame,
-                                 text="Apply size filter",
-                                 command=self.apply_size_filter, 
-                                 style='TButton')
-        self.filter_size_button.grid(row=9, column=0, columnspan=2, sticky="ew", pady=(0, 10), padx=(10, 20))
-        
+        self.erosion_entry.grid(row=2, column=0, sticky="e", padx=(5, 20), pady=5)
+
+        self.extract_particles_button = ttk.Button(self.extraction_frame,
+                                                   text="Extract particles",
+                                                   command=self.apply_extract_particles,
+                                                   style='Extraction.TButton',
+                                                   width=28)
+        self.extract_particles_button.grid(row=3, column=0, columnspan=1, sticky="ew", pady=(0, 15), padx=(8, 15))
+
         #######################################################################
-        ### Filter on aspect ratio section
+        # Filtering section
         #######################################################################
-    
-        self.MinAspectRatio = tk.DoubleVar(value=0.20)
-        
-            #######################################################################
-            ##### drop-down button
-            #######################################################################
-        
-        self.dropdown_min_aspectratio_button = tk.Button(self.extraction_frame,
-                                               text="› Filter particles on aspect ratio",
-                                               command=self.toggle_min_aspectratio_controls, 
-                                               bg="#3A506B", fg="white", font=("Segoe UI", 11, "bold"),
+
+        self.create_filtering_popup()
+
+        self.filtering_info_button = tk.Button(self.extraction_frame,
+                                               text="‹ Particle filtering options",
+                                               bg="#3A506B", fg="white",
+                                               font=("Segoe UI", 11, "bold"),
                                                borderwidth=0, relief="flat",
                                                activebackground="#2C3E50", activeforeground="white",
                                                padx=10, pady=5, anchor="w", width=28)
-        self.dropdown_min_aspectratio_button.grid(row=10, column=0, columnspan=1, sticky="ew", padx=(5, 15), pady=(0, 5))
-        
-            #######################################################################
-            ##### Min aspect ratio label
-            #######################################################################
-        
-        self.MinAspectRatio_label = tk.Label(self.extraction_frame,
-                                              text="Minimum aspect ratio:",
-                                              bg="#2c3e50",
-                                              fg="white",
-                                              font=("Segoe UI", 11),
-                                              wraplength=150)
-        self.MinAspectRatio_label.grid(row=11, column=0, sticky="w", padx=10, pady=(5, 0))
-        
-        formatted_minaspectratio = "{:.2f}".format(self.MinAspectRatio.get())
-        
-        self.MinAspectRatio_value = tk.Label(self.extraction_frame,
-                                                    text=formatted_minaspectratio,
-                                                    bg="#2c3e50",
-                                                    fg="#388E3C",
-                                                    font=("Segoe UI", 11, "bold"))
-        self.MinAspectRatio_value.grid(row=11, column=0, sticky="e", padx=(10,20), pady=(5, 0))
-        
-            #######################################################################
-            ##### Min aspect ratio slider
-            #######################################################################
-            
-        self.MinAspectRatio_slider = ttk.Scale(self.extraction_frame,
-                                                from_=0, to=1,
-                                                orient="horizontal",
-                                                variable=self.MinAspectRatio,
-                                                style="TScale",
-                                                command=self.update_MinAspectRatio)         
-        self.MinAspectRatio_slider.grid(row=12, column=0, columnspan=1, sticky="ew", padx=(10,20), pady=(0, 10))
+        self.filtering_info_button.grid(row=4, column=0, columnspan=2, padx=(5,25), pady=(0, 10), sticky="ew")
 
-            #######################################################################
-            ##### Apply filter on intensity button
-            #######################################################################
-        
-        self.filter_aspectratio_button = ttk.Button(self.extraction_frame,
-                                 text="Apply aspect ratio filter",
-                                 command=self.apply_aspect_ratio_filter, 
-                                 style='TButton')
-        self.filter_aspectratio_button.grid(row=13, column=0, columnspan=2, sticky="ew", pady=(0, 10), padx=(10, 20))
+        self.filtering_info_button.bind("<Enter>", self.show_filtering_popup)
         
         #######################################################################
         # Statistics computation section
@@ -1020,19 +858,7 @@ class SingleImageProcessing:
         #######################################################################
         # Compute image statistics button
         #######################################################################
-        
-        style.configure('Extraction.TButton',
-                        background='#2c3e50',
-                        foreground='white',
-                        font=('Segoe UI', 12),
-                        padding=6,
-                        relief='solid'
-                        )
-        
-        style.map('Extraction.TButton',
-                  background=[('active', '#FFBC42')],
-                  relief=[('pressed', 'sunken'), ('!pressed', 'raised')])
-        
+
         self.compute_statistics_button = ttk.Button(self.extraction_frame,
                                  text="Compute image statistics",
                                  command=self.apply_image_statistics_computation,
@@ -1747,7 +1573,7 @@ class SingleImageProcessing:
             if IMG.selected_image is None:
                 self.log_message('error', f"Selected image is {IMG.selected_image}")
 
-            erosion_value = 2
+            erosion_value = self.erosion_value.get()
             extract_particles(self, IMG.image_name, erosion_value)
             
             if IMG.stats is None:
@@ -3144,7 +2970,112 @@ class SingleImageProcessing:
 
         self.start_point = None
         self.end_point = None
-        
+
+    ###########################################################################
+    ########################### Filtering functions ###########################
+    ###########################################################################
+
+    def create_filtering_popup(self):
+        self.filtering_popup = tk.Toplevel(self.extraction_frame)
+        self.filtering_popup.withdraw()
+        self.filtering_popup.overrideredirect(True)
+        self.filtering_popup.configure(bg="#3A506B")
+
+        frame = tk.Frame(self.filtering_popup, bg="#3A506B")
+        frame.pack(padx=10, pady=10)
+
+        ### Intensity filter
+        tk.Label(frame, text="Fraction of the max intensity:",
+                 bg="#3A506B", fg="white", font=("Segoe UI", 11),
+                 wraplength=150).grid(row=0, column=0, sticky="w", pady=(0, 2))
+
+        self.MaxInt = tk.DoubleVar(value=0.50)
+        tk.Label(frame, textvariable=tk.StringVar(value=f"{self.MaxInt.get():.2f}"),
+                 bg="#3A506B", fg="#388E3C", font=("Segoe UI", 11, "bold")
+                 ).grid(row=0, column=1, sticky="e")
+
+        self.MaxInt_slider = ttk.Scale(frame, from_=0, to=1,
+                                       orient="horizontal", variable=self.MaxInt,
+                                       style="TScale", command=self.update_MaxInt)
+        self.MaxInt_slider.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(0, 5))
+
+        ttk.Button(frame, text="Apply intensity filter",
+                   command=self.apply_intensity_filter,
+                   style='TButton').grid(row=2, column=0, columnspan=2, sticky="ew", pady=(0, 10))
+
+        ### Size filter
+        tk.Label(frame, text="Minimum area (pixels):",
+                 bg="#3A506B", fg="white", font=("Segoe UI", 11)
+                 ).grid(row=3, column=0, sticky="w", pady=(0, 2))
+
+        self.MinSize = tk.DoubleVar(value=20)
+        tk.Entry(frame, textvariable=self.MinSize,
+                 bg="#243342", fg="white", width=6,
+                 font=("Segoe UI", 11), justify='center'
+                 ).grid(row=3, column=1, sticky="e", pady=(0, 5))
+
+        ttk.Button(frame, text="Apply size filter",
+                   command=self.apply_size_filter,
+                   style='TButton').grid(row=4, column=0, columnspan=2, sticky="ew", pady=(0, 10))
+
+        ### Aspect ratio filter
+        tk.Label(frame, text="Minimum aspect ratio:",
+                 bg="#3A506B", fg="white", font=("Segoe UI", 11)
+                 ).grid(row=5, column=0, sticky="w", pady=(0, 2))
+
+        self.MinAspectRatio = tk.DoubleVar(value=0.20)
+        tk.Label(frame, textvariable=tk.StringVar(value=f"{self.MinAspectRatio.get():.2f}"),
+                 bg="#3A506B", fg="#388E3C", font=("Segoe UI", 11, "bold")
+                 ).grid(row=5, column=1, sticky="e")
+
+        self.MinAspectRatio_slider = ttk.Scale(frame, from_=0, to=1,
+                                               orient="horizontal", variable=self.MinAspectRatio,
+                                               style="TScale", command=self.update_MinAspectRatio)
+        self.MinAspectRatio_slider.grid(row=6, column=0, columnspan=2, sticky="ew", pady=(0, 5))
+
+        ttk.Button(frame, text="Apply aspect ratio filter",
+                   command=self.apply_aspect_ratio_filter,
+                   style='TButton').grid(row=7, column=0, columnspan=2, sticky="ew", pady=(0, 0))
+
+        self.filtering_popup.bind_all("<Motion>", self.track_mouse_outside_popup)
+
+    def track_mouse_outside_popup(self, event):
+        if self.filtering_popup.winfo_ismapped():
+            x, y = event.x_root, event.y_root
+
+            px1 = self.filtering_popup.winfo_rootx()
+            py1 = self.filtering_popup.winfo_rooty()
+            px2 = px1 + self.filtering_popup.winfo_width()
+            py2 = py1 + self.filtering_popup.winfo_height()
+
+            bx1 = self.filtering_info_button.winfo_rootx()
+            by1 = self.filtering_info_button.winfo_rooty()
+            bx2 = bx1 + self.filtering_info_button.winfo_width()
+            by2 = by1 + self.filtering_info_button.winfo_height()
+
+            outside_popup = not (px1 <= x <= px2 and py1 <= y <= py2)
+            outside_button = not (bx1 <= x <= bx2 and by1 <= y <= by2)
+
+            if outside_popup and outside_button:
+                self.hide_filtering_popup()
+
+    def show_filtering_popup(self, event=None):
+        if not hasattr(self, 'filtering_popup') or not self.filtering_popup.winfo_exists():
+            self.create_filtering_popup()
+
+        # Position popup left of the button
+        x = self.filtering_info_button.winfo_rootx() - self.filtering_popup.winfo_reqwidth()
+        y = self.filtering_info_button.winfo_rooty()
+        self.filtering_popup.geometry(f"+{x}+{y}")
+
+        self.filtering_popup.deiconify()  # show popup
+        self.filtering_popup.lift()
+        self.filtering_popup.update_idletasks()
+
+    def hide_filtering_popup(self, event=None):
+        if hasattr(self, 'filtering_popup') and self.filtering_popup.winfo_exists():
+            self.filtering_popup.withdraw()
+
     ###########################################################################
     ############################ Plotting functions ###########################
     ###########################################################################
