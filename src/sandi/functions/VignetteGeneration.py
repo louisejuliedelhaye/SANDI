@@ -172,7 +172,7 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
         if scale_length_um >= 1000:
             scale_text = f"{scale_length_um / 1000:.1f} mm"
         else:
-            scale_text = f"{scale_length_um:.0f} µm"
+            scale_text = f"{scale_length_um:.0f} um"
 
     # Characteristics of the scale bar
     bar_height = max(2, height // 100)

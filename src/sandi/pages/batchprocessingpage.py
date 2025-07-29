@@ -608,6 +608,32 @@ class BatchProcessing:
                                         style="TScale",
                                         command=update_erosion)
         self.erosion_slider.grid(row=3, column=0, columnspan=1, sticky="ew", padx=(10,18), pady=(0, 10))
+
+        #######################################################################
+        ##### Particle filling option
+        #######################################################################
+
+        self.filling_enabled  = tk.BooleanVar(value=False)
+        self.filling_label = tk.Label(self.right_frame,
+                                              text="Filling holes inside particles:",
+                                              bg="#2c3e50",
+                                              fg="white",
+                                              font=("Segoe UI", 11),
+                                              wraplength=200)
+        self.filling_label.grid(row=4, column=0, sticky="w", padx=10, pady=(5, 0))
+
+        self.filling_check = tk.Checkbutton(self.right_frame,
+                                            text="Fill holes inside particles",
+                                            variable=self.filling_enabled,
+                                            onvalue=True,
+                                            offvalue=False,
+                                            bg="#2c3e50",
+                                            fg="white",
+                                            font=("Segoe UI", 11),
+                                            selectcolor="#243342",
+                                            activebackground="#2c3e50",
+                                            activeforeground="white")
+        self.filling_check.grid(row=4, column=0, sticky="w", padx=10, pady=5)
         
         #######################################################################
         # Batch processing button
@@ -629,7 +655,7 @@ class BatchProcessing:
                                  text="Process batch",
                                  command=self.apply_batch_processing,
                                  style='Extraction.TButton', width=28) 
-        self.batch_processing_button.grid(row=4, column=0, columnspan=1, sticky="nw", pady=(6, 3), padx=(10, 15))
+        self.batch_processing_button.grid(row=5, column=0, columnspan=1, sticky="nw", pady=(6, 3), padx=(10, 15))
         
         #######################################################################
         # Back to Homepage button
@@ -638,7 +664,7 @@ class BatchProcessing:
         self.back_button = tk.Button(self.right_frame, text="Back to homepage", command=self.go_home,
                                      bg=self.button_color, fg="black", font=("Segoe UI", 12),
                                      borderwidth=1, relief="flat", width=29)
-        self.back_button.grid(row=5, column=0, columnspan=1, sticky="nw", pady=(3, 10), padx=(10, 10))
+        self.back_button.grid(row=6, column=0, columnspan=1, sticky="nw", pady=(3, 10), padx=(10, 10))
         
         self.back_button.bind("<Enter>", self.on_hover_buttons)
         self.back_button.bind("<Leave>", self.on_leave_buttons)
@@ -796,8 +822,9 @@ class BatchProcessing:
             subdiff = round(self.SubDiff.get(), 0)
             new_resolution = round(self.new_resolution.get(), 2)
             erosion_value = round(self.erosion.get(), 0)
+            particle_hole_filling = self.filling_enabled.get()
 
-            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, self.pcam_characteristics.image_height.get(), self.pcam_characteristics.image_width.get(), self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value)
+            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, self.pcam_characteristics.image_height.get(), self.pcam_characteristics.image_width.get(), self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value, particle_hole_filling)
 
         else:
             self.log_message('error', "There is no particle statistics available")

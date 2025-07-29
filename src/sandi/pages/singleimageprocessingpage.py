@@ -818,12 +818,35 @@ class SingleImageProcessing:
                                       justify='center')
         self.erosion_entry.grid(row=2, column=0, sticky="e", padx=(5, 20), pady=5)
 
+        # Particle filling option
+        self.filling_enabled  = tk.BooleanVar(value=False)
+        self.filling_label = tk.Label(self.extraction_frame,
+                                              text="Filling holes inside particles:",
+                                              bg="#2c3e50",
+                                              fg="white",
+                                              font=("Segoe UI", 11),
+                                              wraplength=200)
+        self.filling_label.grid(row=3, column=0, sticky="w", padx=10, pady=(5, 0))
+
+        self.filling_check = tk.Checkbutton(self.extraction_frame,
+                                            text="Fill holes inside particles",
+                                            variable=self.filling_enabled,
+                                            onvalue=True,
+                                            offvalue=False,
+                                            bg="#2c3e50",
+                                            fg="white",
+                                            font=("Segoe UI", 11),
+                                            selectcolor="#243342",
+                                            activebackground="#2c3e50",
+                                            activeforeground="white")
+        self.filling_check.grid(row=3, column=0, sticky="w", padx=10, pady=5)
+
         self.extract_particles_button = ttk.Button(self.extraction_frame,
                                                    text="Extract particles",
                                                    command=self.apply_extract_particles,
                                                    style='Extraction.TButton',
                                                    width=28)
-        self.extract_particles_button.grid(row=3, column=0, columnspan=1, sticky="ew", pady=(0, 15), padx=(8, 15))
+        self.extract_particles_button.grid(row=4, column=0, columnspan=1, sticky="ew", pady=(0, 15), padx=(8, 15))
 
         #######################################################################
         # Filtering section
@@ -838,7 +861,7 @@ class SingleImageProcessing:
                                                borderwidth=0, relief="flat",
                                                activebackground="#2C3E50", activeforeground="white",
                                                padx=10, pady=5, anchor="w", width=28)
-        self.filtering_info_button.grid(row=4, column=0, columnspan=2, padx=(5,25), pady=(0, 10), sticky="ew")
+        self.filtering_info_button.grid(row=5, column=0, columnspan=2, padx=(5,25), pady=(0, 10), sticky="ew")
 
         self.filtering_info_button.bind("<Enter>", self.show_filtering_popup)
         
@@ -1574,7 +1597,8 @@ class SingleImageProcessing:
                 self.log_message('error', f"Selected image is {IMG.selected_image}")
 
             erosion_value = self.erosion_value.get()
-            extract_particles(self, IMG.image_name, erosion_value)
+            particle_hole_filling = self.filling_enabled.get()
+            extract_particles(self, IMG.image_name, erosion_value, particle_hole_filling)
             
             if IMG.stats is None:
                 self.log_message('error', f"An error occurred during the particle extraction. Stats is {IMG.stats}")

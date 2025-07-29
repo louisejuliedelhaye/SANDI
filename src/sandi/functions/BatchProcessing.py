@@ -537,7 +537,7 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
     except Exception as e:
         app_instance.log_message('error', f"Failed to save enhanced image {IMG.image_names[i]}: {e}")
 
-def batch_processing_thread(file_paths, app_instance, denoising_strength, min_histogram_value, max_histogram_value,background_illumination_window_size, image_reconstruction_value, resampling_pixel_size, height, width, depth, canvas, erosion_value):
+def batch_processing_thread(file_paths, app_instance, denoising_strength, min_histogram_value, max_histogram_value,background_illumination_window_size, image_reconstruction_value, resampling_pixel_size, height, width, depth, canvas, erosion_value, particle_hole_filling):
     """
     Defines the process for each batch: creates output dircetory based on user selection, opens a CSV to store mean statistics of each image, starts a loop over ea-very image of the batch that 1. enhances the image, extracts particles and stores statistics in the CSV files. After each image processed, it updates the graphs displayed on the batch processing page.
     
@@ -633,7 +633,7 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
                         continue 
     
                     try:
-                        image_stats_dict = extract_batch_particles(app_instance, file_paths, vignette_file_path, csv_file_path, height, width, depth, erosion_value, i)
+                        image_stats_dict = extract_batch_particles(app_instance, file_paths, vignette_file_path, csv_file_path, height, width, depth, erosion_value, particle_hole_filling, i)
                         writer.writerow(image_stats_dict)
                         IMG.batch_results_df = pd.concat([IMG.batch_results_df, pd.DataFrame([image_stats_dict])], ignore_index=True)
                     except Exception as e:
@@ -1020,11 +1020,11 @@ def save_spiderchart_figure(csv_file_path, df):
         print(f"An unexpected error occurred: {e}")
         raise  
      
-def start_batch_processing(file_paths, app_instance, denoising_strength, min_histogram_value, max_histogram_value,background_illumination_window_size, image_reconstruction_value, resampling_pixel_size,height, width, depth, canvas, erosion_value):
+def start_batch_processing(file_paths, app_instance, denoising_strength, min_histogram_value, max_histogram_value,background_illumination_window_size, image_reconstruction_value, resampling_pixel_size,height, width, depth, canvas, erosion_value, particle_hole_filling):
     """
     Function to start batch processing in a separate thread.
     """  
-    processing_thread = threading.Thread(target=batch_processing_thread, args=(file_paths, app_instance, denoising_strength, min_histogram_value, max_histogram_value,background_illumination_window_size, image_reconstruction_value,resampling_pixel_size, height, width, depth, canvas, erosion_value))
+    processing_thread = threading.Thread(target=batch_processing_thread, args=(file_paths, app_instance, denoising_strength, min_histogram_value, max_histogram_value,background_illumination_window_size, image_reconstruction_value,resampling_pixel_size, height, width, depth, canvas, erosion_value, particle_hole_filling))
     processing_thread.start()                        
             
         
