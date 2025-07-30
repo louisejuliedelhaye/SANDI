@@ -27,7 +27,6 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Correct requirements file
 - [ ] Make sure the user input width, height and depth are correctly adapted
 - [ ] Correct time estimation in log print of batch processing completion
-- [ ] Automatic detection of black/white background for grey background
 
 # To-do list - for future versions
 
