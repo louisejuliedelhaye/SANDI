@@ -178,6 +178,10 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
         # Fractal Dimension 3D
         fractal_dim_3D = np.array([prop.fractal_dimension_3D for prop in stats])
         IMG.mean_fractal_dimension_3D = np.nanmean(fractal_dim_3D)
+
+        # Maximum Feret diameter
+        ferets = np.array([prop.max_feret_diameter for prop in stats])
+        IMG.mean_feret = np.nanmean(ferets)
         
         # Kurtosis
         kurtosiss = np.array([prop.kurtosis for prop in stats if prop.kurtosis is not None])

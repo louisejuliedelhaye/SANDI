@@ -21,7 +21,7 @@ This file lists all the improvements planned for future versions of the software
 - [x] Modify 2D and 3D Fractal Dimension measurements calculations
 - [x] Add kurtosis, skewness and mean pixel intensity inside the particle
 - [ ] Add particle color
-- [ ] Add Feret diameter
+- [x] Add Feret diameter
 
 ## Bug corrections
 - [ ] Correct requirements file
@@ -42,7 +42,7 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Add description of each function when hovering over
 
 ## Bug corrections
-- [ ] Make it available for Linux and Mac
+- [ ] Make it available for Linux and Mac: font adaptation
 
 ## Image processing options
 - [ ] Add region merging option

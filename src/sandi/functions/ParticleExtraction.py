@@ -516,6 +516,7 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             mean_fractal_dimension_3D = np.mean([particle['fractal_dimension_3D'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_major_axis_length = np.mean([particle['major_axis_length_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_minor_axis_length = np.mean([particle['minor_axis_length_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
+            mean_feret = np.mean([particle['max_feret_diameter'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             number_particles = len(IMG.stats[i])
             mean_aspect_ratio = np.mean([particle['aspect_ratio'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_area = np.mean([particle['area_um2'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
@@ -549,6 +550,7 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
                 "Mean Fractal Dimension 3D": mean_fractal_dimension_3D,
                 "Mean Major-Axis-Length (um)": mean_major_axis_length,
                 "Mean Minor-Axis-Length (um)": mean_minor_axis_length,
+                "Mean Feret (um)": mean_feret,
                 "Number of Particles": number_particles,
                 "Mean Area (um²)": mean_area,
                 "Mean Perimeter (um)": mean_perimeter,
