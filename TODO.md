@@ -20,7 +20,7 @@ This file lists all the improvements planned for future versions of the software
 ## Particle measurements
 - [x] Modify 2D and 3D Fractal Dimension measurements calculations
 - [x] Add kurtosis, skewness and mean pixel intensity inside the particle
-- [ ] Add particle color
+- [x] Add particle color
 - [x] Add Feret diameter
 
 ## Bug corrections
