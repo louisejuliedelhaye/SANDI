@@ -34,3 +34,6 @@ There are three ways to install and use SANDI:
 </pre>
 
 If you encounter any problem with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you resolve it.
+
+## About SANDI
+Check out the [full documentation in the Wiki](https://github.com/louisejuliedelhaye/SANDI/wiki)
