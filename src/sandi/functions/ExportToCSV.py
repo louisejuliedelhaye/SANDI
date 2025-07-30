@@ -54,7 +54,11 @@ def save_particles_csv(stats, image_paths, app_instance):
             
             with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
                 
-                fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid", "Max Intensity", "Min Intensity", "Mean Intensity", "Major Axis Length (um)", "Minor Axis Length (um)", "Perimeter (um)", "Volume (ul)", "Euler Number", "Orientation", "Solidity", "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension", "Kurtosis", "Skewness"]
+                fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid",
+                              "Max Intensity", "Min Intensity", "Mean Intensity", "Major Axis Length (um)", "Minor Axis Length (um)",
+                              "Perimeter (um)", "Volume (ul)", "Euler Number", "Orientation", "Solidity", "Form Factor", "Aspect Ratio",
+                              "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension", "Kurtosis", "Skewness",
+                              "Mean RGB Color", "Particle Color"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for i, prop in enumerate(stats):
@@ -84,7 +88,9 @@ def save_particles_csv(stats, image_paths, app_instance):
                         "2D Fractal Dimension": prop.fractal_dimension_2D,
                         "3D Fractal Dimension": prop.fractal_dimension_3D,
                         "Kurtosis": prop.kurtosis,
-                        "Skewness": prop.skewness
+                        "Skewness": prop.skewness,
+                        "Mean RGB Color": prop.mean_RGB_color,
+                        "Particle Color": prop.particle_color
                     }
                     writer.writerow(particle_data)
                 app_instance.log_message('success', 'CSV file containing the detailed particles measurements successfully exported')

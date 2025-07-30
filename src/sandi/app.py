@@ -17,8 +17,8 @@ Description: Main application file for the SANDI software. This file initializes
 import tkinter as tk
 import os
 import sys
-import win32gui
-import win32con
+#import win32gui
+#import win32con
 import ctypes
 from tkinter import ttk
 import importlib.resources

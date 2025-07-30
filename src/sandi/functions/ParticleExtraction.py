@@ -33,6 +33,7 @@ import datetime
 import pandas as pd
 from scipy.ndimage import binary_fill_holes
 from scipy.stats import kurtosis, skew
+import colorsys
 
 ###############################################################################
 # Import local packages
@@ -97,6 +98,44 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
         prop.volume_um3 = (4/3) * np.pi * (prop.equivalent_diameter_um / 2)**3
         prop.volume_ul = prop.volume_um3 * 1e-9
         prop.max_feret_diameter = prop.feret_diameter_max * IMG.pixel_size
+
+        # Get mean color inside particles
+        if IMG.selected_image.ndim == 3:
+            coords = prop.coords
+            scale_row = IMG.selected_image.shape[0] / IMG.img_modified.shape[0]
+            scale_col = IMG.selected_image.shape[1] / IMG.img_modified.shape[1]
+            coords_rescaled = np.zeros_like(coords, dtype=float)
+            coords_rescaled[:, 0] = coords[:, 0] * scale_row
+            coords_rescaled[:, 1] = coords[:, 1] * scale_col
+            coords_rescaled = np.round(coords_rescaled).astype(int)
+            coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_image.shape[0] - 1)
+            coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_image.shape[1] - 1)
+            pixel_values = IMG.selected_image[coords_rescaled[:, 0], coords_rescaled[:, 1], :]
+            prop.mean_RGB_color = np.mean(pixel_values, axis=0)
+
+            r, g, b = prop.mean_RGB_color
+            r_norm, g_norm, b_norm = r / 255, g / 255, b / 255
+            h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
+            h_deg = h * 360
+
+            if v < 0.2:
+                prop.particle_color = 'black'
+            elif s < 0.25 and v > 0.8:
+                prop.particle_color = 'white'
+            elif (h_deg >= 0 and h_deg < 20) or (h_deg > 340 and h_deg <= 360):
+                prop.particle_color = 'red'
+            elif h_deg >= 20 and h_deg < 40:
+                prop.particle_color = 'orange'
+            elif h_deg >= 40 and h_deg < 70:
+                prop.particle_color = 'yellow'
+            elif h_deg >= 70 and h_deg < 160:
+                prop.particle_color = 'green'
+            elif h_deg >= 160 and h_deg < 270:
+                prop.particle_color = 'blue'
+            else:
+                prop.particle_color = 'unknown'
+        else:
+            prop.mean_RGB_color = 'unknown'
 
         if prop.major_axis_length_um > 0:
             prop.aspect_ratio = prop.minor_axis_length_um / prop.major_axis_length_um
