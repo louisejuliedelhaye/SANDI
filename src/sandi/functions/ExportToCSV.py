@@ -232,7 +232,8 @@ def save_batch_particles_csv(stats, image_paths, app_instance, csv_file_path):
                 
                 fieldnames = ["Particle Number","Pixel IDs","Area um2", "Area", "Equivalent spherical diameter (um)", "Centroid", "Max Intensity", "Min Intensity", "Mean Intensity",
                               "Major Axis Length (um)", "Minor Axis Length (um)", "Maximum Feret (um)", "Perimeter (um)", "Volume (ul)", "Euler Number",  "Orientation", "Solidity",
-                              "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension","Mean Intensity", "Kurtosis", "Skewness"]
+                              "Form Factor", "Aspect Ratio", "Sphericity", "Roundness", "Extent", "2D Fractal Dimension", "3D Fractal Dimension","Mean Intensity", "Kurtosis", "Skewness",
+                              "Mean RGB color", "Particle color"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
 
@@ -263,7 +264,9 @@ def save_batch_particles_csv(stats, image_paths, app_instance, csv_file_path):
                         "2D Fractal Dimension": prop.get("fractal_dimension_2D", "N/A"), 
                         "3D Fractal Dimension": prop.get("fractal_dimension_3D", "N/A"),
                         "Kurtosis": prop.get("kurtosis", "N/A"),
-                        "Skewness":prop.get("skewness", "N/A")
+                        "Skewness":prop.get("skewness", "N/A"),
+                        "Mean RGB color": prop.get("mean_RGB_color", "N/A"),
+                        "Particle color": prop.get("particle_color", "N/A"),
                     }
                     writer.writerow(particle_data)
 

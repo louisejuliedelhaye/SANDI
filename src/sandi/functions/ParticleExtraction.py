@@ -361,13 +361,56 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             "fractal_dimension_2D": 2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2)) if prop.perimeter > 0 and prop.area > 0 else None,
             "fractal_dimension_3D": -1.63 * (2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2))) + 4.6 if prop.perimeter > 0 and prop.area > 0 else None,
             "kurtosis": float(kurtosis(prop.intensity_image[prop.image], fisher=True, bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None,
-            "skewness": float(skew(prop.intensity_image[prop.image], bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None
+            "skewness": float(skew(prop.intensity_image[prop.image], bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None,
+            "mean_RGB_color": 'unknown',
+            "particle_color": 'unknown'
         }
 
     # Parallel processing of properties
     with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
         processed_particles = list(executor.map(lambda prop: process_particle(prop, IMG.pixel_sizes[i]), IMG.stats[i]))
-    
+
+    for i in range(len(IMG.selected_images)):
+        if len(IMG.selected_images[i].shape) == 3 and IMG.selected_images[i].shape[2] == 3:
+            for particle in processed_particles:
+                coords = particle['coords']
+                scale_row = IMG.selected_images[i].shape[0] / IMG.img_modified[i].shape[0]
+                scale_col = IMG.selected_images[i].shape[1] / IMG.img_modified[i].shape[1]
+                coords_rescaled = np.zeros_like(coords, dtype=float)
+                coords_rescaled[:, 0] = coords[:, 0] * scale_row
+                coords_rescaled[:, 1] = coords[:, 1] * scale_col
+                coords_rescaled = np.round(coords_rescaled).astype(int)
+                coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_images[i].shape[0] - 1)
+                coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_images[i].shape[1] - 1)
+                pixel_values = IMG.selected_images[i][coords_rescaled[:, 0], coords_rescaled[:, 1], :]
+
+                particle['mean_RGB_color'] = np.mean(pixel_values, axis=0)
+
+                r, g, b = particle['mean_RGB_color']
+                r_norm, g_norm, b_norm = r / 255, g / 255, b / 255
+                h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
+                h_deg = h * 360
+
+                if v < 0.2:
+                    particle['particle_color'] = 'black'
+                elif s < 0.25 and v > 0.8:
+                    particle['particle_color'] = 'white'
+                elif (h_deg >= 0 and h_deg < 20) or (h_deg > 340 and h_deg <= 360):
+                    particle['particle_color'] = 'red'
+                elif h_deg >= 20 and h_deg < 40:
+                    particle['particle_color'] = 'orange'
+                elif h_deg >= 40 and h_deg < 70:
+                    particle['particle_color'] = 'yellow'
+                elif h_deg >= 70 and h_deg < 160:
+                    particle['particle_color'] = 'green'
+                elif h_deg >= 160 and h_deg < 270:
+                    particle['particle_color'] = 'blue'
+                else:
+                    particle['particle_color'] = 'unknown'
+        else:
+            for particle in processed_particles:
+                particle['particle_color'] = 'unknown'
+
     # Remove particles with invalid properties
     volume_threshold = 1e-8 
     IMG.stats[i] = [
