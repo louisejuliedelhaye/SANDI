@@ -178,14 +178,16 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
             scale_text = f"{scale_length_um:.0f} um"
 
     # Characteristics of the scale bar
-    bar_height = max(2, height // 100)
+    bar_height = max(1, height // 200)
     bar_color = (255, 255, 255)  
     text_color = (255, 255, 255)  
     font = cv2.FONT_HERSHEY_SIMPLEX
     if sample_type == "suspended particles":
-        font_scale = max(0.4, width / 800)
+        font_scale = max(0.2, width / 800)
     elif sample_type == "gravel":
         font_scale = 0.2
+    else:
+        font_scale = 0.3
     font_thickness = 1
 
     # Margins
@@ -197,8 +199,12 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
             distance_text_scale = 1
         elif scale_length_um > 50 and scale_length_um <= 100:
             distance_text_scale = 5
-        elif scale_length_um > 100 and scale_length_um <= 300:
-            distance_text_scale = 10
+        elif scale_length_um > 100 and scale_length_um <= 150:
+            distance_text_scale = 6
+        elif scale_length_um > 150 and scale_length_um <= 225:
+            distance_text_scale = 8
+        elif scale_length_um > 225 and scale_length_um <= 300:
+            distance_text_scale = 9
         elif scale_length_um > 300 and scale_length_um <= 500:
             distance_text_scale = 20
         elif scale_length_um > 500:
@@ -352,38 +358,52 @@ def add_scale_bar_batch(image, scale_length_pixels, sample_type, pixelsize):
             image_with_scale = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
         else:
             image_with_scale = image.copy()
-    
-        # Calculate the required size for the scale bar 
+
+        # Default scale bar length is 1/3 of the image width
+        if scale_length_pixels is None:
+            fraction = 1 / 3
+            scale_length_pixels = int(width * fraction)
+
+        # Calculate the required size for the scale bar legend
         if sample_type == "gravel":
-            scale_length_cm = scale_length_pixels * pixelsize
+            scale_length_cm = 1
+            scale_length_pixels = int(scale_length_cm / pixelsize)
             scale_text = f"{scale_length_cm:.0f} cm"
         elif sample_type == "suspended particles":
             scale_length_um = scale_length_pixels * pixelsize
-            scale_text = f"{scale_length_um:.0f} um"
+            if scale_length_um >= 1000:
+                scale_text = f"{scale_length_um / 1000:.1f} mm"
+            else:
+                scale_text = f"{scale_length_um:.0f} um"
+
+        height, width = image_with_scale.shape[:2]
             
         # Characteristics of the scale bar
-        bar_height = int(max(scale_length_pixels/10, 2))   
+        bar_height = max(1, height // 200)
         bar_color = (255, 255, 255)  
         text_color = (255, 255, 255)  
         font = cv2.FONT_HERSHEY_SIMPLEX
         if sample_type == "suspended particles":
-            if scale_length_um <= 50:
-                font_scale = 0.2
-            if scale_length_um > 50:
-                font_scale = 0.4
+            font_scale = max(0.2, width / 800)
         elif sample_type == "gravel":
             font_scale = 0.2
         font_thickness = 1
-        horizontal_margin = 25  
-        vertical_margin = 5 
+
+        # Margins
+        horizontal_margin = int(width * 0.05)
+        vertical_margin = int(height * 0.03)
         
         if sample_type == "suspended particles":
             if scale_length_um <= 50:
                 distance_text_scale = 1
             elif scale_length_um > 50 and scale_length_um <= 100:
                 distance_text_scale = 5
-            elif scale_length_um > 100 and scale_length_um <= 300:
-                distance_text_scale = 10
+            elif scale_length_um > 100 and scale_length_um <= 150:
+                distance_text_scale = 6
+            elif scale_length_um > 150 and scale_length_um <= 225:
+                distance_text_scale = 8
+            elif scale_length_um > 225 and scale_length_um <= 300:
+                distance_text_scale = 9
             elif scale_length_um > 300 and scale_length_um <= 500:
                 distance_text_scale = 20
             elif scale_length_um > 500:
