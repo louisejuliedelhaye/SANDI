@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Updated image canvas in single image processing page to center smaller images.
-* Improved vignettes layout to make it adjust automatically to particle size.
+* Improved vignettes layout to make it adjust automatically to particle size, and to make sure it retains the colors of the originally imported image.
 
 ### Removed
 

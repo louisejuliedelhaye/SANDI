@@ -47,7 +47,10 @@ def generate_vignette(app_instance, sample_type, stats):
             app_instance.log_message('info', "Vignette saving canceled by user.")
         else:
             if IMG.img_original_resampled is not None:
-                original_image = IMG.img_original_resampled
+                original_image = np.array(Image.open(IMG.filename).convert("RGB"))
+                original_image = cv2.cvtColor(original_image, cv2.COLOR_RGB2BGR)
+                target_height, target_width = IMG.img_original_resampled.shape[:2]
+                original_image = cv2.resize(original_image, (target_width, target_height), interpolation=cv2.INTER_CUBIC)
             else:
                 original_image = np.array(Image.open(IMG.filename).convert("RGB"))
                 original_image = cv2.cvtColor(original_image, cv2.COLOR_RGB2BGR)
@@ -254,9 +257,14 @@ def generate_batch_vignettes(app_instance, sample_type, stats, i, vignette_folde
         return
 
     if IMG.img_original_resampled[i] is not None and IMG.img_original_resampled[i].any():
-        original_image = IMG.img_original_resampled[i]
+        if IMG.selected_images[i].shape[2] == 3:
+            original_image = cv2.cvtColor(IMG.selected_images[i], cv2.COLOR_RGB2BGR)
+        else:
+            original_image = np.array(IMG.selected_images[i])
+        target_height, target_width = IMG.img_original_resampled[i].shape[:2]
+        original_image = cv2.resize(original_image, (target_width, target_height), interpolation=cv2.INTER_CUBIC)
     else:
-        original_image = np.array(Image.open(IMG.file_paths[i]))
+        original_image = np.array(IMG.selected_images[i])
 
     black_and_white_image = IMG.img_binary[i]
 
