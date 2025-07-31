@@ -11,8 +11,6 @@ Description: functions for the image import and variables resetting
 # Import packages
 ###############################################################################
 
-#import os
-#import sys
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk 
@@ -21,7 +19,6 @@ import os
 import datetime
 import numpy as np
 from fractions import Fraction
-#import pandas as pd
 import cv2
 
 ###############################################################################
@@ -104,7 +101,7 @@ def show_technical_frame_popup(app_instance, filename):
     popup = tk.Toplevel(app_instance.root)  
     popup.title("Image technical details")
     popup.configure(bg="#2c3e50")
-    popup.geometry("350x340")
+    popup.geometry("350x270")
     
     popup_frame_title = tk.Label(popup, 
                                  text="Enter technical specifications of the selected image:", 
@@ -124,54 +121,20 @@ def show_technical_frame_popup(app_instance, filename):
                                  font=("Segoe UI", 10))
     popup_frame_description.grid(row=2, column=0, columnspan=2, padx=(10, 0), pady=(0, 10), sticky="nw")
     
-    # Height 
-    height_label = tk.Label(popup, 
-                           text="Height of the image (mm):", 
-                           bg="#2c3e50", 
-                           fg="white", 
-                           font=("Segoe UI", 11))
-    height_label.grid(row=3, column=0, sticky="w", padx=(10, 5), pady=6)
-    
-    height_entry = tk.Entry(popup, 
-                            textvariable=app_instance.pcam_characteristics.image_height,
-                            bg="#243342", 
-                            fg="white", 
-                            width=6, 
-                            font=("Segoe UI", 11), 
-                            justify='center')
-    height_entry.grid(row=3, column=1, sticky="e", padx=(5, 5), pady=5)
-
-    # Width 
-    width_label = tk.Label(popup, 
-                           text="Width of the image (mm):", 
-                           bg="#2c3e50", 
-                           fg="white", 
-                           font=("Segoe UI", 11))
-    width_label.grid(row=4, column=0, sticky="w", padx=(10, 5), pady=6)
-    
-    width_entry = tk.Entry(popup, 
-                            textvariable=app_instance.pcam_characteristics.image_width,
-                            bg="#243342", 
-                            fg="white", 
-                            width=6, 
-                            font=("Segoe UI", 11), 
-                            justify='center')
-    width_entry.grid(row=4, column=1, sticky="e", padx=(5, 5), pady=5)
-    
     # Depth 
-    depth_label = tk.Label(popup, 
-                           text="Depth of field (mm):", 
-                           bg="#2c3e50", 
-                           fg="white", 
+    depth_label = tk.Label(popup,
+                           text="Depth of field (mm):",
+                           bg="#2c3e50",
+                           fg="white",
                            font=("Segoe UI", 11))
     depth_label.grid(row=5, column=0, sticky="w", padx=(10, 5), pady=6)
     
-    depth_entry = tk.Entry(popup, 
+    depth_entry = tk.Entry(popup,
                             textvariable=app_instance.pcam_characteristics.image_depth,
-                            bg="#243342", 
-                            fg="white", 
-                            width=6, 
-                            font=("Segoe UI", 11), 
+                            bg="#243342",
+                            fg="white",
+                            width=6,
+                            font=("Segoe UI", 11),
                             justify='center')
     depth_entry.grid(row=5, column=1, sticky="e", padx=(5, 5), pady=5)
     
@@ -194,7 +157,7 @@ def show_technical_frame_popup(app_instance, filename):
     
     # OK
     ok_button = tk.Button(popup, text="OK", 
-                          command=lambda: import_image(app_instance, filename, height_entry.get(), width_entry.get(), depth_entry.get(), pixel_size_entry.get(), popup),              
+                          command=lambda: import_image(app_instance, filename, depth_entry.get(), pixel_size_entry.get(), popup),
                           width=10, 
                           font=("Segoe UI", 11), 
                           justify='left')
@@ -209,14 +172,12 @@ def show_technical_frame_popup(app_instance, filename):
                           justify='right')
     cancel_button.grid(row=7, column=1, padx=(5,40), pady=20, sticky="w")
     
-def import_image(app_instance, filename, height, width, depth, pixelsize, popup):
+def import_image(app_instance, filename, depth, pixelsize, popup):
     """
     Once the user clicks on the "ok" button of the popup, this function extracts all metadata from the image to be imported, and reclaculates the pixel size based on the user input height.
     """
     
     try:
-        IMG.image_height = float(app_instance.pcam_characteristics.image_height.get())
-        IMG.image_width = float(app_instance.pcam_characteristics.image_width.get())
         IMG.image_depth = float(app_instance.pcam_characteristics.image_depth.get())
         IMG.pixel_size = float(app_instance.pcam_characteristics.pixel_size.get())
         
@@ -227,6 +188,8 @@ def import_image(app_instance, filename, height, width, depth, pixelsize, popup)
             IMG.camera = IMG.exif_data.get('Model', None)
             IMG.height = IMG.exif_data.get('ExifImageHeight', None)
             IMG.width = IMG.exif_data.get('ExifImageWidth', None)
+            IMG.image_width = IMG.pixel_size * IMG.width
+            IMG.image_height = IMG.pixel_size * IMG.height
             IMG.lens = IMG.exif_data.get('LensModel', None)
             IMG.iso = IMG.exif_data.get('ISOSpeedRatings', None)
             IMG.exposure = Fraction(IMG.exif_data.get('ExposureTime', None)).limit_denominator() if IMG.exif_data.get('ExposureTime', None) else None
@@ -253,10 +216,9 @@ def import_image(app_instance, filename, height, width, depth, pixelsize, popup)
             app_instance.update_new_resolution()
             app_instance.log_message('start', "New processing started.")
             app_instance.log_message('success', f"Image '{IMG.filename}' successfully imported")
-            app_instance.log_message('info', f"Image height: {app_instance.pcam_characteristics.image_height.get()} mm, width: {app_instance.pcam_characteristics.image_width.get()} mm, depth: {app_instance.pcam_characteristics.image_depth.get()} mm and pixel size: {app_instance.pcam_characteristics.pixel_size.get()} µm")
+            app_instance.log_message('info', f"Image depth: {app_instance.pcam_characteristics.image_depth.get()} mm and pixel size: {app_instance.pcam_characteristics.pixel_size.get()} µm")
             app_instance.log_message('info', f"Image name is: {IMG.image_name}")
             app_instance.log_message('info', f"Image date is: {IMG.date_time}")
-            app_instance.log_message('info', f"Calculated pixel size is: {IMG.pixel_size} µm")
             app_instance.log_message('info', f"Image was shot using {IMG.camera} equipped with {IMG.lens}, at aperture of f/{IMG.aperture}, focal length of {IMG.focal_length} mm, exposure time of {IMG.exposure} s and ISO {IMG.iso}. Detected background is {IMG.image_background}")
         
             if IMG.selected_image is not None:

@@ -13,8 +13,6 @@ Description: layout of the homepage
 
 import tkinter as tk
 from tkinter import ttk
-#import os
-#import sys
 from PIL import Image, ImageTk
 import importlib.resources
 
@@ -36,7 +34,6 @@ class Homepage():
         
         self.bg_photo = None
 
-        #self.set_background_image("images/homepage_background.png")
         self.background_res = importlib.resources.files("sandi.images").joinpath("homepage_background.png")
         with importlib.resources.as_file(self.background_res) as res_file:
             self.set_background_image(res_file)
@@ -49,8 +46,6 @@ class Homepage():
         """
         Adapt background image to window size.
         """
-        #self.set_background_image("images/homepage_background.png")
-
         with importlib.resources.as_file(self.background_res) as res_file:
             self.set_background_image(res_file)
 
@@ -58,13 +53,6 @@ class Homepage():
         """
         Displays the background image.
         """
-        #if getattr(sys, 'frozen', False):
-            #base_path = sys._MEIPASS
-        #else:
-            #base_path = os.path.abspath(".")
-
-        #full_image_path = os.path.join(base_path, image_path)
-
         if self.homepage_frame.winfo_width() > 1 and self.homepage_frame.winfo_height() > 1:
             self.original_bg_image = Image.open(image_path)
             resized_image = self.original_bg_image.resize(
@@ -160,7 +148,7 @@ class Homepage():
         space.grid(row=5, column=0, padx=80, pady=(0, 20), sticky="sw")
     
         # Copyrights
-        copyrights = tk.Label(self.homepage_frame, text="SANDI v0.1.5+ 2025\nRoyal Belgian Institute of Natural Sciences | Louise Delhaye\nArtwork by Sophie Delhaye",
+        copyrights = tk.Label(self.homepage_frame, text="SANDI v0.1.6 2025\nRoyal Belgian Institute of Natural Sciences | Louise Delhaye\nArtwork by Sophie Delhaye",
                                      bg="#2c3e50", fg="#0f1620", font=("Segoe UI", 8), wraplength=440)
         copyrights.grid(row=6, column=0, padx=140, pady=(20, 10), sticky="sw")
     

@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adjusted the requirements file.
 
 ### Removed
+* Removed possibility to add image height and width in um manually, but is instead automatically calculated from the pixel size.
 
 ## [0.1.5] - 2025-06-24
 

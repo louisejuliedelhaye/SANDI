@@ -823,8 +823,10 @@ class BatchProcessing:
             new_resolution = round(self.new_resolution.get(), 2)
             erosion_value = round(self.erosion.get(), 0)
             particle_hole_filling = self.filling_enabled.get()
+            image_width = IMG.image_widths[0]
+            image_height = IMG.image_heights[0]
 
-            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, self.pcam_characteristics.image_height.get(), self.pcam_characteristics.image_width.get(), self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value, particle_hole_filling)
+            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, image_height, image_width, self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value, particle_hole_filling)
 
         else:
             self.log_message('error', "There is no particle statistics available")

@@ -112,6 +112,8 @@ def open_multiple_files(app_instance):
     IMG.cameras = []
     IMG.heights = []
     IMG.widths = []
+    IMG.image_widths = []
+    IMG.image_heights = []
     IMG.lenses = []
     IMG.isos = []
     IMG.exposures = []
@@ -189,7 +191,7 @@ def show_technical_frame_popup(app_instance, file_paths):
     popup = tk.Toplevel(app_instance.root)  
     popup.title("Image technical details")
     popup.configure(bg="#2c3e50")
-    popup.geometry("350x340")
+    popup.geometry("350x270")
     
     popup_frame_title = tk.Label(popup, 
                                  text="Enter technical specifications of the selected image:", 
@@ -208,41 +210,7 @@ def show_technical_frame_popup(app_instance, file_paths):
                                  justify="left", 
                                  font=("Segoe UI", 10))
     popup_frame_description.grid(row=2, column=0, columnspan=2, padx=(10, 0), pady=(0, 10), sticky="nw")
-    
-    # Height 
-    height_label = tk.Label(popup, 
-                           text="Height of the image (mm):", 
-                           bg="#2c3e50", 
-                           fg="white", 
-                           font=("Segoe UI", 11))
-    height_label.grid(row=3, column=0, sticky="w", padx=(10, 5), pady=6)
-    
-    height_entry = tk.Entry(popup, 
-                            textvariable=app_instance.pcam_characteristics.image_height,
-                            bg="#243342", 
-                            fg="white", 
-                            width=6, 
-                            font=("Segoe UI", 11), 
-                            justify='center')
-    height_entry.grid(row=3, column=1, sticky="e", padx=(5, 5), pady=5)
 
-    # Width 
-    width_label = tk.Label(popup, 
-                           text="Width of the image (mm):", 
-                           bg="#2c3e50", 
-                           fg="white", 
-                           font=("Segoe UI", 11))
-    width_label.grid(row=4, column=0, sticky="w", padx=(10, 5), pady=6)
-    
-    width_entry = tk.Entry(popup, 
-                            textvariable=app_instance.pcam_characteristics.image_width,
-                            bg="#243342", 
-                            fg="white", 
-                            width=6, 
-                            font=("Segoe UI", 11), 
-                            justify='center')
-    width_entry.grid(row=4, column=1, sticky="e", padx=(5, 5), pady=5)
-    
     # Depth 
     depth_label = tk.Label(popup, 
                            text="Depth of field (mm):", 
@@ -279,7 +247,7 @@ def show_technical_frame_popup(app_instance, file_paths):
     
     # OK
     ok_button = tk.Button(popup, text="OK", 
-                          command=lambda: import_all_images(app_instance, file_paths, height_entry.get(), width_entry.get(), depth_entry.get(), pixel_size_entry.get(), popup),              
+                          command=lambda: import_all_images(app_instance, file_paths, depth_entry.get(), pixel_size_entry.get(), popup),
                           width=10, 
                           font=("Segoe UI", 11), 
                           justify='left')
@@ -294,15 +262,15 @@ def show_technical_frame_popup(app_instance, file_paths):
                           justify='right')
     cancel_button.grid(row=7, column=1, padx=(5,40), pady=20, sticky="w")
  
-def import_all_images(app_instance, file_paths, height, width, depth, pixelsize, popup):
+def import_all_images(app_instance, file_paths, depth, pixelsize, popup):
     """
     Once the user clicks on the "ok" button of the popup, this function extracts all metadata from the image to be imported, and reclaculates the pixel size based on the user input height.
     """
     try:
         IMG.pixel_sizes = []
         
-        IMG.image_height = float(app_instance.pcam_characteristics.image_height.get())
-        IMG.image_width = float(app_instance.pcam_characteristics.image_width.get())
+        #IMG.image_height = float(app_instance.pcam_characteristics.image_height.get())
+        #IMG.image_width = float(app_instance.pcam_characteristics.image_width.get())
         IMG.image_depth = float(app_instance.pcam_characteristics.image_depth.get())
         IMG.pixel_size = float(app_instance.pcam_characteristics.pixel_size.get())
         app_instance.progress_var.set(0)
@@ -322,6 +290,7 @@ def import_all_images(app_instance, file_paths, height, width, depth, pixelsize,
             ('exposures', IMG.exposures),
             ('isos', IMG.isos),
             ('height', IMG.heights),
+            ('width', IMG.widths)
         ]
         
         for name, attr_list in required_attrs:
@@ -340,8 +309,12 @@ def import_all_images(app_instance, file_paths, height, width, depth, pixelsize,
             focal_length = IMG.focal_lengths[i]
             exposure = IMG.exposures[i]
             iso = IMG.isos[i]
-            pixel_size = IMG.pixel_size #(IMG.image_height / IMG.heights[i]) * 1000  
+            pixel_size = IMG.pixel_size #(IMG.image_height / IMG.heights[i]) * 1000
             IMG.pixel_sizes.append(pixel_size)
+            image_width = IMG.widths[i] * pixel_size
+            IMG.image_widths.append(image_width)
+            image_height = IMG.heights[i] * pixel_size
+            IMG.image_heights.append(image_height)
 
             app_instance.log_message('new', f"Image name: {image_name}")
             app_instance.log_message('info', f"Image date: {date_time}")
@@ -351,7 +324,7 @@ def import_all_images(app_instance, file_paths, height, width, depth, pixelsize,
         app_instance.update_new_resolution()
             
         app_instance.log_message('success', f"{len(file_paths)} images successfully imported")                   
-        app_instance.log_message('info', f"Image height: {app_instance.pcam_characteristics.image_height.get()} mm, width: {app_instance.pcam_characteristics.image_width.get()} mm, depth: {app_instance.pcam_characteristics.image_depth.get()} mm and pixel size: {app_instance.pcam_characteristics.pixel_size.get()} µm")
+        app_instance.log_message('info', f"Image depth: {app_instance.pcam_characteristics.image_depth.get()} mm and pixel size: {app_instance.pcam_characteristics.pixel_size.get()} µm")
 
         popup.destroy()
 
@@ -371,6 +344,8 @@ def reset_all_batch():
     IMG.image_paths = []
     IMG.pixel_size = 0.0
     IMG.pixel_sizes = []
+    IMG.image_heights = []
+    IMG.image_widths = []
     IMG.exif_data = []
     IMG.focal_length = []
     IMG.camera = []
