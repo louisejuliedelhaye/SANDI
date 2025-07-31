@@ -26,7 +26,7 @@ This file lists all the improvements planned for future versions of the software
 ## Bug corrections
 - [x] Correct requirements file
 - [ ] Make sure the user input width, height and depth are correctly adapted
-- [ ] Correct time estimation in log print of batch processing completion
+- [x] Correct time estimation in log print of batch processing completion
 
 # To-do list - for future versions
 
