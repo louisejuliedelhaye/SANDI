@@ -370,19 +370,19 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
     with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
         processed_particles = list(executor.map(lambda prop: process_particle(prop, IMG.pixel_sizes[i]), IMG.stats[i]))
 
-    for i in range(len(IMG.selected_images)):
-        if len(IMG.selected_images[i].shape) == 3 and IMG.selected_images[i].shape[2] == 3:
+    for i in range(len(IMG.selected_image)):
+        if len(IMG.selected_image[i].shape) == 3 and IMG.selected_image[i].shape[2] == 3:
             for particle in processed_particles:
                 coords = particle['coords']
-                scale_row = IMG.selected_images[i].shape[0] / IMG.img_modified[i].shape[0]
-                scale_col = IMG.selected_images[i].shape[1] / IMG.img_modified[i].shape[1]
+                scale_row = IMG.selected_image[i].shape[0] / IMG.img_modified[i].shape[0]
+                scale_col = IMG.selected_image[i].shape[1] / IMG.img_modified[i].shape[1]
                 coords_rescaled = np.zeros_like(coords, dtype=float)
                 coords_rescaled[:, 0] = coords[:, 0] * scale_row
                 coords_rescaled[:, 1] = coords[:, 1] * scale_col
                 coords_rescaled = np.round(coords_rescaled).astype(int)
-                coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_images[i].shape[0] - 1)
-                coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_images[i].shape[1] - 1)
-                pixel_values = IMG.selected_images[i][coords_rescaled[:, 0], coords_rescaled[:, 1], :]
+                coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_image[i].shape[0] - 1)
+                coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_image[i].shape[1] - 1)
+                pixel_values = IMG.selected_image[i][coords_rescaled[:, 0], coords_rescaled[:, 1], :]
 
                 particle['mean_RGB_color'] = np.mean(pixel_values, axis=0)
 

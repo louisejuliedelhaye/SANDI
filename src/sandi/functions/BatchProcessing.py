@@ -690,9 +690,9 @@ def batch_processing_thread(file_paths, app_instance, denoising_strength, min_hi
             minutes = int((elapsed_time % 3600) // 60)
             seconds = int(elapsed_time % 60)
             
-            if hours > 0:
+            if hours >= 1:
                 time_str = f"{hours}h {minutes}m {seconds}s"
-            if hours <= 1 and minutes > 0:
+            elif hours < 1 and minutes > 0:
                 time_str = f"{minutes}m {seconds}s"
             else:
                 time_str = f"{seconds}s"

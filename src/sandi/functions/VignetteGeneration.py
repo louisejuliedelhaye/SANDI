@@ -197,8 +197,12 @@ def add_scale_bar(image, scale_length_pixels, sample_type):
             distance_text_scale = 1
         elif scale_length_um > 50 and scale_length_um <= 100:
             distance_text_scale = 5
-        elif scale_length_um > 100:
+        elif scale_length_um > 100 and scale_length_um <= 300:
             distance_text_scale = 10
+        elif scale_length_um > 300 and scale_length_um <= 500:
+            distance_text_scale = 20
+        elif scale_length_um > 500:
+            distance_text_scale = 35
     elif sample_type == "gravel":
         distance_text_scale = 1
         
@@ -378,8 +382,12 @@ def add_scale_bar_batch(image, scale_length_pixels, sample_type, pixelsize):
                 distance_text_scale = 1
             elif scale_length_um > 50 and scale_length_um <= 100:
                 distance_text_scale = 5
-            elif scale_length_um > 100:
+            elif scale_length_um > 100 and scale_length_um <= 300:
                 distance_text_scale = 10
+            elif scale_length_um > 300 and scale_length_um <= 500:
+                distance_text_scale = 20
+            elif scale_length_um > 500:
+                distance_text_scale = 35
         elif sample_type == "gravel":
             distance_text_scale = 1
             
