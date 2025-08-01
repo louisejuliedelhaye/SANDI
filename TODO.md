@@ -2,7 +2,7 @@ This file lists all the improvements planned for future versions of the software
 - [ ] indicates changes not implemented yet
 - [x] indicates changes implemented in the online code, but not yet in the latest executable release.
 
-# To-do list for SANDI v0.1.7
+# To-do list for SANDI v0.1.8
 
 - [ ] Update documentation (format & content)
 
@@ -29,7 +29,7 @@ This file lists all the improvements planned for future versions of the software
 - [ ] Add option to choose the thresholding algorithm
 - [ ] Add option to convert video to images
 
-# Changes made for SANDI v0.1.6
+# Changes made for SANDI v0.1.7
 
 ## Layout
 - [x] Add a progress bar for the batch processing

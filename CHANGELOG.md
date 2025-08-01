@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.7 - Unreleased]
+## [0.1.8 - Unreleased]
 
 ### Added
 
@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Removed
 
-## [0.1.6] - 2025-08-01
+## [0.1.7] - 2025-08-01
 
 ### Added
 * Added progress bar in batch processing page.
@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file. The format 
 * Updated image canvas in single image processing page to center smaller images.
 * Improved vignettes layout to make it adjust automatically to particle size, and to make sure it retains the colors of the originally imported image.
 * Adjusted the requirements file.
+* Adjusted relative path directories.
 
 ### Removed
 * Removed possibility to add image height and width in um manually, but is instead automatically calculated from the pixel size.
