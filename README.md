@@ -1,13 +1,14 @@
 [![PyPI version](https://badge.fury.io/py/SANDI.svg)](https://pypi.org/project/SANDI/)
 # <img src="https://github.com/user-attachments/assets/b1fa9c0e-d914-40fc-b6b8-83716b975e52" width="23">  SANDI     
-SANDI is a free, open-source software designed for oceanography and sedimentology. It can be used to extract suspended particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. 
+SANDI is a free, open-source software designed for oceanography and sedimentology. It can be used to extract particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. 
 
-***Disclaimer**: This is an alpha version of the software, and it may therefore still contain some errors or malfunctions. In the TODO document, you can see the improvements planned for future versions, but any additional feedback or suggestion is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
+***Disclaimer**: This software is under development, and it may therefore still contain some errors or malfunctions. In the TODO document, you can see the improvements planned for future versions, but any additional feedback or suggestion is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/b17280c1-3734-4f1d-a8f1-27dd87c4c8db">
+  <img src="https://github.com/user-attachments/assets/8e5e7f57-2914-4f11-b80a-ae05f676b6df">
 
-  *Figure 1. Homepage of the SANDI v1.0.0-alpha software. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
+
+  *Homepage of SANDI v0.1.6. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
 </div>
 
 ## How to install and use SANDI?
