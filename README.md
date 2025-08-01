@@ -11,7 +11,10 @@ SANDI is a free, open-source software designed for oceanography and sedimentolog
   *Homepage of SANDI v0.1.6. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
 </div>
 
-## How to install SANDI?
+## About SANDI
+Check out the [full documentation in the Wiki](https://github.com/louisejuliedelhaye/SANDI/wiki)
+
+## How to install SANDI
 There are three ways to install and use SANDI, we recommend to use option 3:
 1. *Users can choose to download the full code and run the ‘main’ file from GitHub*. This is the most up-to-date version, but it might still contain several bugs and errors and hasn't been approved for release yet.
 2. *Users can download the executable in the 'tags' section of the repository.* This is a self-contained software, the easiest option for users with no experience in coding but is only compatible with Windows systems and is the least frequently updated of the three options.
@@ -25,7 +28,7 @@ There are three ways to install and use SANDI, we recommend to use option 3:
   conda env create -f environment_user.yml 
 </pre> 
 
-## How to run SANDI?
+## How to run SANDI
 - open the miniconda/anaconda prompt and type the following lines **to run the package after installation**:
 
 <pre lang="markdown"> 
@@ -36,6 +39,3 @@ There are three ways to install and use SANDI, we recommend to use option 3:
 </pre>
 
 If you encounter any problem with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you resolve it.
-
-## About SANDI
-Check out the [full documentation in the Wiki](https://github.com/louisejuliedelhaye/SANDI/wiki)
