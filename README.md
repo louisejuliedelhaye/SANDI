@@ -38,4 +38,16 @@ There are three ways to install and use SANDI, we recommend to use option 3:
   python -m sandi 
 </pre>
 
+## How to update SANDI
+- open the miniconda/anaconda prompt and type the following lines **to update the package after installation** in order to have the latest available version:
+
+<pre lang="markdown"> 
+  # Activate the environment
+  conda activate sandi_env 
+  # Check the version of the package that is installed
+  pip show sandi
+  # Upgrade if necessary
+  python -m pip install --upgrade sandi
+</pre>
+
 If you encounter any problem with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you resolve it.
