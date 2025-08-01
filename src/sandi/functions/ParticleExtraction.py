@@ -433,14 +433,15 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
         contours, _ = cv2.findContours(IMG.img_binary[i], cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         
         #######################################################################
-        ## 1 ## Load particle size (ESD) bins/classes from Bins.mat file
+        ## 1 ## Load particle size (ESD) bins/classes from bins.txt file
         #######################################################################
                 
-        if getattr(sys, 'frozen', False):  
-            base_path = sys._MEIPASS  
-        else:
-            base_path = os.path.abspath(".")
-        bins_txt_path = os.path.join(base_path, 'attributes/bins.txt')
+        #if getattr(sys, 'frozen', False):
+            #base_path = sys._MEIPASS
+        #else:
+            #base_path = os.path.abspath(".")
+        #bins_txt_path = os.path.join(base_path, 'attributes/bins.txt')
+        bins_txt_path = importlib.resources.files("sandi.attributes").joinpath("bins.txt")
         
         if os.path.exists(bins_txt_path):
             try:

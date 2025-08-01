@@ -39,14 +39,15 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
     if stats is not None: 
         
         #######################################################################
-        ## 1 ## Load particle size (ESD) bins/classes from Bins.mat file
+        ## 1 ## Load particle size (ESD) bins/classes from bins.txt file
         #######################################################################
         
-        if getattr(sys, 'frozen', False):  
-            base_path = sys._MEIPASS  
-        else:
-            base_path = os.path.abspath(".")
-        bins_txt_path = os.path.join(base_path, 'attributes/bins.txt')
+        #if getattr(sys, 'frozen', False):
+            #base_path = sys._MEIPASS
+        #else:
+            #base_path = os.path.abspath(".")
+        #bins_txt_path = os.path.join(base_path, 'attributes/bins.txt')
+        bins_txt_path = importlib.resources.files("sandi.attributes").joinpath("bins.txt")
         
         if os.path.exists(bins_txt_path):
             try:
