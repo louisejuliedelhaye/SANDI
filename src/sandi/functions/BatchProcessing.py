@@ -268,9 +268,7 @@ def import_all_images(app_instance, file_paths, depth, pixelsize, popup):
     """
     try:
         IMG.pixel_sizes = []
-        
-        #IMG.image_height = float(app_instance.pcam_characteristics.image_height.get())
-        #IMG.image_width = float(app_instance.pcam_characteristics.image_width.get())
+
         IMG.image_depth = float(app_instance.pcam_characteristics.image_depth.get())
         IMG.pixel_size = float(app_instance.pcam_characteristics.pixel_size.get())
         app_instance.progress_var.set(0)
@@ -309,12 +307,20 @@ def import_all_images(app_instance, file_paths, depth, pixelsize, popup):
             focal_length = IMG.focal_lengths[i]
             exposure = IMG.exposures[i]
             iso = IMG.isos[i]
-            pixel_size = IMG.pixel_size #(IMG.image_height / IMG.heights[i]) * 1000
+            pixel_size = IMG.pixel_size
             IMG.pixel_sizes.append(pixel_size)
-            image_width = IMG.widths[i] * pixel_size
-            IMG.image_widths.append(image_width)
-            image_height = IMG.heights[i] * pixel_size
-            IMG.image_heights.append(image_height)
+            if IMG.widths[i] is not None:
+                image_width = IMG.widths[i] * pixel_size
+                IMG.image_widths.append(image_width)
+                image_height = IMG.heights[i] * pixel_size
+                IMG.image_heights.append(image_height)
+            else:
+                img = np.array(IMG.selected_images[i])
+                height, width = img.shape
+                image_width = (width * pixel_size)/1000
+                IMG.image_widths.append(image_width)
+                image_height = (height * pixel_size)/1000
+                IMG.image_heights.append(image_height)
 
             app_instance.log_message('new', f"Image name: {image_name}")
             app_instance.log_message('info', f"Image date: {date_time}")

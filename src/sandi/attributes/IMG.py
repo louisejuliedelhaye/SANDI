@@ -41,6 +41,9 @@ class IMG:
     aperture = None
     height = None
     width = None
+    image_height = None
+    image_width = None
+    image_depth = None
     lens = None
     iso = None
     exposure = None

@@ -188,13 +188,21 @@ def import_image(app_instance, filename, depth, pixelsize, popup):
             IMG.camera = IMG.exif_data.get('Model', None)
             IMG.height = IMG.exif_data.get('ExifImageHeight', None)
             IMG.width = IMG.exif_data.get('ExifImageWidth', None)
-            IMG.image_width = IMG.pixel_size * IMG.width
-            IMG.image_height = IMG.pixel_size * IMG.height
+            IMG.image_width = (IMG.pixel_size * IMG.width)/1000
+            IMG.image_height = (IMG.pixel_size * IMG.height)/1000
             IMG.lens = IMG.exif_data.get('LensModel', None)
             IMG.iso = IMG.exif_data.get('ISOSpeedRatings', None)
             IMG.exposure = Fraction(IMG.exif_data.get('ExposureTime', None)).limit_denominator() if IMG.exif_data.get('ExposureTime', None) else None
-            
-        IMG.pixel_size = IMG.pixel_size 
+
+        if not IMG.exif_data:
+            img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+            height, width = img.shape
+            IMG.width = width
+            IMG.height = height
+            IMG.image_width = (IMG.pixel_size * IMG.width)/1000
+            IMG.image_height = (IMG.pixel_size * IMG.height)/1000
+
+        #IMG.pixel_size = IMG.pixel_size
             
         try:
             img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
@@ -296,9 +304,9 @@ def reset_all():
     """
     Reset all parameters of IMG class to their default value.
     """   
-    IMG.image_height= 0
-    IMG.image_width = 0
-    IMG.image_depth = 0
+    IMG.image_height = None
+    IMG.image_width = None
+    IMG.image_depth = None
     
     IMG.filename = None
     IMG.selected_image = None

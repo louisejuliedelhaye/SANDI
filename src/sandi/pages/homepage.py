@@ -114,7 +114,7 @@ class Homepage():
         space.grid(row=0, column=0, columnspan=2, pady=(10, 10), sticky="nw")  
         
         # Suspended particles
-        suspended_particles_text = tk.Label(button_frame, text="Suspended particles:",
+        suspended_particles_text = tk.Label(button_frame, text="Particles:",
                                      bg="#2c3e50", fg="lightgrey", font=("Segoe UI", 12, "bold"), wraplength=440)
         suspended_particles_text.grid(row=1, column=0, padx=5, pady=(0, 0), sticky="sw")
     

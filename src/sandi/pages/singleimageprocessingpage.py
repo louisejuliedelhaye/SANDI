@@ -3009,14 +3009,17 @@ class SingleImageProcessing:
         frame.pack(padx=10, pady=10)
 
         ### Intensity filter
-        tk.Label(frame, text="Fraction of the max intensity:",
+        self.MaxInt_label = tk.Label(frame, text="Fraction of the max intensity:",
                  bg="#3A506B", fg="white", font=("Segoe UI", 11),
                  wraplength=150).grid(row=0, column=0, sticky="w", pady=(0, 2))
 
         self.MaxInt = tk.DoubleVar(value=0.50)
-        tk.Label(frame, textvariable=tk.StringVar(value=f"{self.MaxInt.get():.2f}"),
-                 bg="#3A506B", fg="#388E3C", font=("Segoe UI", 11, "bold")
-                 ).grid(row=0, column=1, sticky="e")
+
+        self.MaxInt_value = tk.Label(frame,
+                                     text=f"{self.MaxInt.get():.2f}",
+                                     bg="#3A506B", fg="#388E3C",
+                                     font=("Segoe UI", 11, "bold"))
+        self.MaxInt_value.grid(row=0, column=1, sticky="e")
 
         self.MaxInt_slider = ttk.Scale(frame, from_=0, to=1,
                                        orient="horizontal", variable=self.MaxInt,
@@ -3048,9 +3051,12 @@ class SingleImageProcessing:
                  ).grid(row=5, column=0, sticky="w", pady=(0, 2))
 
         self.MinAspectRatio = tk.DoubleVar(value=0.20)
-        tk.Label(frame, textvariable=tk.StringVar(value=f"{self.MinAspectRatio.get():.2f}"),
-                 bg="#3A506B", fg="#388E3C", font=("Segoe UI", 11, "bold")
-                 ).grid(row=5, column=1, sticky="e")
+
+        self.MinAspectRatio_value = tk.Label(frame,
+                                     text=f"{self.MinAspectRatio.get():.2f}",
+                                     bg="#3A506B", fg="#388E3C",
+                                     font=("Segoe UI", 11, "bold"))
+        self.MinAspectRatio_value.grid(row=5, column=1, sticky="e")
 
         self.MinAspectRatio_slider = ttk.Scale(frame, from_=0, to=1,
                                                orient="horizontal", variable=self.MinAspectRatio,

@@ -267,7 +267,7 @@ def generate_batch_vignettes(app_instance, sample_type, stats, i, vignette_folde
         return
 
     if IMG.img_original_resampled[i] is not None and IMG.img_original_resampled[i].any():
-        if IMG.selected_images[i].shape[2] == 3:
+        if len(IMG.selected_images[i].shape) == 3 and IMG.selected_images[i].shape[2] == 3:
             original_image = cv2.cvtColor(IMG.selected_images[i], cv2.COLOR_RGB2BGR)
         else:
             original_image = np.array(IMG.selected_images[i])

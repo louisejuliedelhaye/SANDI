@@ -93,6 +93,7 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
         #######################################################################
         
         IMG.volume_concentration_per_bin = volume_per_bin
+        app_instance.log_message('error', f"image_height: {image_height}, image_width: {image_width}, image_depth: {image_depth}")
         IMG.volume_concentration_per_bin /= (image_height * image_width * image_depth * 10**-6) # scale volumes per bins (µL) relative to the total image volume (mm³) - giving volume concentration in µL/L
         IMG.volume_concentration_per_bin = np.array(IMG.volume_concentration_per_bin).flatten()
         IMG.total_volume_concentration = np.sum(IMG.volume_concentration_per_bin) # calculate total volume concentration

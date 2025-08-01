@@ -136,6 +136,7 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
                 prop.particle_color = 'unknown'
         else:
             prop.mean_RGB_color = 'unknown'
+            prop.particle_color = 'unknown'
 
         if prop.major_axis_length_um > 0:
             prop.aspect_ratio = prop.minor_axis_length_um / prop.major_axis_length_um

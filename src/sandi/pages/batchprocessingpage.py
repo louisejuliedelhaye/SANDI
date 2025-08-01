@@ -680,7 +680,7 @@ class BatchProcessing:
                                          wraplength=230,
                                          justify="left",
                                          font=("Segoe UI", 12))
-        self.spider_title.grid(row=8, column=0, columnspan=1, padx=5, pady=(250, 5), sticky="w")
+        self.spider_title.grid(row=8, column=0, columnspan=1, padx=5, pady=(260, 5), sticky="w")
         
         self.spider_figure = Figure(figsize=(2, 2), dpi=120)
         self.spider_ax = self.spider_figure.add_subplot(111, polar=True)
