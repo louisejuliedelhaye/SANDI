@@ -437,12 +437,16 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
         ## 1 ## Load particle size (ESD) bins/classes from bins.txt file
         #######################################################################
                 
-        #if getattr(sys, 'frozen', False):
-            #base_path = sys._MEIPASS
-        #else:
-            #base_path = os.path.abspath(".")
-        #bins_txt_path = os.path.join(base_path, 'attributes/bins.txt')
-        bins_txt_path = importlib.resources.files("sandi.attributes").joinpath("bins.txt")
+        try:
+            resource = resources.files("sandi.attributes") / "bins.txt"
+            with resources.as_file(resource) as bins_path:
+                if not bins_path.exists():
+                    raise FileNotFoundError(f"{bins_path} does not exist.")
+                bins = np.genfromtxt(bins_path, delimiter=',', dtype=float)
+                if bins.ndim == 1:
+                    bins = bins.reshape(-1, 1)
+        except Exception as e:
+            app_instance.log_message('error', f"Error loading bins.txt: {e}")
         
         if os.path.exists(bins_txt_path):
             try:

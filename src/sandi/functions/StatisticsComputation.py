@@ -42,20 +42,17 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
         #######################################################################
         ## 1 ## Load particle size (ESD) bins/classes from bins.txt file
         #######################################################################
-        
-        bins_txt_path = importlib.resources.files("sandi.attributes").joinpath("bins.txt")
-        
-        if os.path.exists(bins_txt_path):
-            try:
-                bins = np.loadtxt(bins_txt_path)
-                bins = np.genfromtxt(bins_txt_path, delimiter=',')
+
+        try:
+            resource = resources.files("sandi.attributes") / "bins.txt"
+            with resources.as_file(resource) as bins_path:
+                if not bins_path.exists():
+                    raise FileNotFoundError(f"{bins_path} does not exist.")
+                bins = np.genfromtxt(bins_path, delimiter=',', dtype=float)
                 if bins.ndim == 1:
-                    bins = bins.reshape(-1, 1)          
-                bins = bins.astype(float)   
-            except Exception as e:
-                app_instance.log_message('error', f"Error loading {bins_txt_path}: {e}")
-        else:
-            app_instance.log_message('error', f"{bins_txt_path} does not exist.")
+                    bins = bins.reshape(-1, 1)
+        except Exception as e:
+            app_instance.log_message('error', f"Error loading bins.txt: {e}")
         
         bin_edges = bins[:, 0]
         midpoints = np.sqrt(bin_edges[1:] * bin_edges[:-1]) 
