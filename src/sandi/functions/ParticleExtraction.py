@@ -34,7 +34,7 @@ import pandas as pd
 from scipy.ndimage import binary_fill_holes
 from scipy.stats import kurtosis, skew
 import colorsys
-import importlib.resources
+from importlib import resources
 
 ###############################################################################
 # Import local packages

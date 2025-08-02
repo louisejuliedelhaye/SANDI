@@ -21,7 +21,7 @@ from functools import partial
 import os
 import sys
 from scipy.stats import skew, kurtosis
-import importlib.resources
+from importlib import resources
 
 ###############################################################################
 # Import local packages
