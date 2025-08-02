@@ -5,19 +5,18 @@ SANDI is a free, open-source software designed for oceanography and sedimentolog
 ***Disclaimer**: This software is under development, and it may therefore still contain some errors or malfunctions. In the TODO document, you can see the improvements planned for future versions, but any additional feedback or suggestion is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8e5e7f57-2914-4f11-b80a-ae05f676b6df">
+  <img src="https://github.com/user-attachments/assets/85809bf2-9c02-4b09-a56f-da2c8763f558">
 
-
-  *Homepage of SANDI v0.1.6. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
+  *Homepage of SANDI v0.1.8. Artwork is from [Sophie Delhaye](https://sophiedelhaye.com).*
 </div>
 
 ## About SANDI
 Check out the [full documentation in the Wiki](https://github.com/louisejuliedelhaye/SANDI/wiki)
 
 ## How to install SANDI
-There are three ways to install and use SANDI, we recommend to use option 3:
+There are three ways to install and use SANDI, we recommend using option 3:
 1. *Users can choose to download the full code and run the ‘main’ file from GitHub*. This is the most up-to-date version, but it might still contain several bugs and errors and hasn't been approved for release yet.
-2. *Users can download the executable in the 'tags' section of the repository.* This is a self-contained software, the easiest option for users with no experience in coding but is only compatible with Windows systems and is the least frequently updated of the three options.
+2. *Users can download the executable in the 'tags' section of the repository.* This is a self-contained software, the easiest option for users with no experience in coding but is only compatible with Windows systems and is the least frequently updated of the three options. To run it, you then only need to run the exe file and can ignore the rest of this document.
 3. *Users can choose to work with the sandi package referenced in PyPI*. This is the **easiest and most reliable option**, it contains the latest approved updates of the software and can simply be installed with the few following steps (provided that Anaconda or Miniconda is already installed on the user's computer) :
 - download the environment_user.yml file
 - open the miniconda/anaconda prompt and type the following lines **to install the package**:
