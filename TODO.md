@@ -9,6 +9,8 @@ This file lists all the improvements planned for future versions of the software
 ## Code structure
 ## Layout
 ## Bug corrections
+- [ ] Correct error logged in the anaconda console when using SANDI: _tkinter.TclError: bad window path name ".!frame4.!canvas.!frame.!toplevel"
+
 ## Image processing options
 
 # To-do list - for future versions

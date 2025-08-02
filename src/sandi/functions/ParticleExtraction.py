@@ -448,19 +448,6 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
         except Exception as e:
             app_instance.log_message('error', f"Error loading bins.txt: {e}")
         
-        if os.path.exists(bins_txt_path):
-            try:
-                bins = np.loadtxt(bins_txt_path)
-                bins = np.genfromtxt(bins_txt_path, delimiter=',')
-                if bins.ndim == 1:
-                    bins = bins.reshape(-1, 1)  
-                bins = bins.astype(float)
-                
-            except Exception as e:
-                app_instance.log_message('error', f"Error loading {bins_txt_path}: {e}")
-        else:
-            app_instance.log_message('error', f"{bins_txt_path} does not exist.")
-        
         try:
             bin_edges = bins[:, 0]
             midpoints = np.sqrt(bin_edges[1:] * bin_edges[:-1]) 
