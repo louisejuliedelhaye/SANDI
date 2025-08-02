@@ -24,6 +24,7 @@ license-files = ["LICEN[CS]E*"]
 
 [tool.setuptools.package-data]
 "sandi.images" = ["*.png", "*.ico"]
+"sandi.attributes" = ["*.txt"]
 
 keywords = ["Sedimentation", "Image Analysis"]
 
