@@ -50,3 +50,6 @@ There are three ways to install and use SANDI, we recommend using option 3:
 </pre>
 
 If you encounter any problem with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you resolve it.
+
+## Known issue
+You might experience some issues with the vignette export in the single image processing page if you don't apply a resampling on the image. We are aware of this issue and are currently working on resolving it. Know you should be able to export the correct vignettes when applying the resampling. Sorry for the inconvenience.
