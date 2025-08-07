@@ -46,7 +46,7 @@ def generate_vignette(app_instance, sample_type, stats):
         if not vignette_folder_path:
             app_instance.log_message('info', "Vignette saving canceled by user.")
         else:
-            if IMG.img_original_resampled is not None:
+            if IMG.img_original_resampled is not None and IMG.img_original_resampled.any():
                 original_image = np.array(Image.open(IMG.filename).convert("RGB"))
                 original_image = cv2.cvtColor(original_image, cv2.COLOR_RGB2BGR)
                 target_height, target_width = IMG.img_original_resampled.shape[:2]
