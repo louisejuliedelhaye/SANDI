@@ -1,6 +1,6 @@
 [![PyPI version](https://img.shields.io/pypi/v/sandi.svg?color=#FFBC42)](https://pypi.org/project/sandi/)
 # <img src="https://github.com/user-attachments/assets/b1fa9c0e-d914-40fc-b6b8-83716b975e52" width="23">  SANDI     
-SANDI is a free, open-source software designed for oceanography and sedimentology. It can be used to extract particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. 
+SANDI is a free, open-source software designed for oceanography and sedimentology initiated at the Royal Belgian Institute of Natural Sciences. It can be used to extract particles from high-resolution underwater images (on a single image or on a batch) and to extract gravels (> 1 mm) from a laboratory image, in order to measure their size and shape and to compute some statistics. 
 
 ***Disclaimer**: This software is under development, and it may therefore still contain some errors or malfunctions. In the TODO document, you can see the improvements planned for future versions, but any additional feedback or suggestion is welcome and appreciated, as we hope to make it a collaboratively improving tool.*
 
