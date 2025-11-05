@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using the following metadata."
 title: "SANDI"
-version: "1.0.0-alpha"
-date-released: 2025-04-16
+version: "0.1.8"
+date-released: 2025-08-02
 authors:
   - family-names: Delhaye
     given-names: Louise

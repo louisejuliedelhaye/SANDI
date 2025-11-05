@@ -4,12 +4,17 @@ This file lists all the improvements planned for future versions of the software
 
 # To-do list for SANDI v0.1.9
 
-- [ ] Update documentation (format & content)
+- [x] Update documentation (format & content)
 
 ## Code structure
+- [ ] Make it possible to reset image enhancements without removing the image
+      
 ## Layout
+- [ ] Improve layout of single image processing mode
+      
 ## Bug corrections
 - [ ] Correct error logged in the anaconda console when using SANDI: _tkinter.TclError: bad window path name ".!frame4.!canvas.!frame.!toplevel"
+- [ ] Vignette background image bug depending on whether image has been resampled or not (single image processing mode)
 
 ## Image processing options
 
