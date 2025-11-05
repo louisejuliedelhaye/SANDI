@@ -194,8 +194,10 @@ def import_image(app_instance, filename, depth, pixelsize, popup):
             IMG.iso = IMG.exif_data.get('ISOSpeedRatings', None)
             IMG.exposure = Fraction(IMG.exif_data.get('ExposureTime', None)).limit_denominator() if IMG.exif_data.get('ExposureTime', None) else None
 
-        if not IMG.exif_data:
+        if not IMG.exif_data or IMG.width is None:
             img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+            if img is None:
+                app_instance.log_message('error', f"Failed to load image: {filename}")
             height, width = img.shape
             IMG.width = width
             IMG.height = height
@@ -227,10 +229,11 @@ def import_image(app_instance, filename, depth, pixelsize, popup):
             app_instance.log_message('info', f"Image depth: {app_instance.pcam_characteristics.image_depth.get()} mm and pixel size: {app_instance.pcam_characteristics.pixel_size.get()} µm")
             app_instance.log_message('info', f"Image name is: {IMG.image_name}")
             app_instance.log_message('info', f"Image date is: {IMG.date_time}")
+            app_instance.log_message('info', f"IMG.width = {IMG.width}")
             app_instance.log_message('info', f"Image was shot using {IMG.camera} equipped with {IMG.lens}, at aperture of f/{IMG.aperture}, focal length of {IMG.focal_length} mm, exposure time of {IMG.exposure} s and ISO {IMG.iso}. Detected background is {IMG.image_background}")
-        
+
             if IMG.selected_image is not None:
-                app_instance.plot_histogram(which='original_histogram')  
+                app_instance.plot_histogram(which='original_histogram')
             else:
                 app_instance.plot_histogram(which='initialise') 
                 
@@ -243,7 +246,7 @@ def import_image(app_instance, filename, depth, pixelsize, popup):
 # Functions for the gravels image processing
 ###############################################################################      
         
-def open_stones_file(app_instance, image_height):
+def open_stones_file(app_instance):
     """
     Opens a file dialog to select a JPG image, resizes the image for display,
     extracts EXIF data, and computes pixel size.

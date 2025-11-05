@@ -63,9 +63,9 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
         image = IMG.selected_image
         IMG.img_modified = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY) if len(image.shape) == 3 else image
     
-    if np.max(IMG.img_modified) <= 110 or np.std(IMG.img_modified) < 1 or np.mean(IMG.img_modified) < 2:
-        app_instance.log_message('error', "Error: No particle detected")
-        return
+    #if np.max(IMG.img_modified) <= 110 or np.std(IMG.img_modified) < 1 or np.mean(IMG.img_modified) < 1:
+        #app_instance.log_message('error', "Error: No particle detected")
+        #return
 
     threshold_value = threshold_otsu(IMG.img_modified)
     if IMG.image_background == 'white':
@@ -251,6 +251,7 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
                     cv2.polylines(output_image_resized, [contour_points], isClosed=True, color=(255, 190, 0), thickness=1)
 
         IMG.tk_extracted_particles_image = ImageTk.PhotoImage(Image.fromarray(output_image_resized))
+        return IMG.tk_binary_image, IMG.tk_extracted_particles_image, IMG.stats
         
         app_instance.log_message('success', f"Particle extraction is successfully completed with contour erosion of {erosion_value} pixel(s)")
         app_instance.log_message('info', f"{len(IMG.stats)} particles have been extracted")

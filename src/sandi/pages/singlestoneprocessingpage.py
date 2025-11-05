@@ -822,7 +822,7 @@ class SingleStoneProcessing:
         self.image_canvas.delete("all")
         self.particle_canvas.delete("all")
         self.tooltip_label.place_forget() 
-        open_stones_file(self, self.pcam_characteristics.image_height.get())
+        open_stones_file(self)
         if IMG.tk_resized_image:
             self.show_stones_technical_frame_popup(IMG.filename)
                 
