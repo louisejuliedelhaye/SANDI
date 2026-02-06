@@ -115,13 +115,39 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
         IMG.D90 = np.interp(90, IMG.cdf, midpoints)
         
         #######################################################################
-        ## 6 ## Calculate volume weighted mean diameter 
+        ## 6 ## Calculate volume weighted mean diameter weighted by volume and by surface area, volume moment mean diameter, Sauter diameter
         #######################################################################
         
+        # Mean diameter weighted by volume 
         diameters = np.array([prop.equivalent_diameter_um for prop in stats])
         volumes = np.array([prop.volume_ul for prop in stats])
         IMG.mean_diameter = np.sum(volumes * diameters) / np.sum(volumes)
+        
+        # Mean diameter weighted by surface area
+        if len(diameters) > 0:
+            surface_areas = np.pi * diameters**2
+            IMG.mean_diameter_surface = np.sum(surface_areas * diameters) / np.sum(surface_areas)
+        else:
+            IMG.mean_diameter_surface = None
+        
+        # Sauter diameter
+        if len(diameters) > 0:
+            IMG.Sauter_diameter = np.sum(diameters**3) / np.sum(diameters**2)
+        else:
+            IMG.Sauter_diameter = None
             
+        # Volume moment mean diameter
+        if len(diameters) > 0:
+            IMG.volume_moment_mean = np.sum(diameters**4) / np.sum(diameters**3)
+        else:
+            IMG.volume_moment_mean = None
+            
+        # Specific Surface Area    
+        if IMG.Sauter_diameter is not None and IMG.Sauter_diameter > 0:
+            IMG.SSA = 6 / IMG.Sauter_diameter  # µm²/µm³
+        else:
+            IMG.SSA = None
+                    
         #######################################################################
         ## 7 ## Calculate mean shape descriptors
         #######################################################################

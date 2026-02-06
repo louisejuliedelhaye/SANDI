@@ -116,7 +116,7 @@ def save_image_csv(stats, file_path, app_instance):
             with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
                 
                 fieldnames = ["Image Name", "Datetime", "D10", "D50", "D90", "Mean Solidity", "Mean Aspect Ratio", "Mean Form Factor", "Mean Sphericity", "Mean Roundness", "Mean Extent", "Mean Fractal Dimension 2D", "Mean Fractal Dimension 3D", "Mean Major-Axis-Length (um)",
-           "Mean Minor-Axis-Length (um)", "Mean Feret (um)", "Number of Particles", "Mean Area (um²)", "Mean Perimeter (um)", "Mean Diameter (um)", "Mean Mean Intensity", "Mean Kurtosis", "Mean Skewness",
+           "Mean Minor-Axis-Length (um)", "Mean Feret (um)", "Number of Particles", "Mean Area (um²)", "Mean Perimeter (um)", "Mean Diameter (um)", "Sauter Diameter (um)", "Mean Specific Surface Area (um-1)", "Mean Mean Intensity", "Mean Kurtosis", "Mean Skewness",
            "Total Volume Concentration (ul/l)","1.21449578", "1.60249025", "1.891035166", "2.23134399", "2.633450968", "3.107850704", "3.666961685", "4.327133347", "5.106510257", "6.025832888", 
                       "7.111107509", "8.39172807", "9.90256593", "11.68543358", "13.78971066", "16.27318162", "19.20366522", "22.66131587", "26.74179968", "31.55729789", "37.23981168", "43.94534164", 
                       "51.85865627", "61.19717694", "72.21641829", "85.2202712", "100.5661856", "118.6746248", "140.0438222", "165.261362", "195.0198203", "230.1369158", "272.6270346", "324.2098302", 
@@ -145,6 +145,8 @@ def save_image_csv(stats, file_path, app_instance):
                     "Mean Area (um²)": IMG.mean_area,
                     "Mean Perimeter (um)": IMG.mean_perimeter,
                     "Mean Diameter (um)": IMG.mean_diameter,
+                    "Sauter Diameter (um)": IMG.Sauter_diameter,
+                    "Mean Specific Surface Area (um-1)": IMG.SSA,
                     "Mean Mean Intensity": IMG.mean_mean_intensity,
                     "Mean Kurtosis": IMG.mean_kurtosis,
                     "Mean Skewness": IMG.mean_skewness,

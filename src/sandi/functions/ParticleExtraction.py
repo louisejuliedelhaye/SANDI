@@ -417,35 +417,33 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             particle['skewness'] = None
             
             if len(selected_image.shape) == 3 and selected_image.shape[2] == 3:
-                for particle in processed_particles:
-                    pixel_values = IMG.selected_image[i][coords_rescaled[:, 0], coords_rescaled[:, 1], :]
-                    particle['mean_RGB_color'] = np.mean(pixel_values, axis=0)
+                pixel_values = selected_image[coords_rescaled[:, 0], coords_rescaled[:, 1], :]
+                particle['mean_RGB_color'] = np.mean(pixel_values, axis=0)
 
-                    r, g, b = particle['mean_RGB_color']
-                    r_norm, g_norm, b_norm = r / 255, g / 255, b / 255
-                    h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
-                    h_deg = h * 360
+                r, g, b = particle['mean_RGB_color']
+                r_norm, g_norm, b_norm = r / 255, g / 255, b / 255
+                h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
+                h_deg = h * 360
 
-                    if v < 0.2:
-                        particle['particle_color'] = 'black'
-                    elif s < 0.25 and v > 0.8:
-                        particle['particle_color'] = 'white'
-                    elif (h_deg >= 0 and h_deg < 20) or (h_deg > 340 and h_deg <= 360):
-                        particle['particle_color'] = 'red'
-                    elif h_deg >= 20 and h_deg < 40:
-                        particle['particle_color'] = 'orange'
-                    elif h_deg >= 40 and h_deg < 70:
-                        particle['particle_color'] = 'yellow'
-                    elif h_deg >= 70 and h_deg < 160:
-                        particle['particle_color'] = 'green'
-                    elif h_deg >= 160 and h_deg < 270:
-                        particle['particle_color'] = 'blue'
-                    else:
-                        particle['particle_color'] = 'unknown'
+                if v < 0.2:
+                    particle['particle_color'] = 'black'
+                elif s < 0.25 and v > 0.8:
+                    particle['particle_color'] = 'white'
+                elif (h_deg >= 0 and h_deg < 20) or (h_deg > 340 and h_deg <= 360):
+                    particle['particle_color'] = 'red'
+                elif h_deg >= 20 and h_deg < 40:
+                    particle['particle_color'] = 'orange'
+                elif h_deg >= 40 and h_deg < 70:
+                    particle['particle_color'] = 'yellow'
+                elif h_deg >= 70 and h_deg < 160:
+                    particle['particle_color'] = 'green'
+                elif h_deg >= 160 and h_deg < 270:
+                    particle['particle_color'] = 'blue'
+                else:
+                    particle['particle_color'] = 'unknown'
                     
             else:
-                for particle in processed_particles:
-                    particle['particle_color'] = 'unknown'
+                particle['particle_color'] = 'unknown'
             
         return particle
     
@@ -577,7 +575,31 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             diameters = np.array([particle['equivalent_diameter_um'] for particle in IMG.stats[i]])
             volumes = np.array([particle['volume_ul'] for particle in IMG.stats[i]])
             mean_diameter = np.sum(volumes * diameters) / np.sum(volumes)
+                       
+            # Mean diameter weighted by surface area
+            if len(diameters) > 0:
+                surface_areas = np.pi * diameters**2
+                mean_diameter_surface = np.sum(surface_areas * diameters) / np.sum(surface_areas)
+            else:
+                mean_diameter_surface = None
             
+            # Sauter diameter
+            if len(diameters) > 0:
+                Sauter_diameter = np.sum(diameters**3) / np.sum(diameters**2)
+            else:
+                Sauter_diameter = None
+                
+            # Volume moment mean diameter
+            if len(diameters) > 0:
+                volume_moment_mean = np.sum(diameters**4) / np.sum(diameters**3)
+            else:
+                volume_moment_mean = None
+                
+            if Sauter_diameter is not None and Sauter_diameter > 0:
+                SSA = 6 / Sauter_diameter  # µm²/µm³
+            else:
+                SSA = None
+                
         except Exception as e:
             app_instance.log_message('error', f"Error during mean diameter calculation: {e}")
         
@@ -604,6 +626,7 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             mean_perimeter = np.mean([particle['perimeter_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             kurtosiss = np.array([particle['kurtosis'] for particle in IMG.stats[i] if particle['kurtosis'] is not None])
             mean_kurtosis = np.nanmean(kurtosiss) if kurtosiss.size > 0 else -99.99
+            
             
             skewnesss = np.array([particle['skewness'] for particle in IMG.stats[i] if particle['skewness'] is not None])
             mean_skewness = np.nanmean(skewnesss) if skewnesss.size > 0 else -99.99
@@ -636,6 +659,8 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
                 "Mean Area (um²)": mean_area,
                 "Mean Perimeter (um)": mean_perimeter,
                 "Mean Diameter (um)": mean_diameter,
+                "Sauter Diameter (um)": Sauter_diameter,
+                "Mean Specific Surface Area (um-1)": SSA,
                 "Mean Mean Intensity": mean_mean_intensity,
                 "Mean Kurtosis": mean_kurtosis,
                 "Mean Skewness": mean_skewness,
