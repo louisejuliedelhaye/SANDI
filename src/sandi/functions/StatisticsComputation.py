@@ -187,7 +187,7 @@ def compute_image_statistics(app_instance, stats, image_height, image_width, ima
         IMG.mean_skewness = np.nanmean(skewnesss) if skewnesss.size > 0 else np.nan
         
         # Mean Intensity
-        mean_intensities = np.array([prop.mean_intensity for prop in stats if prop.mean_intensity is not None])
+        mean_intensities = np.array([prop.mean_intensity_original for prop in stats if prop.mean_intensity_original is not None])
         IMG.mean_mean_intensity = np.nanmean(mean_intensities) if mean_intensities.size > 0 else np.nan
         
         #######################################################################

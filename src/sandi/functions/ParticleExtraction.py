@@ -14,7 +14,15 @@ Description: File containing the functions needed to extract the particles and g
 import concurrent.futures
 import numpy as np
 #import cv2
-from skimage.filters import threshold_otsu
+from skimage.filters import (
+    threshold_otsu,
+    threshold_isodata,
+    threshold_li,
+    threshold_mean,
+    threshold_minimum,
+    threshold_triangle,
+    threshold_yen
+)
 from skimage.segmentation import clear_border, watershed
 from skimage.measure import label, regionprops
 from skimage import morphology
@@ -135,9 +143,38 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
                 prop.particle_color = 'blue'
             else:
                 prop.particle_color = 'unknown'
+                                
         else:
             prop.mean_RGB_color = 'unknown'
             prop.particle_color = 'unknown'
+        
+        if prop.area_um2 > 0 and prop.perimeter_um > 0:  
+            if IMG.selected_image.ndim == 3:
+                original_gray = cv2.cvtColor(IMG.selected_image, cv2.COLOR_RGB2GRAY)
+            else:
+                original_gray = IMG.selected_image
+            coords = prop.coords
+            scale_row = IMG.selected_image.shape[0] / IMG.img_modified.shape[0]
+            scale_col = IMG.selected_image.shape[1] / IMG.img_modified.shape[1]
+            coords_rescaled = np.zeros_like(coords, dtype=float)
+            coords_rescaled[:, 0] = coords[:, 0] * scale_row
+            coords_rescaled[:, 1] = coords[:, 1] * scale_col
+            coords_rescaled = np.round(coords_rescaled).astype(int)
+            coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_image.shape[0] - 1)
+            coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_image.shape[1] - 1)
+            intensities = original_gray[coords_rescaled[:, 0], coords_rescaled[:, 1]]
+            if intensities.size > 0 and np.std(intensities) > 1e-8:
+                prop.min_intensity_original = np.min(intensities)
+                prop.max_intensity_original = np.max(intensities)
+                prop.mean_intensity_original = np.mean(intensities)
+                prop.kurtosis = kurtosis(intensities, fisher=True, bias=False)
+                prop.skewness = skew(intensities, bias=False)
+            else:
+                prop.kurtosis = None
+                prop.skewness = None
+        else:
+            prop.kurtosis = None
+            prop.skewness = None
 
         if prop.major_axis_length_um > 0:
             prop.aspect_ratio = prop.minor_axis_length_um / prop.major_axis_length_um
@@ -169,18 +206,6 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
             prop.fractal_dimension_3D = -1.63 * prop.fractal_dimension_2D + 4.6
         else:
             prop.fractal_dimension_3D = None
-         
-        if prop.area_um2 > 0 and prop.perimeter_um > 0:    
-            intensities = prop.intensity_image[prop.image]
-            if intensities.size > 0 and np.std(intensities) > 1e-8:
-                prop.kurtosis = kurtosis(intensities, fisher=True, bias=False)
-                prop.skewness = skew(intensities, bias=False)
-            else:
-                prop.kurtosis = None
-                prop.skewness = None
-        else:
-            prop.kurtosis = None
-            prop.skewness = None
             
         return prop
 
@@ -266,7 +291,7 @@ def filter_particles_on_intensity(app_instance, stats, MaxInt):
     
     initial_length = len(IMG.stats)
     if MaxInt != 0:
-        MI = np.array([prop.max_intensity for prop in IMG.stats])
+        MI = np.array([prop.max_intensity_original for prop in IMG.stats])
         ind = MI > (np.max(MI) * MaxInt)
         IMG.stats = [IMG.stats[i] for i in range(len(IMG.stats)) if ind[i]]
         app_instance.log_message('success', f"Particles with a maximum  intensity lower than {MaxInt:.2f} of the overall maximum intensity of the image have been successfully filtrated")
@@ -319,8 +344,8 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
     """
     Extract and computes particles properties on a batch of images.
     """
+    image = IMG.selected_images[i]
     if IMG.img_modified[i] is None:    
-        image = IMG.selected_image[i]
         IMG.img_modified[i] = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY) if len(image.shape) == 3 else image
 
     threshold_value = threshold_otsu(IMG.img_modified[i])
@@ -337,82 +362,100 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
     CC = label(IMG.img_binary[i], connectivity=1)
     IMG.stats[i] = regionprops(CC, intensity_image=IMG.img_modified[i])
 
-    def process_particle(prop, pixel_size):
-        return {
-            "coords": prop.coords,
-            "area": prop.area,
-            "area_um2": prop.area * pixel_size**2,
-            "centroid": prop.centroid,
-            "max_intensity": prop.max_intensity,
-            "min_intensity": prop.min_intensity,
-            "mean_intensity": prop.mean_intensity,
-            "equivalent_diameter_um": prop.equivalent_diameter * pixel_size,
-            "major_axis_length_um": prop.major_axis_length * pixel_size,
-            "minor_axis_length_um": prop.minor_axis_length * pixel_size,
-            "perimeter_um": prop.perimeter * pixel_size,
-            "volume_um3": (4/3) * np.pi * (prop.equivalent_diameter * pixel_size / 2)**3,
-            "volume_ul": (4/3) * np.pi * (prop.equivalent_diameter * pixel_size / 2)**3 * 1e-9,
-            "max_feret_diameter": prop.feret_diameter_max * pixel_size,
-            "aspect_ratio": (prop.minor_axis_length * pixel_size) / (prop.major_axis_length * pixel_size) if prop.major_axis_length > 0 else None,
-            "solidity": prop.solidity,
-            "form_factor": (4 * np.pi * prop.area) / (prop.perimeter ** 2) if prop.perimeter > 0 else None,
-            "sphericity": (2 * np.sqrt(np.pi * (prop.area * pixel_size**2))) / (prop.perimeter * pixel_size) if prop.area > 0 and prop.perimeter > 0 else None,
-            "roundness": (4 * (prop.area * pixel_size**2)) / (np.pi * ((prop.feret_diameter_max * pixel_size) ** 2)) if prop.area > 0 and prop.feret_diameter_max > 0 else None,
-            "orientation": prop.orientation,
-            "extent": prop.extent,
-            "euler_number": prop.euler_number,
-            "fractal_dimension_2D": 2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2)) if prop.perimeter > 0 and prop.area > 0 else None,
-            "fractal_dimension_3D": -1.63 * (2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2))) + 4.6 if prop.perimeter > 0 and prop.area > 0 else None,
-            "kurtosis": float(kurtosis(prop.intensity_image[prop.image], fisher=True, bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None,
-            "skewness": float(skew(prop.intensity_image[prop.image], bias=False)) if np.std(prop.intensity_image[prop.image]) > 1e-8 else None,
-            "mean_RGB_color": 'unknown',
-            "particle_color": 'unknown'
-        }
+    def process_particle(prop, pixel_size, selected_image, img_modified):
+        particle = {}
+        
+        particle["coords"] = prop.coords
+        particle["area"] = prop.area
+        particle["area_um2"] = prop.area * pixel_size**2
+        particle["centroid"] = prop.centroid
+        particle["equivalent_diameter_um"] = prop.equivalent_diameter * pixel_size
+        particle["major_axis_length_um"] = prop.major_axis_length * pixel_size
+        particle["minor_axis_length_um"] = prop.minor_axis_length * pixel_size
+        particle["perimeter_um"] = prop.perimeter * pixel_size
+        particle["max_feret_diameter"] = prop.feret_diameter_max * pixel_size
+        particle["solidity"] = prop.solidity
+        particle["orientation"] = prop.orientation
+        particle["extent"] = prop.extent
+        particle["euler_number"] = prop.euler_number 
+        particle["volume_um3"] = (4/3) * np.pi * (prop.equivalent_diameter * pixel_size / 2)**3
+        particle["volume_ul"] = (4/3) * np.pi * (prop.equivalent_diameter * pixel_size / 2)**3 * 1e-9
+
+        particle["aspect_ratio"] = (prop.minor_axis_length * pixel_size) / (prop.major_axis_length * pixel_size) if prop.major_axis_length > 0 else None
+
+        particle["form_factor"] = (4 * np.pi * prop.area) / (prop.perimeter ** 2) if prop.perimeter > 0 else None
+        particle["sphericity"] = (2 * np.sqrt(np.pi * (prop.area * pixel_size**2))) / (prop.perimeter * pixel_size) if prop.area > 0 and prop.perimeter > 0 else None
+        particle["roundness"] = (4 * (prop.area * pixel_size**2)) / (np.pi * ((prop.feret_diameter_max * pixel_size) ** 2)) if prop.area > 0 and prop.feret_diameter_max > 0 else None
+        particle["fractal_dimension_2D"] = 2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2)) if prop.perimeter > 0 and prop.area > 0 else None
+        particle["fractal_dimension_3D"] = -1.63 * (2 * (np.log(prop.perimeter * pixel_size) / np.log(prop.area * pixel_size**2))) + 4.6 if prop.perimeter > 0 and prop.area > 0 else None
+        particle["mean_RGB_color"] = 'unknown'
+        particle["particle_color"] = 'unknown'
+   
+        original_gray = None
+        if selected_image.ndim == 3:
+            original_gray = cv2.cvtColor(selected_image, cv2.COLOR_RGB2GRAY)
+        else:
+            original_gray = selected_image
+        coords = particle['coords']
+        scale_row = selected_image.shape[0] / img_modified.shape[0]
+        scale_col = selected_image.shape[1] / img_modified.shape[1]
+        coords_rescaled = np.zeros_like(coords, dtype=float)
+        coords_rescaled[:, 0] = coords[:, 0] * scale_row
+        coords_rescaled[:, 1] = coords[:, 1] * scale_col
+        coords_rescaled = np.round(coords_rescaled).astype(int)
+        coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, selected_image.shape[0] - 1)
+        coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, selected_image.shape[1] - 1)
+        intensities = original_gray[coords_rescaled[:, 0], coords_rescaled[:, 1]]
+        if intensities.size > 0 and np.std(intensities) > 1e-8:
+            particle['min_intensity'] = np.min(intensities)
+            particle['max_intensity'] = np.max(intensities)
+            particle['mean_intensity'] = np.mean(intensities)
+            particle['kurtosis'] = kurtosis(intensities, fisher=True, bias=False)
+            particle['skewness'] = skew(intensities, bias=False)
+        else:
+            particle['kurtosis'] = None
+            particle['skewness'] = None
+            
+            if len(selected_image.shape) == 3 and selected_image.shape[2] == 3:
+                for particle in processed_particles:
+                    pixel_values = IMG.selected_image[i][coords_rescaled[:, 0], coords_rescaled[:, 1], :]
+                    particle['mean_RGB_color'] = np.mean(pixel_values, axis=0)
+
+                    r, g, b = particle['mean_RGB_color']
+                    r_norm, g_norm, b_norm = r / 255, g / 255, b / 255
+                    h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
+                    h_deg = h * 360
+
+                    if v < 0.2:
+                        particle['particle_color'] = 'black'
+                    elif s < 0.25 and v > 0.8:
+                        particle['particle_color'] = 'white'
+                    elif (h_deg >= 0 and h_deg < 20) or (h_deg > 340 and h_deg <= 360):
+                        particle['particle_color'] = 'red'
+                    elif h_deg >= 20 and h_deg < 40:
+                        particle['particle_color'] = 'orange'
+                    elif h_deg >= 40 and h_deg < 70:
+                        particle['particle_color'] = 'yellow'
+                    elif h_deg >= 70 and h_deg < 160:
+                        particle['particle_color'] = 'green'
+                    elif h_deg >= 160 and h_deg < 270:
+                        particle['particle_color'] = 'blue'
+                    else:
+                        particle['particle_color'] = 'unknown'
+                    
+            else:
+                for particle in processed_particles:
+                    particle['particle_color'] = 'unknown'
+            
+        return particle
+    
+    stats = IMG.stats[i]
+    selected_image = IMG.selected_images[i]
+    img_modified = IMG.img_modified[i]
 
     # Parallel processing of properties
     with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
-        processed_particles = list(executor.map(lambda prop: process_particle(prop, IMG.pixel_sizes[i]), IMG.stats[i]))
-
-    for i in range(len(IMG.selected_image)):
-        if len(IMG.selected_image[i].shape) == 3 and IMG.selected_image[i].shape[2] == 3:
-            for particle in processed_particles:
-                coords = particle['coords']
-                scale_row = IMG.selected_image[i].shape[0] / IMG.img_modified[i].shape[0]
-                scale_col = IMG.selected_image[i].shape[1] / IMG.img_modified[i].shape[1]
-                coords_rescaled = np.zeros_like(coords, dtype=float)
-                coords_rescaled[:, 0] = coords[:, 0] * scale_row
-                coords_rescaled[:, 1] = coords[:, 1] * scale_col
-                coords_rescaled = np.round(coords_rescaled).astype(int)
-                coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_image[i].shape[0] - 1)
-                coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_image[i].shape[1] - 1)
-                pixel_values = IMG.selected_image[i][coords_rescaled[:, 0], coords_rescaled[:, 1], :]
-
-                particle['mean_RGB_color'] = np.mean(pixel_values, axis=0)
-
-                r, g, b = particle['mean_RGB_color']
-                r_norm, g_norm, b_norm = r / 255, g / 255, b / 255
-                h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
-                h_deg = h * 360
-
-                if v < 0.2:
-                    particle['particle_color'] = 'black'
-                elif s < 0.25 and v > 0.8:
-                    particle['particle_color'] = 'white'
-                elif (h_deg >= 0 and h_deg < 20) or (h_deg > 340 and h_deg <= 360):
-                    particle['particle_color'] = 'red'
-                elif h_deg >= 20 and h_deg < 40:
-                    particle['particle_color'] = 'orange'
-                elif h_deg >= 40 and h_deg < 70:
-                    particle['particle_color'] = 'yellow'
-                elif h_deg >= 70 and h_deg < 160:
-                    particle['particle_color'] = 'green'
-                elif h_deg >= 160 and h_deg < 270:
-                    particle['particle_color'] = 'blue'
-                else:
-                    particle['particle_color'] = 'unknown'
-        else:
-            for particle in processed_particles:
-                particle['particle_color'] = 'unknown'
+        processed_particles = list(executor.map(lambda prop: process_particle(prop, IMG.pixel_sizes[i], selected_image, img_modified), stats))
 
     # Remove particles with invalid properties
     volume_threshold = 1e-8 

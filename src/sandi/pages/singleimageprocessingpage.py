@@ -1158,8 +1158,8 @@ class SingleImageProcessing:
                 self.original_histogram_image = IMG.selected_image
                 image = rgb_to_grey(IMG.selected_image)
     
-            minimum = self.min_value.get()
-            maximum = self.max_value.get()
+            minimum = float(self.min_value.get())
+            maximum = float(self.max_value.get())
     
             if image is not None and image.size > 0:
                 stretched = histogram_stretching(image, minimum, maximum)

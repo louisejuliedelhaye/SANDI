@@ -85,10 +85,10 @@ def histogram_stretching(image, minimum, maximum):
         scale = min(scale_w, scale_h)
         new_width = int(original_width * scale)
         new_height = int(original_height * scale)
-        IMG.img_modified = cv2.resize(IMG.img_modified, (new_width, new_height))
-        IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified))
+        #resized_img = cv2.resize(IMG.img_modified, (new_width, new_height))
+        #IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(resized_img))
 
-        #IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((RESIZE_WIDTH, RESIZE_HEIGHT)))
+        IMG.tk_stretched_image = ImageTk.PhotoImage(Image.fromarray(IMG.img_modified).resize((new_width, new_height)))
         return IMG.img_modified
     else:
         pass

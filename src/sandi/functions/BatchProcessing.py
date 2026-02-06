@@ -418,14 +418,24 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
     ### 2. Image denoising
     ###################################################################
         
-    IMG.img_modified[i] = cv2.fastNlMeansDenoising(IMG.img_grey[i], None, denoising_strength, 7, 21)
-    
-    if IMG.img_modified[i] is None:
-        app_instance.log_message('error', f"An error occurred during the denoising of {IMG.image_names[i]}. Batch processing stopped")
+    if denoising_strength != 0:
+        IMG.img_modified[i] = cv2.fastNlMeansDenoising(IMG.img_grey[i], None, denoising_strength, 7, 21)
+        
+        if IMG.img_modified[i] is None:
+            app_instance.log_message('error', f"An error occurred during the denoising of {IMG.image_names[i]}. Batch processing stopped")
+        else:
+            app_instance.log_message('info', f"{IMG.image_names[i]} successfully denoised")
+        
+        before_histogram = IMG.img_modified[i].copy()
+        
     else:
-        app_instance.log_message('info', f"{IMG.image_names[i]} successfully denoised")
-    
-    before_histogram = IMG.img_modified[i].copy()
+        IMG.img_modified[i] = IMG.img_grey[i]
+        if IMG.img_modified[i] is None:
+            app_instance.log_message('error', f"An error occurred during the processing of {IMG.image_names[i]}. Batch processing stopped at denoising.")
+        else:
+            app_instance.log_message('info', f"{IMG.image_names[i]} was not denoised")
+        
+        before_histogram = IMG.img_modified[i].copy()
     
     ###############################################################
     ### 3. Image histogram stretching
@@ -445,48 +455,61 @@ def background_batch_processing(app_instance, file_paths, i, denoising_strength,
     ### 4. Background illumination correction
     ###########################################################
     
-    w = int(np.ceil((background_illumination_window_size * 1000) / IMG.pixel_sizes[i]))  
-    kernel = np.ones((w, w), np.uint8)
-    
-    if IMG.image_background[i] == 'black':
-        bg = cv2.erode(IMG.img_modified[i], kernel)
-        bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))
-        corrected = IMG.img_modified[i] - bg
+    if background_illumination_window_size > 0.1:
+        w = int(np.ceil((background_illumination_window_size * 1000) / IMG.pixel_sizes[i]))  
+        kernel = np.ones((w, w), np.uint8)
         
-    elif IMG.image_background[i]  == 'white':
-        bg = cv2.dilate(IMG.img_modified[i], kernel)
-        bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))
-        corrected = bg - IMG.img_modified[i]
-        corrected = 255 - corrected
+        if IMG.image_background[i] == 'black':
+            bg = cv2.erode(IMG.img_modified[i], kernel)
+            bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))
+            corrected = IMG.img_modified[i] - bg
+            
+        elif IMG.image_background[i]  == 'white':
+            bg = cv2.dilate(IMG.img_modified[i], kernel)
+            bg = cv2.resize(bg, (IMG.img_modified[i].shape[1], IMG.img_modified[i].shape[0]))
+            corrected = bg - IMG.img_modified[i]
+            corrected = 255 - corrected
+            
+        else:
+            raise ValueError("IMG.image_background must be either 'black' or 'white'.")
+        
+        IMG.img_modified[i] = cv2.normalize(corrected, None, 0, 255, cv2.NORM_MINMAX)
+            
+        if np.array_equal(before_illumination, IMG.img_modified[i]) and background_illumination_window_size != 0:
+            app_instance.log_message('error', f"Image remained the same after background illumination correction of {IMG.image_names[i]}")
+        else:
+            app_instance.log_message('info', f"{IMG.image_names[i]} background illumination successfully corrected")
+        
+        before_reconstruction = IMG.img_modified[i].copy()
         
     else:
-        raise ValueError("IMG.image_background must be either 'black' or 'white'.")
-    
-    IMG.img_modified[i] = cv2.normalize(corrected, None, 0, 255, cv2.NORM_MINMAX)
+        IMG.img_modified[i] = IMG.img_modified[i]
         
-    if np.array_equal(before_illumination, IMG.img_modified[i]) and background_illumination_window_size != 0:
-        app_instance.log_message('error', f"Image remained the same after background illumination correction of {IMG.image_names[i]}")
-    else:
-        app_instance.log_message('info', f"{IMG.image_names[i]} background illumination successfully corrected")
-    
-    before_reconstruction = IMG.img_modified[i].copy()
+        app_instance.log_message('info', f"The background of {IMG.image_names[i]} was not corrected")
+        before_reconstruction = IMG.img_modified[i].copy()
     
     #######################################################
     ### 5. Image reconstruction
     #######################################################
     
-    mask = IMG.img_modified[i]
-    marker = np.where(IMG.img_modified[i] <= image_reconstruction_value, 0, IMG.img_modified[i] - image_reconstruction_value)
-    img_reconstructed = reconstruction(marker, mask, method='dilation', footprint=np.ones((3,) * mask.ndim))
-    IMG.img_modified[i] = cv2.normalize(img_reconstructed, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-    
-    if np.array_equal(before_reconstruction, IMG.img_modified[i]) and image_reconstruction_value != 0:
-        app_instance.log_message('error', f"Image remained the same after image reconstruction of {IMG.image_names[i]}. Batch processing stopped")
-        return
+    if image_reconstruction_value > 1:
+        mask = IMG.img_modified[i]
+        marker = np.where(IMG.img_modified[i] <= image_reconstruction_value, 0, IMG.img_modified[i] - image_reconstruction_value)
+        img_reconstructed = reconstruction(marker, mask, method='dilation', footprint=np.ones((3,) * mask.ndim))
+        IMG.img_modified[i] = cv2.normalize(img_reconstructed, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+        
+        if np.array_equal(before_reconstruction, IMG.img_modified[i]) and image_reconstruction_value != 0:
+            app_instance.log_message('error', f"Image remained the same after image reconstruction of {IMG.image_names[i]}. Batch processing stopped")
+            return
+        else:
+            app_instance.log_message('info', f"{IMG.image_names[i]} successfully reconstructed")
+        
+        before_resampling = IMG.img_modified[i].copy()
+        
     else:
-        app_instance.log_message('info', f"{IMG.image_names[i]} successfully reconstructed")
-    
-    before_resampling = IMG.img_modified[i].copy()
+        IMG.img_modified[i] = IMG.img_modified[i]
+        app_instance.log_message('info', f"{IMG.image_names[i]} was not reconstructed")
+        before_resampling = IMG.img_modified[i].copy()
     
     ###################################################
     ### 6. Image resampling
