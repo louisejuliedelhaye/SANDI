@@ -163,7 +163,7 @@ def extract_particles(app_instance, image_name, erosion_value, particle_hole_fil
             coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, IMG.selected_image.shape[0] - 1)
             coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, IMG.selected_image.shape[1] - 1)
             intensities = original_gray[coords_rescaled[:, 0], coords_rescaled[:, 1]]
-            if intensities.size > 0 and np.std(intensities) > 1e-8:
+            if intensities.size > 0:
                 prop.min_intensity_original = np.min(intensities)
                 prop.max_intensity_original = np.max(intensities)
                 prop.mean_intensity_original = np.mean(intensities)
@@ -340,7 +340,7 @@ def filter_particles_on_aspect_ratio(app_instance, stats, MinAspectRatio):
 # Batch processing (SPM)
 ###############################################################################
 
-def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_file_path, height, width, depth, erosion_value, particle_hole_filling, i):
+def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_file_path, height, width, depth, erosion_value, particle_hole_filling, particle_vignettes, i):
     """
     Extract and computes particles properties on a batch of images.
     """
@@ -406,10 +406,10 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
         coords_rescaled[:, 0] = np.clip(coords_rescaled[:, 0], 0, selected_image.shape[0] - 1)
         coords_rescaled[:, 1] = np.clip(coords_rescaled[:, 1], 0, selected_image.shape[1] - 1)
         intensities = original_gray[coords_rescaled[:, 0], coords_rescaled[:, 1]]
+        particle['min_intensity'] = np.min(intensities)
+        particle['max_intensity'] = np.max(intensities)
+        particle['mean_intensity'] = np.mean(intensities)
         if intensities.size > 0 and np.std(intensities) > 1e-8:
-            particle['min_intensity'] = np.min(intensities)
-            particle['max_intensity'] = np.max(intensities)
-            particle['mean_intensity'] = np.mean(intensities)
             particle['kurtosis'] = kurtosis(intensities, fisher=True, bias=False)
             particle['skewness'] = skew(intensities, bias=False)
         else:
@@ -624,14 +624,14 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
             mean_aspect_ratio = np.mean([particle['aspect_ratio'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_area = np.mean([particle['area_um2'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
             mean_perimeter = np.mean([particle['perimeter_um'] for particle in IMG.stats[i]]) if IMG.stats[i] else 0
-            kurtosiss = np.array([particle['kurtosis'] for particle in IMG.stats[i] if particle['kurtosis'] is not None])
+            kurtosiss = np.array([particle['kurtosis'] for particle in IMG.stats[i] if particle['kurtosis'] is not None and particle['kurtosis'] != "N/A"])
             mean_kurtosis = np.nanmean(kurtosiss) if kurtosiss.size > 0 else -99.99
             
             
-            skewnesss = np.array([particle['skewness'] for particle in IMG.stats[i] if particle['skewness'] is not None])
+            skewnesss = np.array([particle['skewness'] for particle in IMG.stats[i] if particle['skewness'] is not None and particle['skewness'] != "N/A"])
             mean_skewness = np.nanmean(skewnesss) if skewnesss.size > 0 else -99.99
             
-            mean_intensities = np.array([particle['mean_intensity'] for particle in IMG.stats[i] if particle['mean_intensity'] is not None])
+            mean_intensities = np.array([particle['mean_intensity'] for particle in IMG.stats[i] if particle['mean_intensity'] is not None and particle['mean_intensity'] != "N/A"])
             mean_mean_intensity = np.nanmean(mean_intensities) if mean_intensities.size > 0 else -99.99
             
         except Exception as e:
@@ -730,7 +730,8 @@ def extract_batch_particles(app_instance, file_paths, vignette_folder_path, csv_
     app_instance.log_message('success', f"Particle extraction is successfully completed for image {IMG.image_names[i]}")
     app_instance.log_message('success', 'CSV file containing the detailed particles measurements successfully exported and mean statistics have been added to the batch_statistics file')
     
-    generate_batch_vignettes(app_instance, "suspended particles", IMG.stats[i], i, vignette_folder_path, IMG.pixel_sizes[i], image_name)
+    if particle_vignettes == True:
+        generate_batch_vignettes(app_instance, "suspended particles", IMG.stats[i], i, vignette_folder_path, IMG.pixel_sizes[i], image_name)
         
     return image_stats_dict    
         

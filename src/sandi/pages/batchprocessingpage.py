@@ -636,6 +636,25 @@ class BatchProcessing:
         self.filling_check.grid(row=4, column=0, sticky="w", padx=10, pady=5)
         
         #######################################################################
+        ##### Save particles vignettes option
+        #######################################################################
+
+        self.vignettes_enabled  = tk.BooleanVar(value=False)
+
+        self.vignettes_check = tk.Checkbutton(self.right_frame,
+                                            text="Save individual particle vignettes",
+                                            variable=self.vignettes_enabled,
+                                            onvalue=True,
+                                            offvalue=False,
+                                            bg="#2c3e50",
+                                            fg="white",
+                                            font=("Segoe UI", 11),
+                                            selectcolor="#243342",
+                                            activebackground="#2c3e50",
+                                            activeforeground="white")
+        self.vignettes_check.grid(row=5, column=0, sticky="w", padx=10, pady=5)
+        
+        #######################################################################
         # Batch processing button
         #######################################################################
         
@@ -655,7 +674,7 @@ class BatchProcessing:
                                  text="Process batch",
                                  command=self.apply_batch_processing,
                                  style='Extraction.TButton', width=28) 
-        self.batch_processing_button.grid(row=5, column=0, columnspan=1, sticky="nw", pady=(6, 3), padx=(10, 15))
+        self.batch_processing_button.grid(row=6, column=0, columnspan=1, sticky="nw", pady=(6, 3), padx=(10, 15))
         
         #######################################################################
         # Back to Homepage button
@@ -664,7 +683,7 @@ class BatchProcessing:
         self.back_button = tk.Button(self.right_frame, text="Back to homepage", command=self.go_home,
                                      bg=self.button_color, fg="black", font=("Segoe UI", 12),
                                      borderwidth=1, relief="flat", width=29)
-        self.back_button.grid(row=6, column=0, columnspan=1, sticky="nw", pady=(3, 10), padx=(10, 10))
+        self.back_button.grid(row=7, column=0, columnspan=1, sticky="nw", pady=(3, 10), padx=(10, 10))
         
         self.back_button.bind("<Enter>", self.on_hover_buttons)
         self.back_button.bind("<Leave>", self.on_leave_buttons)
@@ -823,10 +842,11 @@ class BatchProcessing:
             new_resolution = round(self.new_resolution.get(), 2)
             erosion_value = round(self.erosion.get(), 0)
             particle_hole_filling = self.filling_enabled.get()
+            particle_vignettes = self.vignettes_enabled.get()
             image_width = IMG.image_widths[0]
             image_height = IMG.image_heights[0]
 
-            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, image_height, image_width, self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value, particle_hole_filling)
+            start_batch_processing(IMG.image_paths, self, filter_strength, self.min_value.get(), self.max_value.get(), background_window_size, subdiff, new_resolution, image_height, image_width, self.pcam_characteristics.image_depth.get(), self.canvas, erosion_value, particle_hole_filling, particle_vignettes)
 
         else:
             self.log_message('error', "There is no particle statistics available")
