@@ -52,4 +52,9 @@ There are three ways to install and use SANDI, we recommend using option 3:
 If you encounter any problem with the installation and/or use of SANDI on your computer, please make an issue on the repository so we can help you resolve it.
 
 ## Known issue
+ERR#01 
 For certain types of images, you might experience an issue with the vignette export in the single image processing page if you don't previously apply a resampling on the image. We are aware of this issue and are currently working on resolving it. Know you should be able to export the correct vignettes when applying the resampling. 
+
+ERR#02
+In the PyPI package and executable, the code calculates the skewness, kurtosis, and intensity parameters on the modified image and not the original one. This is already corrected in the online GitHub code.
+
