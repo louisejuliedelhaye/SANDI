@@ -2799,10 +2799,12 @@ class SingleImageProcessing:
                 command=lambda: self.remove_particle(matched_particle[0] if matched_particle else selected_particles[0][0])
             )
 
-        self.context_menu.add_command(
-            label="Restore deleted particle(s)",
-            command=lambda: self.restore_particle()
-        )
+            self.context_menu.add_command(
+                label="Keep only selected particle",
+                command=lambda: self.keep_only_this_particle(
+                    matched_particle[0] if matched_particle else selected_particles[0][0]
+                )
+            )
         
         self.context_menu.post(event.x_root, event.y_root)
     
@@ -2832,6 +2834,28 @@ class SingleImageProcessing:
             self.removed_particles.append((index, removed_particle))  # Store the particle data
             del IMG.stats[index]
         self.log_message('info', f"Removed {len(particle_indices)} particle(s).")
+        self.image_canvas.delete("centroid")
+        self.draw_centroids_on_canvas(False)
+           
+    def keep_only_this_particle(self, index):
+        """        
+        Keeps only the selected particles and removes all others.
+        Updates the contours and centroids on the image canvas.
+                
+        Functions called:
+            draw_centroids_on_canvas (local)
+        """
+        if isinstance(IMG.stats, int):
+            IMG.stats = [IMG.stats]
+    
+        # Collect removed particles
+        removed_particles = [(idx, p) for idx, p in enumerate(IMG.stats) if idx != index]
+        self.removed_particles.extend(removed_particles)
+    
+        # Keep only the selected particle
+        IMG.stats = [IMG.stats[index]]
+    
+        self.log_message('info', f"Successfully kept particle {index + 1}.")
         self.image_canvas.delete("centroid")
         self.draw_centroids_on_canvas(False)
             
